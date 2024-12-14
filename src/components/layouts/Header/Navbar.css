@@ -1,0 +1,92 @@
+.custom-navbar {
+     /* Custom blue color */
+    background-color:white;
+    
+}
+.toplist{
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    column-gap: 20px;
+    background-color: #534891;
+    padding: 0.8rem;
+    color: #fff;
+    margin: 0;
+}
+
+.custom-navlinks li a{
+    color:#20024e;
+    text-decoration: none; 
+   
+    font-weight: bold; 
+    margin-bottom: 0!important;
+}
+
+.custom-navlinks {
+    display: flex; /* Activate Flexbox */
+    justify-content: space-evenly; /* Distribute items evenly */
+    align-items: center; /* Vertically center items */
+    width: 100%; /* Span full width */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+    list-style-type: none; /* Remove bullet points */
+  }
+  
+
+  
+  .custom-navlinks li {
+    flex: 1; /* Ensure equal spacing */
+    text-align: center; /* Center-align text */
+  }
+  
+
+.main-logo{
+    width: 100px;
+    height: 80px;
+}
+
+.custom-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=UTF8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Cpath stroke='black' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  }
+
+  /* Optional: Adjust the toggler button border if needed */
+  .navbar-toggler {
+    border-color: black;
+  }
+  
+
+  /* Base styles for nav links */
+.custom-navlinks .nav-link {
+    position: relative;
+    display: inline-block;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    padding-bottom: 5px; /* Provide space for the line */
+    transition: color 0.3s ease; /* Smooth color transition */
+  }
+  
+  /* Hover effect using ::after */
+  .custom-navlinks .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0; /* Position the line directly below the link */
+    width: 0; /* Initially the width is 0 */
+    height: 4px; /* Thickness of the line */
+    background-color: #534891; /* Color of the line */
+    transition: width 0.3s ease; /* Smooth animation for the width */
+  }
+  
+  /* On hover, the width expands to 100% */
+  .custom-navlinks .nav-link:hover::after {
+    width: 100%; /* Make the line expand fully on hover */
+  }
+  
+  /* Optional: Change text color on hover */
+  .custom-navlinks .nav-link:hover {
+    color: #534891; /* Text color when hovered */
+  }
+  

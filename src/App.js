@@ -1,24 +1,44 @@
 import logo from './logo.svg';
 import './App.css';
+import Header from './components/layouts/Header/Header';
+import Footer from './components/layouts/Footer/Footer';
+import Jumbotron from './components/layouts/Jumbotron';
+import Home from './components/layouts/Home/Home';
+import { Route, Routes } from 'react-router-dom';
+import Login from './screens/Login';
+// Toastify imports
+import { Bounce, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Register from './screens/Register';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  return(
+    <>
+    
+        <Routes>
+          <Route path="/" element={<Login/>}/>
+          <Route path="/home" element={<Jumbotron/>}/>
+          <Route path='/about' element={<Home/>}/>
+          <Route path='/register' element={<Register/>}/>
+          
+        </Routes>
+    
+
+       {/* toast container */}
+       <ToastContainer 
+       position="top-center"
+       autoClose={5000}
+       hideProgressBar={false}
+       newestOnTop={false}
+       closeOnClick
+       rtl={false}
+       pauseOnFocusLoss
+       draggable
+       pauseOnHover
+       theme="light"
+      transition={Bounce}
+       />
+    </>
   );
 }
 

@@ -1,0 +1,37 @@
+.jumbotron-container {
+  position: relative;
+  width: 100%;
+  height: 500px; 
+}
+
+.curvy-image-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../../../public/banner.jpg'); /* Set the image as the background */
+  background-size: cover; /* Ensure the image covers the entire container */
+  background-position: center; /* Center the image */
+  z-index: -1; /* Make sure the image is behind the text */
+}
+
+.text-overlay {
+  position: absolute;
+  top: 20%;
+  left: 20px;
+  transform: translateY(-50%);
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Optional: Adds shadow for better readability */
+}
+
+.text-overlay h1 {
+  font-size: 4rem; /* Adjust font size as needed */
+  margin: 0;
+  font-family: "llbrown", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+}
+
+.text-overlay p {
+  font-size: 1.2rem; /* Adjust font size as needed */
+  margin-top: 10px;
+}
