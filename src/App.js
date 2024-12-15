@@ -10,6 +10,7 @@ import Login from './screens/Login';
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Register from './screens/Register';
+import CustomerProfile from './screens/CustomerProfile';
 
 function App() {
   return(
@@ -20,6 +21,7 @@ function App() {
           <Route path="/home" element={<Jumbotron/>}/>
           <Route path='/about' element={<Home/>}/>
           <Route path='/register' element={<Register/>}/>
+          <Route path='/customerProfile' element={<CustomerProfile/>}/>
           
         </Routes>
     
