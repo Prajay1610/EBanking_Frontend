@@ -1,4 +1,6 @@
 import React from 'react';
+import Header from '../components/layouts/Header/Header';
+import Footer from '../components/layouts/Footer/Footer';
 
 const CustomerProfile = () => {
 
@@ -10,11 +12,13 @@ const CustomerProfile = () => {
   ];
 
   return (
-    <div className="container mt-5">
+    <div>
+        <Header/>
+        <div className="container mt-5">
       <div className="row justify-content-center">
         <div className="col-md-10">
           <div className="card shadow-lg">
-            <div className="card-header text-white bg-secondary bg-gradient">
+          <div className="card-header text-white" style={{ backgroundColor: "#534891" }}>
               <h4 className="mb-0">Customer Profile</h4>
             </div>
             <div className="card-body">
@@ -62,7 +66,7 @@ const CustomerProfile = () => {
               {/* Recent Transactions from backend */}
               <h6>Recent Transactions</h6>
               <div className="table-responsive">
-                <table className="table table-striped table-hover">
+                <table className="table table-striped table-hover" style={{backgroundColor: "#9d96e0"}}>
                   <thead className="table-primary">
                     <tr>
                       <th>Date</th>
@@ -94,8 +98,8 @@ const CustomerProfile = () => {
 
             
               <div className="text-center mt-4">
-                <button className="btn btn-primary mx-2">Edit Profile</button>
-                <button className="btn btn-secondary mx-2">View Transactions</button>
+                <button className="btn btn-primary mx-2" style={{backgroundColor: "#8533ff"}} >Edit Profile</button>
+                <button className="btn btn-secondary mx-2" style={{backgroundColor: "#413C69"}}>View Transactions</button>
                 <button className="btn btn-danger mx-2">Logout</button>
               </div>
             </div>
@@ -103,6 +107,9 @@ const CustomerProfile = () => {
         </div>
       </div>
     </div>
+<Footer/>
+    </div>
+    
   );
 };
 
