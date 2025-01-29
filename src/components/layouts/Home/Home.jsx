@@ -4,6 +4,7 @@ import '../../../App.css';
 import Header from '../Header/Header';
 import Jumbotron from '../Jumbotron';
 import Footer from '../Footer/Footer';
+import Homeinformation from '../Homeinformation/Homeinformation';
 
 const Home = () => {
 
@@ -11,7 +12,9 @@ const Home = () => {
     <>
     <Header/>
      <Jumbotron/>
+     <Homeinformation/>
      <Footer/>
+     
     </>
    
   );
