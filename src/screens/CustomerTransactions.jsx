@@ -105,7 +105,7 @@ const ViewCustomerTransactions = () => {
      <div
        className="card-header text-center"
        style={{
-         backgroundColor: "#493D9E",
+         backgroundColor: "#544892",
          color: "white",
          borderTopLeftRadius: "10px",
          borderTopRightRadius: "10px",
@@ -131,7 +131,7 @@ const ViewCustomerTransactions = () => {
            <thead
              className="table-bordered"
              style={{
-               backgroundColor: "#493D9E",
+               backgroundColor: "#544892",
                color: "white",
              }}
            >
@@ -218,8 +218,9 @@ const ViewCustomerTransactions = () => {
      </div>
    </div>
  </div>
- <Footer/>
+ 
      </div>
+     <Footer/>
     </>
    
   );

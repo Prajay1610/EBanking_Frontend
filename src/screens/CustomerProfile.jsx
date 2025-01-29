@@ -12,7 +12,7 @@ const CustomerProfile = () => {
   ];
 
   return (
-    <div>
+    <>
       <Header />
       <div className="container mt-5">
         <div className="row justify-content-center">
@@ -114,7 +114,8 @@ const CustomerProfile = () => {
         </div>
       </div>
       <Footer />
-    </div>
+    </>
+
   );
 };
 

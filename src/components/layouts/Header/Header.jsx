@@ -62,7 +62,7 @@ const Header = () => {
                 </li>
 
                 <li className="nav-item">
-                  <Link className="nav-link active text-black nunito-standardfont" to="/admin-dashboard">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/ViewManagers">
                     View Bank Managers 
                   </Link>
                 </li>
