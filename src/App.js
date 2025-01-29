@@ -14,6 +14,7 @@ import CustomerProfile from './screens/CustomerProfile';
 import AddBank from './screens/AddBank';
 import AddBankManager from './screens/AddBankManager';
 import AddCustomer from './screens/AddCustomer';
+import AddNewAdmin from './screens/AddNewAdmin';
 
 function App() {
   return(
@@ -28,6 +29,7 @@ function App() {
           <Route path='/AddBank' element={<AddBank/>}/>
           <Route path='/AddBankManager' element={<AddBankManager/>}/>
           <Route path='/AddCustomer' element={<AddCustomer/>}/>
+          <Route path='/AddNewAdmin' element={<AddNewAdmin/>}/>
 
         </Routes>
     

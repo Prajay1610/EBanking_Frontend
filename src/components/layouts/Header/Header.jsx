@@ -1,74 +1,162 @@
-import React from 'react'
-import './Header.css';
-import '../../../index.css';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import "./Header.css";
+import "../../../index.css";
+
 const Header = () => {
+  const role = "admin"; // Change this dynamically from authentication
+  const isLoggedIn=true;
+
   return (
     <div>
-      <div>
-       <ul className='toplist'>
-       <li>Personal</li>
-        <li>Business</li>
-        <li>Coroporate</li>
-       </ul>
+      {/* Top List Section */}
+      {/* <div>
+        <ul className="toplist">
+          <li>Personal</li>
+          <li>Business</li>
+          <li>Corporate</li>
+        </ul>
+      </div> */}
 
-      </div>
-    <nav className="navbar navbar-expand-lg  sticky-top">
-      <div className="container-fluid custom-navbar ">
-        <a className="navbar-brand text-black" href="/home">
-         {/* <img src="logo.png" className='main-logo'></img> */}
-         Logo Here
-        </a>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon custom-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto custom-navlinks">
-            <li className="nav-item custom-navlinks ">
-              <a className="nav-link active text-black nunito-standardfont" href="/home">
-                Home
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link nunito-standardfont" href="/about">
-                Accounts
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link text-black" href="#loans">
-                Loans
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link text-black nunito-standardfont" href="#transactions">
-                Transactions
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link text-black nunito-standardfont" href="/customerProfile">
-               Profile
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="text-black nunito-standardfont" href="#contact">
-               <button className='btn btn-danger '><Link to='/' className='text-white'>Login</Link></button>
-              </a>
-            </li>
-           
-          </ul>
+      {/* Navbar */}
+      <nav className="navbar navbar-expand-lg sticky-top bg-navbar">
+        <div className="container-fluid custom-navbar">
+          <a className="navbar-brand text-black" href="/home">
+            {/* <img src="logo.png" className='main-logo' alt="Logo" /> */}
+            Logo Here
+          </a>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon custom-toggler-icon"></span>
+          </button>
+
+          {/* Navbar Links */}
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav ms-auto custom-navlinks">
+              {/* Role-Based Navigation */}
+              {role === "admin" && (
+                <>
+                <li className="nav-item">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/addNewAdmin">
+                    Add New Admin
+                  </Link>
+                </li>
+
+                <li className="nav-item">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/addBankManager">
+                    Add Bank Manager
+                  </Link>
+                </li>
+
+                <li className="nav-item">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/addBank">
+                    Add Bank 
+                  </Link>
+                </li>
+
+                <li className="nav-item">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/admin-dashboard">
+                    View Bank Managers 
+                  </Link>
+                </li>
+
+                <li className="nav-item">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/admin-dashboard">
+                    View Banks 
+                  </Link>
+                </li>
+                </>
+              )}
+
+              {role === "bank_manager" && (
+               <>
+                <li className="nav-item">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/addCustomer">
+                   Add Customer
+                  </Link>
+                </li>
+                 <li className="nav-item">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/">
+                   Bank Accounts
+                  </Link>
+                </li>
+
+                <li className="nav-item">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/bank-manager">
+                   Bank Customers
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/bank-manager">
+                  Customer Transactions
+                  </Link>
+                </li>
+               </>
+
+              )}
+
+              {role === "customer" && (
+                <>
+                <li className="nav-item">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/customer-dashboard">
+                    Money Transfer
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/customer-dashboard">
+                    Bank Account
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/customer-dashboard">
+                    Transaction History
+                  </Link>
+                </li>
+                </>
+              )}
+
+              {/* Common Links for All Users
+              <li className="nav-item">
+                <Link className="nav-link nunito-standardfont" to="/accounts">
+                  Accounts
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-black" to="/loans">
+                  Loans
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-black nunito-standardfont" to="/transactions">
+                  Transactions
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-black nunito-standardfont" to="/customerProfile">
+                  Profile
+                </Link>
+              </li> */}
+
+              {/* Login Button */}
+              <li className="nav-item">
+                <Link to="/" className="text-black nunito-standardfont">
+                  {isLoggedIn && <button className="btn btn-danger text-white">Logout</button>}
+                  {!isLoggedIn && <button className="btn btn-danger text-white">Login</button>}
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
     </div>
-  )
-}
+  );
+};
 
 export default Header;
