@@ -2,69 +2,78 @@ import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import Header from "../components/layouts/Header/Header";
 import Footer from "../components/layouts/Footer/Footer";
-
-const ViewAllBankAccounts = () => {
+const ViewAllBankCustomers = () => {
   let navigate = useNavigate();
-  const [allAccounts, setAccounts] = useState([]);
-  const [accountNumber, setAccountNumber] = useState("");
-  const [tempAccountNumber, setTempAccountNumber] = useState("");
+  const [allCustomer, setAllCustomer] = useState([]);
+  const [customerName, setCustomerNumber] = useState("");
+  const [tempCustomerName, setTempCustomerName] = useState("");
 
   // Mock data for testing
-  const mockAccounts = [
+  const mockCustomers = [
     {
-      user: { name: "John Doe" },
+      id: 1,
+      name: "John Doe",
       bank: { name: "Global Bank" },
-      number: "1234567890",
-      ifscCode: "GLB0001234",
-      type: "Savings",
-      status: "Open",
+      email: "john.doe@example.com",
+      gender: "Male",
+      contact: "1234567890",
+      street: "123 Main St",
+      city: "New York",
+      pincode: "10001",
+      isAccountLinked: "Yes",
+      status: "Active",
     },
     {
-      user: { name: "Jane Smith" },
+      id: 2,
+      name: "Jane Smith",
       bank: { name: "National Bank" },
-      number: "9876543210",
-      ifscCode: "NTB0005678",
-      type: "Current",
-      status: "Lock",
+      email: "jane.smith@example.com",
+      gender: "Female",
+      contact: "9876543210",
+      street: "456 Elm St",
+      city: "Los Angeles",
+      pincode: "90001",
+      isAccountLinked: "No",
+      status: "Deactivated",
     },
     {
-      user: { name: "Alice Johnson" },
+      id: 3,
+      name: "Alice Johnson",
       bank: { name: "City Bank" },
-      number: "5678901234",
-      ifscCode: "CTB0009101",
-      type: "Savings",
-      status: "Open",
+      email: "alice.johnson@example.com",
+      gender: "Female",
+      contact: "5678901234",
+      street: "789 Oak St",
+      city: "Chicago",
+      pincode: "60601",
+      isAccountLinked: "Yes",
+      status: "Active",
     },
   ];
 
   // Simulate fetching data from the backend
   useEffect(() => {
-    setAccounts(mockAccounts); // Use mock data for testing
+    setAllCustomer(mockCustomers); // Use mock data for testing
   }, []);
 
-  const searchBankAccountsByAccountNumber = (e) => {
+  const searchBankCustomersByName = (e) => {
     e.preventDefault();
-    setAccountNumber(tempAccountNumber);
-    // Filter mock data based on account number
-    const filteredAccounts = mockAccounts.filter((account) =>
-      account.number.includes(tempAccountNumber)
+    setCustomerNumber(tempCustomerName);
+    // Filter mock data based on customer name
+    const filteredCustomers = mockCustomers.filter((customer) =>
+      customer.name.toLowerCase().includes(tempCustomerName.toLowerCase())
     );
-    setAccounts(filteredAccounts);
+    setAllCustomer(filteredCustomers);
   };
 
   const viewAccountDetails = (customer) => {
     navigate("/customer/bank/account/detail", { state: customer });
   };
 
-  const viewAccountStatement = (customer) => {
-    navigate("/customer/bank/account/statement", { state: customer });
-  };
-
-  const openAccount = (accountId) => {
-    toast.success("Account opened successfully!", {
+  const activateUser = (userId) => {
+    toast.success("User activated successfully!", {
       position: "top-center",
       autoClose: 1000,
       hideProgressBar: false,
@@ -75,8 +84,8 @@ const ViewAllBankAccounts = () => {
     });
   };
 
-  const lockAccount = (accountId) => {
-    toast.error("Account locked successfully!", {
+  const deactivateUser = (userId) => {
+    toast.error("User deactivated successfully!", {
       position: "top-center",
       autoClose: 1000,
       hideProgressBar: false,
@@ -88,7 +97,6 @@ const ViewAllBankAccounts = () => {
   };
 
   return (
-
     <>
     <Header/>
     <div style={{ backgroundColor: "#f8f9fa", minHeight: "100vh" }}>
@@ -111,7 +119,7 @@ const ViewAllBankAccounts = () => {
               borderRadius: "10px 10px 0 0",
             }}
           >
-            <h2>All Bank Accounts</h2>
+            <h2>All Bank Customers</h2>
           </div>
           <div
             className="card-body"
@@ -124,14 +132,14 @@ const ViewAllBankAccounts = () => {
                 <form className="row g-3 align-items-center">
                   <div className="col-auto">
                     <label>
-                      <b>Account Number</b>
+                      <b>Customer Name</b>
                     </label>
                     <input
-                      type="number"
+                      type="text"
                       className="form-control"
-                      placeholder="Enter account no..."
-                      onChange={(e) => setTempAccountNumber(e.target.value)}
-                      value={tempAccountNumber}
+                      placeholder="Enter customer name..."
+                      onChange={(e) => setTempCustomerName(e.target.value)}
+                      value={tempCustomerName}
                       required
                       style={{ border: "1px solid #544892" }}
                     />
@@ -141,8 +149,7 @@ const ViewAllBankAccounts = () => {
                       type="submit"
                       className="btn btn-primary btn-lg"
                       style={{ backgroundColor: "#544892", border: "none" }}
-                      onClick={searchBankAccountsByAccountNumber}
-        
+                      onClick={searchBankCustomersByName}
                     >
                       Search
                     </button>
@@ -159,52 +166,58 @@ const ViewAllBankAccounts = () => {
                   <tr>
                     <th scope="col">Customer Name</th>
                     <th scope="col">Bank Name</th>
-                    <th scope="col">Account No.</th>
-                    <th scope="col">Ifsc Code</th>
-                    <th scope="col">Account Type</th>
-                    <th scope="col">Complete Detail</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Contact</th>
+                    <th scope="col">Street</th>
+                    <th scope="col">City</th>
+                    <th scope="col">Pincode</th>
+                    <th scope="col">Account Details</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Statement</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {allAccounts.map((account, index) => (
-                    <tr key={index} style={{ backgroundColor: "#f8f9fa" }}>
+                  {allCustomer.map((customer) => (
+                    <tr key={customer.id} style={{ backgroundColor: "#f8f9fa" }}>
                       <td>
-                        <b>{account.user.name}</b>
+                        <b>{customer.name}</b>
                       </td>
                       <td>
-                        <b>{account.bank.name}</b>
+                        <b>{customer.bank.name}</b>
                       </td>
                       <td>
-                        <b>{account.number}</b>
+                        <b>{customer.email}</b>
                       </td>
                       <td>
-                        <b>{account.ifscCode}</b>
+                        <b>{customer.gender}</b>
                       </td>
                       <td>
-                        <b>{account.type}</b>
+                        <b>{customer.contact}</b>
                       </td>
                       <td>
-                        <button
-                          onClick={() => viewAccountDetails(account.user)}
-                          className="btn btn-sm btn-primary"
-                          style={{ backgroundColor: "#544892", border: "none" }}
-                        >
-                          View Detail
-                        </button>
+                        <b>{customer.street}</b>
                       </td>
                       <td>
-                        <b>{account.status}</b>
+                        <b>{customer.city}</b>
                       </td>
                       <td>
-                        <button
-                          onClick={() => viewAccountStatement(account.user)}
-                          className="btn btn-sm btn-primary"
-                          style={{ backgroundColor: "#544892", border: "none" }}
-                        >
-                          View
-                        </button>
+                        <b>{customer.pincode}</b>
+                      </td>
+                      <td>
+                        {customer.isAccountLinked === "Yes" ? (
+                          <button
+                            onClick={() => viewAccountDetails(customer)}
+                            className="btn btn-sm btn-primary"
+                            style={{ backgroundColor: "#544892", border: "none" }}
+                          >
+                            View Account
+                          </button>
+                        ) : (
+                          <b className="text-danger">NOT LINKED</b>
+                        )}
+                      </td>
+                      <td>
+                        <b>{customer.status}</b>
                       </td>
                     </tr>
                   ))}
@@ -216,10 +229,10 @@ const ViewAllBankAccounts = () => {
       </div>
       <ToastContainer />
     </div>
-    <Footer/>
+<Footer/>
     </>
     
   );
 };
 
-export default ViewAllBankAccounts;
+export default ViewAllBankCustomers;
