@@ -1,6 +1,7 @@
 import React from 'react'
-import './Navbar.css';
+import './Header.css';
 import '../../../index.css';
+import { Link } from 'react-router-dom';
 const Header = () => {
   return (
     <div>
@@ -14,7 +15,7 @@ const Header = () => {
       </div>
     <nav className="navbar navbar-expand-lg  sticky-top">
       <div className="container-fluid custom-navbar ">
-        <a className="navbar-brand text-black" href="#">
+        <a className="navbar-brand text-black" href="/home">
          {/* <img src="logo.png" className='main-logo'></img> */}
          Logo Here
         </a>
@@ -32,7 +33,7 @@ const Header = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto custom-navlinks">
             <li className="nav-item custom-navlinks ">
-              <a className="nav-link active text-black nunito-standardfont" href="/">
+              <a className="nav-link active text-black nunito-standardfont" href="/home">
                 Home
               </a>
             </li>
@@ -52,10 +53,16 @@ const Header = () => {
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-black nunito-standardfont" href="#contact">
-                Contact Us
+              <a className="nav-link text-black nunito-standardfont" href="/customerProfile">
+               Profile
               </a>
             </li>
+            <li className="nav-item">
+              <a className="text-black nunito-standardfont" href="#contact">
+               <button className='btn btn-danger '><Link to='/' className='text-white'>Login</Link></button>
+              </a>
+            </li>
+           
           </ul>
         </div>
       </div>
