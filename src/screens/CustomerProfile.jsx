@@ -14,9 +14,8 @@ const CustomerProfile = () => {
   ];
 
   return (
-
-   <>
-    <Header/>
+    <div>
+      <Header/>
      <div className="container mt-5">
 
     <div>
@@ -115,10 +114,10 @@ const CustomerProfile = () => {
       </div>
     </div>
 
-   </>
-
+    </div>
     </div>
     
+    </div>
   );
 };
 
