@@ -1,9 +1,11 @@
 import React from 'react';
 import Header from '../components/layouts/Header/Header';
-import Footer from '../components/layouts/Footer/Footer';
+
+import Jumbotron from '../components/layouts/Jumbotron';
+
 
 const CustomerProfile = () => {
-
+ 
     //We will fetch data from backend - Sample dta
   const transactions = [
     { date: "15-Dec-2024", description: "Online Shopping", amount: "-Rs. 100.00", type: "Debit" },
@@ -12,6 +14,11 @@ const CustomerProfile = () => {
   ];
 
   return (
+
+   <>
+    <Header/>
+     <div className="container mt-5">
+
     <div>
         <Header/>
         <div className="container mt-5">
@@ -107,7 +114,9 @@ const CustomerProfile = () => {
         </div>
       </div>
     </div>
-<Footer/>
+
+   </>
+
     </div>
     
   );

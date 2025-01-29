@@ -18,8 +18,8 @@ function App() {
     
         <Routes>
           <Route path="/" element={<Login/>}/>
-          <Route path="/home" element={<Jumbotron/>}/>
-          <Route path='/about' element={<Home/>}/>
+          <Route path="/home" element={<Home/>}/>
+          {/* <Route path='/about' element={}/> */}
           <Route path='/register' element={<Register/>}/>
           <Route path='/customerProfile' element={<CustomerProfile/>}/>
           

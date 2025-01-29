@@ -6,7 +6,7 @@ import Header from "./Header/Header";
 function Jumbotron() {
   return (
     <>
-    <Header/>
+    
        <div className="jumbotron-container">
     <div className="curvy-image-container">
       <div className="text-overlay animate__animated animate__bounceInDown">
