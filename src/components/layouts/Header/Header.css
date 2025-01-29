@@ -1,7 +1,7 @@
-.custom-navbar {
-     /* Custom blue color */
-    background-color:white;
-    
+
+
+.bg-navbar{
+  background-color: #d6d0f2;
 }
 .toplist{
     list-style-type: none;

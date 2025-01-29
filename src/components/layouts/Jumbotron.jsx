@@ -3,6 +3,7 @@ import React from "react";
 import "./Jumbotron.css";
 import Header from "./Header/Header";
 
+
 function Jumbotron() {
   return (
     <>
@@ -12,10 +13,11 @@ function Jumbotron() {
       <div className="text-overlay animate__animated animate__bounceInDown">
         <h1>Your Banking, Your Way</h1>
         <p>Experience the future of banking with us.</p>
-        <a className="btn btn-danger">Explore</a>
+        <a className="btn btn-danger" href="/home">Explore</a>
       </div>
     </div>
   </div>
+
     </>
    
   );
