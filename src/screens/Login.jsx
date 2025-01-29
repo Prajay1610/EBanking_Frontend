@@ -3,6 +3,7 @@ import { Link, redirect } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {login} from "../services/user";
+import Header from "../components/layouts/Header/Header";
 
 const Login = () => {
 
@@ -48,6 +49,8 @@ async function onSubmit(){
 
 
 return (
+  <>
+  <Header/>
     <div>
       <div className="heading d-flex flex-row justify-content-center mb-0 mt-5" >
         <h2 className="nanunito-standardfont mt-1">Login</h2>
@@ -97,6 +100,7 @@ return (
   </div>
     </section>
     </div>
+  </>
   )
 }
 

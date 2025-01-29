@@ -5,7 +5,7 @@ import "../../../index.css";
 
 const Header = () => {
   const role = "admin"; // Change this dynamically from authentication
-  const isLoggedIn=true;
+  const isLoggedIn=true;//toggle this to check
 
   return (
     <div>
@@ -41,7 +41,7 @@ const Header = () => {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto custom-navlinks">
               {/* Role-Based Navigation */}
-              {role === "admin" && (
+              {isLoggedIn && role === "admin" && (
                 <>
                 <li className="nav-item">
                   <Link className="nav-link active text-black nunito-standardfont" to="/addNewAdmin">
@@ -75,7 +75,7 @@ const Header = () => {
                 </>
               )}
 
-              {role === "bank_manager" && (
+              {isLoggedIn && role === "bank_manager" && (
                <>
                 <li className="nav-item">
                   <Link className="nav-link active text-black nunito-standardfont" to="/addCustomer">
@@ -102,7 +102,7 @@ const Header = () => {
 
               )}
 
-              {role === "customer" && (
+              {isLoggedIn && role === "customer" && (
                 <>
                 <li className="nav-item">
                   <Link className="nav-link active text-black nunito-standardfont" to="/customer-dashboard">
@@ -121,6 +121,22 @@ const Header = () => {
                 </li>
                 </>
               )}
+
+              {!isLoggedIn && (
+                <>
+                <li className="nav-item">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/customer-dashboard">
+                    About Us
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/customer-dashboard">
+                    Contact Us
+                  </Link>
+                </li>
+               
+                </>
+              )}  
 
               {/* Common Links for All Users
               <li className="nav-item">
@@ -145,12 +161,12 @@ const Header = () => {
               </li> */}
 
               {/* Login Button */}
-              <li className="nav-item">
+             {isLoggedIn && ( <li className="nav-item">
                 <Link to="/" className="text-black nunito-standardfont">
                   {isLoggedIn && <button className="btn btn-danger text-white">Logout</button>}
                   {!isLoggedIn && <button className="btn btn-danger text-white">Login</button>}
                 </Link>
-              </li>
+              </li>)}
             </ul>
           </div>
         </div>

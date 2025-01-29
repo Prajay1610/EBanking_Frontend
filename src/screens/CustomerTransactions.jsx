@@ -87,137 +87,141 @@ const ViewCustomerTransactions = () => {
   };
 
   return (
-    <div style={{ backgroundColor: "white", minHeight: "100vh", padding: "20px" }}>
-  <Header/>
-      <div className="mt-2">
-        <div
-          className="card form-card ms-5 me-5 mb-5 border-color"
-          style={{
-            height: "45rem",
-            backgroundColor: "white",
-            border: "1px solidrgb(78, 63, 192)",
-            borderRadius: "10px",
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-          }}
-        >
-          <div
-            className="card-header text-center"
-            style={{
-              backgroundColor: "#493D9E",
-              color: "white",
-              borderTopLeftRadius: "10px",
-              borderTopRightRadius: "10px",
-              padding: "15px",
-            }}
-          >
-            <h2>Customer Transactions</h2>
-          </div>
-          <div
-            className="card-body"
-            style={{
-              overflowY: "auto",
-            }}
-          >
-            <div className="table-responsive mt-3">
-              <table
-                className="table table-hover text-center"
-                style={{
-                  backgroundColor: "white",
-                  color: "#493D9E",
-                }}
-              >
-                <thead
-                  className="table-bordered"
-                  style={{
-                    backgroundColor: "#493D9E",
-                    color: "white",
-                  }}
-                >
-                  <tr>
-                    <th scope="col">Transaction Id</th>
-                    <th scope="col">Source Bank</th>
-                    <th scope="col">Customer Name</th>
-                    <th scope="col">Source Account</th>
-                    <th scope="col">Transaction Type</th>
-                    <th scope="col">Amount</th>
-                    <th scope="col">Recipient Bank</th>
-                    <th scope="col">Recipient Account</th>
-                    <th scope="col">Narration</th>
-                    <th scope="col">Transaction Time</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {allTransactions.map((transaction) => {
-                    return (
-                      <tr
-                        key={transaction.transactionId}
-                        style={{
-                          borderBottom: "1px solidrgb(147, 130, 242)",
-                        }}
-                      >
-                        <td>
-                          <b>{transaction.transactionId}</b>
-                        </td>
-                        <td>
-                          <b>{transaction.bank.name}</b>
-                        </td>
-                        <td>
-                          <b>{transaction.user.name}</b>
-                        </td>
-                        <td>
-                          <b>{transaction.bankAccount.number}</b>
-                        </td>
-                        <td>
-                          <b>{transaction.type}</b>
-                        </td>
-                        <td>
-                          <b>{transaction.amount}</b>
-                        </td>
-                        <td>
-                          {(() => {
-                            if (transaction.type === "Account Transfer") {
-                              return (
-                                <b>
-                                  {transaction.destinationBankAccount.bank.name}
-                                </b>
-                              );
-                            } else {
-                              return <b>---</b>;
-                            }
-                          })()}
-                        </td>
-                        <td>
-                          {(() => {
-                            if (transaction.type === "Account Transfer") {
-                              return (
-                                <b>
-                                  {transaction.destinationBankAccount.number}
-                                </b>
-                              );
-                            } else {
-                              return <b>---</b>;
-                            }
-                          })()}
-                        </td>
-                        <td>
-                          <b>{transaction.narration}</b>
-                        </td>
-                        <td>
-                          <b>
-                            {formatDateFromEpoch(transaction.transactionTime)}
-                          </b>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-      <Footer/>
-    </div>
+    <>
+    <Header />
+     <div style={{ backgroundColor: "white", minHeight: "100vh", padding: "20px" }}>
+ 
+ <div className="mt-2">
+   <div
+     className="card form-card ms-5 me-5 mb-5 border-color"
+     style={{
+       height: "45rem",
+       backgroundColor: "white",
+       border: "1px solidrgb(78, 63, 192)",
+       borderRadius: "10px",
+       boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+     }}
+   >
+     <div
+       className="card-header text-center"
+       style={{
+         backgroundColor: "#493D9E",
+         color: "white",
+         borderTopLeftRadius: "10px",
+         borderTopRightRadius: "10px",
+         padding: "15px",
+       }}
+     >
+       <h2>Customer Transactions</h2>
+     </div>
+     <div
+       className="card-body"
+       style={{
+         overflowY: "auto",
+       }}
+     >
+       <div className="table-responsive mt-3">
+         <table
+           className="table table-hover text-center"
+           style={{
+             backgroundColor: "white",
+             color: "#493D9E",
+           }}
+         >
+           <thead
+             className="table-bordered"
+             style={{
+               backgroundColor: "#493D9E",
+               color: "white",
+             }}
+           >
+             <tr>
+               <th scope="col">Transaction Id</th>
+               <th scope="col">Source Bank</th>
+               <th scope="col">Customer Name</th>
+               <th scope="col">Source Account</th>
+               <th scope="col">Transaction Type</th>
+               <th scope="col">Amount</th>
+               <th scope="col">Recipient Bank</th>
+               <th scope="col">Recipient Account</th>
+               <th scope="col">Narration</th>
+               <th scope="col">Transaction Time</th>
+             </tr>
+           </thead>
+           <tbody>
+             {allTransactions.map((transaction) => {
+               return (
+                 <tr
+                   key={transaction.transactionId}
+                   style={{
+                     borderBottom: "1px solidrgb(147, 130, 242)",
+                   }}
+                 >
+                   <td>
+                     <b>{transaction.transactionId}</b>
+                   </td>
+                   <td>
+                     <b>{transaction.bank.name}</b>
+                   </td>
+                   <td>
+                     <b>{transaction.user.name}</b>
+                   </td>
+                   <td>
+                     <b>{transaction.bankAccount.number}</b>
+                   </td>
+                   <td>
+                     <b>{transaction.type}</b>
+                   </td>
+                   <td>
+                     <b>{transaction.amount}</b>
+                   </td>
+                   <td>
+                     {(() => {
+                       if (transaction.type === "Account Transfer") {
+                         return (
+                           <b>
+                             {transaction.destinationBankAccount.bank.name}
+                           </b>
+                         );
+                       } else {
+                         return <b>---</b>;
+                       }
+                     })()}
+                   </td>
+                   <td>
+                     {(() => {
+                       if (transaction.type === "Account Transfer") {
+                         return (
+                           <b>
+                             {transaction.destinationBankAccount.number}
+                           </b>
+                         );
+                       } else {
+                         return <b>---</b>;
+                       }
+                     })()}
+                   </td>
+                   <td>
+                     <b>{transaction.narration}</b>
+                   </td>
+                   <td>
+                     <b>
+                       {formatDateFromEpoch(transaction.transactionTime)}
+                     </b>
+                   </td>
+                 </tr>
+               );
+             })}
+           </tbody>
+         </table>
+       </div>
+     </div>
+   </div>
+ </div>
+ <Footer/>
+     </div>
+    </>
+   
   );
 };
 
