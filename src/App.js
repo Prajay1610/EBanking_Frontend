@@ -11,6 +11,9 @@ import { Bounce, ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Register from './screens/Register';
 import CustomerProfile from './screens/CustomerProfile';
+import AddBank from './screens/AddBank';
+import AddBankManager from './screens/AddBankManager';
+import AddCustomer from './screens/AddCustomer';
 
 function App() {
   return(
@@ -22,7 +25,10 @@ function App() {
           <Route path='/about' element={<Home/>}/>
           <Route path='/register' element={<Register/>}/>
           <Route path='/customerProfile' element={<CustomerProfile/>}/>
-          
+          <Route path='/AddBank' element={<AddBank/>}/>
+          <Route path='/AddBankManager' element={<AddBankManager/>}/>
+          <Route path='/AddCustomer' element={<AddCustomer/>}/>
+
         </Routes>
     
 
