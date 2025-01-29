@@ -2,7 +2,7 @@ import React from "react";
 
 import "./Jumbotron.css";
 import Header from "./Header/Header";
-import Footer from "./Footer/Footer";
+
 
 function Jumbotron() {
   return (
@@ -17,7 +17,7 @@ function Jumbotron() {
       </div>
     </div>
   </div>
-  <Footer/>
+
     </>
    
   );
