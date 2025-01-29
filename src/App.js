@@ -22,6 +22,7 @@ import ViewBankManagers from './screens/ViewBankManagers';
 import ViewAllBankAccounts from './screens/ViewAllBankAccounts';
 import ViewAllBankCustomers from './screens/ViewAllBankCustomer';
 import ViewAllBanks from './screens/ViewAllBanks';
+import MoneyTransfer from './screens/MoneyTransfer';
 
 
 function App() {
@@ -58,6 +59,7 @@ function App() {
           <Route path='/customerProfile' element={<CustomerProfile/>}/>
 
           <Route path='/ViewAllBanks' element={<ViewAllBanks/>}/>
+          <Route path='/MoneyTransfer' element={<MoneyTransfer/>}/>
         </Routes>
     
 

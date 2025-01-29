@@ -4,7 +4,7 @@ import "./Header.css";
 import "../../../index.css";
 
 const Header = () => {
-  const role = "admin"; // Change this dynamically from authentication
+  const role = "customer"; // Change this dynamically from authentication
   const isLoggedIn=true;//toggle this to check
 
   return (
@@ -106,7 +106,7 @@ const Header = () => {
               {isLoggedIn && role === "customer" && (
                 <>
                 <li className="nav-item">
-                  <Link className="nav-link active text-black nunito-standardfont" to="/customer-dashboard">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/MoneyTransfer">
                     Money Transfer
                   </Link>
                 </li>
@@ -123,7 +123,7 @@ const Header = () => {
                 </>
               )}
 
-              {!isLoggedIn && (
+              {role==="customer" && isLoggedIn && (
                 <>
                 <li className="nav-item">
                   <Link className="nav-link active text-black nunito-standardfont" to="/customer-dashboard">
