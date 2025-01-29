@@ -31,3 +31,16 @@ export const register = async(reqbody)=>{
     }
 }
 
+export const getCustomer = async(reqbody)=>{
+    
+    const url = createUrl('user/profile')
+
+    try {
+        const response = await axios.get(url,reqbody);
+        return response.data;
+        
+    } catch (error) {
+        toast.error('Error occured')
+    }
+}
+
