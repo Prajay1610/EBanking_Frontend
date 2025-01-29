@@ -11,6 +11,7 @@ import { Bounce, ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Register from './screens/Register';
 import CustomerProfile from './screens/CustomerProfile';
+import ViewCustomerTransactions from './screens/CustomerTransactions';
 
 function App() {
   return(
@@ -22,6 +23,7 @@ function App() {
           {/* <Route path='/about' element={}/> */}
           <Route path='/register' element={<Register/>}/>
           <Route path='/customerProfile' element={<CustomerProfile/>}/>
+          <Route path="/transactions" element={<ViewCustomerTransactions/>}/>
           
         </Routes>
     
