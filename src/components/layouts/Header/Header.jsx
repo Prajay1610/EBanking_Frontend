@@ -99,11 +99,7 @@ const Header = () => {
                   </Link>
                 </li>
 
-                <li className="nav-item">
-                  <Link className="nav-link active text-black nunito-standardfont" to="/ViewBankAccount">
-                  View Bank Account
-                  </Link>
-                </li>
+               
                 
                </>
 
