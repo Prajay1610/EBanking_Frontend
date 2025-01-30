@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./Header.css";
 import "../../../index.css";
-
+import logo from "./logoSecureBank.png"
 const Header = () => {
   const role = "customer"; // Change this dynamically from authentication
   const isLoggedIn=true;//toggle this to check
@@ -21,10 +21,17 @@ const Header = () => {
       {/* Navbar */}
       <nav className="navbar navbar-expand-lg sticky-top bg-navbar">
         <div className="container-fluid custom-navbar">
-          <a className="navbar-brand text-black" href="/home">
-            {/* <img src="logo.png" className='main-logo' alt="Logo" /> */}
-            Logo Here
-          </a>
+        <a className="navbar-brand text-black" href="/home">
+  <img 
+    src={logo} 
+    style={{ 
+      width: 'auto',    
+      height: '35px'    
+    }} 
+    className='main-logo' 
+    alt="Logo" 
+  />
+</a>
           <button
             className="navbar-toggler"
             type="button"
