@@ -4,7 +4,7 @@ import "./Header.css";
 import "../../../index.css";
 
 const Header = () => {
-  const role = "admin"; // Change this dynamically from authentication
+  const role = "customer"; // Change this dynamically from authentication
   const isLoggedIn=true;//toggle this to check
 
   return (
@@ -68,7 +68,7 @@ const Header = () => {
                 </li>
 
                 <li className="nav-item">
-                  <Link className="nav-link active text-black nunito-standardfont" to="/admin-dashboard">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/ViewAllBanks">
                     View Banks 
                   </Link>
                 </li>
@@ -83,21 +83,22 @@ const Header = () => {
                   </Link>
                 </li>
                  <li className="nav-item">
-                  <Link className="nav-link active text-black nunito-standardfont" to="/">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/ViewAllBankAccounts">
                    Bank Accounts
                   </Link>
                 </li>
 
                 <li className="nav-item">
-                  <Link className="nav-link active text-black nunito-standardfont" to="/bank-manager">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/ViewAllBankCustomers">
                    Bank Customers
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link active text-black nunito-standardfont" to="/bank-manager">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/transactions">
                   Customer Transactions
                   </Link>
                 </li>
+                
                </>
 
               )}
@@ -105,24 +106,24 @@ const Header = () => {
               {isLoggedIn && role === "customer" && (
                 <>
                 <li className="nav-item">
-                  <Link className="nav-link active text-black nunito-standardfont" to="/customer-dashboard">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/MoneyTransfer">
                     Money Transfer
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link active text-black nunito-standardfont" to="/customer-dashboard">
-                    Bank Account
+                  <Link className="nav-link active text-black nunito-standardfont" to="/customerProfile">
+                    Profile
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link active text-black nunito-standardfont" to="/customer-dashboard">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/transactions">
                     Transaction History
                   </Link>
                 </li>
                 </>
               )}
 
-              {!isLoggedIn && (
+              {role==="customer" && isLoggedIn && (
                 <>
                 <li className="nav-item">
                   <Link className="nav-link active text-black nunito-standardfont" to="/customer-dashboard">

@@ -21,7 +21,12 @@ import AddNewAdmin from './screens/AddNewAdmin';
 import ViewBankManagers from './screens/ViewBankManagers';
 import ViewAllBankAccounts from './screens/ViewAllBankAccounts';
 import ViewAllBankCustomers from './screens/ViewAllBankCustomer';
+
 import ViewBankAccount from './screens/ViewBankAccount';
+
+import ViewAllBanks from './screens/ViewAllBanks';
+import MoneyTransfer from './screens/MoneyTransfer';
+
 
 
 function App() {
@@ -55,7 +60,14 @@ function App() {
 
           <Route path='/ViewAllBankCustomers' element={<ViewAllBankCustomers/>}/>
           
+
           <Route path='/customer/bank/account/detail' element={<ViewBankAccount/>}/>
+
+          <Route path='/customerProfile' element={<CustomerProfile/>}/>
+
+          <Route path='/ViewAllBanks' element={<ViewAllBanks/>}/>
+          <Route path='/MoneyTransfer' element={<MoneyTransfer/>}/>
+
         </Routes>
     
 
