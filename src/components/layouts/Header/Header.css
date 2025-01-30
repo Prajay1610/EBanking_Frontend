@@ -3,6 +3,47 @@
 .bg-navbar{
   background-color: #d6d0f2;
 }
+
+
+
+/* Header.css */
+
+/* Navbar container */
+.custom-navbar {
+  padding: 0 2rem; /* Add horizontal padding */
+}
+
+/* Logo styling */
+.main-logo {
+  max-height: 50px; /* Match the inline height */
+  width: auto; /* Maintain aspect ratio */
+  margin-right: 1rem; /* Add spacing between logo and links */
+}
+
+/* Nav links container */
+.custom-navlinks {
+  gap: 1.5rem; /* Space between nav items */
+  align-items: center;
+}
+
+/* Individual nav items */
+.nav-item {
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .custom-navlinks {
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+  
+  .main-logo {
+    height: 40px;
+  }
+}
+
+
 .toplist{
     list-style-type: none;
     display: flex;
