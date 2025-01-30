@@ -23,7 +23,8 @@ import ViewAllBankAccounts from './screens/ViewAllBankAccounts';
 import ViewAllBankCustomers from './screens/ViewAllBankCustomer';
 import ViewAllBanks from './screens/ViewAllBanks';
 import MoneyTransfer from './screens/MoneyTransfer';
-
+import About from './screens/About/About';
+import Contact from './screens/Contact/Contact'; 
 
 function App() {
   return(
@@ -32,7 +33,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Login/>}/>
           <Route path="/home" element={<Home/>}/>
-          {/* <Route path='/about' element={}/> */}
+           <Route path='/about' element={<About/>}/> 
+           <Route path='/contact' element={<Contact/>}/>
           <Route path='/register' element={<Register/>}/>
           <Route path='/customerProfile' element={<CustomerProfile/>}/>
 

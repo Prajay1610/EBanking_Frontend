@@ -126,12 +126,12 @@ const Header = () => {
               {role==="customer" && isLoggedIn && (
                 <>
                 <li className="nav-item">
-                  <Link className="nav-link active text-black nunito-standardfont" to="/customer-dashboard">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/About">
                     About Us
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link active text-black nunito-standardfont" to="/customer-dashboard">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/Contact">
                     Contact Us
                   </Link>
                 </li>
