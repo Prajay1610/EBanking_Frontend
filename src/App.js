@@ -67,7 +67,7 @@ function App() {
 
           <Route path='/ViewAllBanks' element={<ViewAllBanks/>}/>
           <Route path='/MoneyTransfer' element={<MoneyTransfer/>}/>
-
+          <Route path='/ViewBankAccount' element={<ViewBankAccount/>}/>
         </Routes>
     
 

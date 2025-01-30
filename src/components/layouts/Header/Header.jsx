@@ -4,7 +4,7 @@ import "./Header.css";
 import "../../../index.css";
 
 const Header = () => {
-  const role = "customer"; // Change this dynamically from authentication
+  const role = "bank_manager"; // Change this dynamically from authentication
   const isLoggedIn=true;//toggle this to check
 
   return (
@@ -96,6 +96,12 @@ const Header = () => {
                 <li className="nav-item">
                   <Link className="nav-link active text-black nunito-standardfont" to="/transactions">
                   Customer Transactions
+                  </Link>
+                </li>
+
+                <li className="nav-item">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/ViewBankAccount">
+                  View Bank Account
                   </Link>
                 </li>
                 
