@@ -1,7 +1,7 @@
 import React from "react";
 
 import "./Jumbotron.css";
-import Header from "./Header/Header";
+import Header from "../Header/Header";
 
 
 function Jumbotron() {

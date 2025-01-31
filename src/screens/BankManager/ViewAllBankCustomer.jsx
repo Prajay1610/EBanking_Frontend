@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/layouts/Header/Header";
-import Footer from "../components/layouts/Footer/Footer";
+import Header from "../../components/layouts/Header/Header";
+import Footer from "../../components/layouts/Footer/Footer";
 const ViewAllBankCustomers = () => {
   let navigate = useNavigate();
   const [allCustomer, setAllCustomer] = useState([]);

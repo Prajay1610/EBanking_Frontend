@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import Header from "../components/layouts/Header/Header";
-import Footer from "../components/layouts/Footer/Footer";
+import Header from "../../components/layouts/Header/Header";
+import Footer from "../../components/layouts/Footer/Footer";
 
-const MoneyTransfer = () => {
+const AddCustomer = () => {
 
   const admin_jwtToken = sessionStorage.getItem("admin-jwtToken");
 
@@ -40,10 +40,14 @@ const MoneyTransfer = () => {
   // }, []);
 
   const [customer, setCustomer] = useState({
-    accno: "",
-    ifsc: "",
-    amount: "",
-    purpose: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    gender:"",
+    age: "",
+    password: "",
+    address: "",
   });
 
   const handleInput = (e) => {
@@ -122,74 +126,132 @@ const MoneyTransfer = () => {
     <div className="d-flex justify-content-center align-items-center min-vh-100">
       <div className="card form-card border-color custom-bg" style={{ width: "50rem" }}>
         <div className="card-header  custom-bg-text text-center" style={{ backgroundColor: "#534891", color: "white", padding: "10px", textAlign: "center", borderRadius: "8px 8px 0 0" }}>
-          <h5 className="card-title">Transfer Money</h5>
+          <h5 className="card-title">Add Customer</h5>
         </div>
         <div className="card-body text-color" style={{backgroundColor: "#d6d0f2"}}>
           <form className="row g-3">
             <div className="col-md-6 mb-3">
-              <label htmlFor="accno" className="form-label">
-                <b>Account Number</b>
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                id="accno"
-                name="accno"
-                onChange={handleInput}
-                value={customer.accno}
-              />
-            </div>
-
-            <div className="col-md-6 mb-3">
-              <label htmlFor="ifsc" className="form-label">
-                <b>IFSC</b>
+              <label htmlFor="name" className="form-label">
+                <b>First Name</b>
               </label>
               <input
                 type="text"
                 className="form-control"
-                id="ifsc"
-                name="ifsc"
+                id="firstName"
+                name="firstName"
                 onChange={handleInput}
-                value={customer.ifsc}
+                value={customer.firstName}
               />
             </div>
 
             <div className="col-md-6 mb-3">
               <label htmlFor="code" className="form-label">
-                <b>Amount</b>
+                <b>Last Name</b>
               </label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
-                id="amount"
-                name="amount"
+                id="lastName"
+                name="lastName"
                 onChange={handleInput}
-                value={customer.amount}
+                value={customer.lastName}
               />
             </div>
 
             <div className="col-md-6 mb-3">
-              <label htmlFor="purpose" className="form-label">
-                <b>Purpose</b>
+              <label htmlFor="code" className="form-label">
+                <b>Email</b>
               </label>
-              <textarea
+              <input
+                type="email"
                 className="form-control"
-                id="purpose"
-                name="purpose"
-                rows="3"
+                id="email"
+                name="email"
                 onChange={handleInput}
-                value={customer.purpose}
+                value={customer.email}
               />
             </div>
 
+            <div className="col-md-6 mb-3">
+              <label htmlFor="website" className="form-label">
+                <b>Phone No</b>
+              </label>
+              <input
+                type="tel"
+                pattern="[0-9]{10}"
+                className="form-control"
+                id="phone"
+                name="phone"
+                onChange={handleInput}
+                value={customer.phone}
+              />
+            </div>
+
+            <div className="col-md-6 mb-3">
+              <label htmlFor="address" className="form-label">
+                <b>Gender</b>
+              </label>
+              <select name="userId" onChange={handleInput} className="form-control">
+                
+                <option value="">Select Gender</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+                <option value="O">Other</option>
+               
+              </select>
+            </div>
+
+            <div className="col-md-6 mb-3">
+              <label htmlFor="quantity" className="form-label">
+                <b>Age</b>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="age"
+                name="age"
+                onChange={handleInput}
+                value={customer.age}
+              />
+            </div>
+
+            <div className="col-md-6 mb-3">
+              <label htmlFor="password" className="form-label">
+                <b>Password</b>
+              </label>
+              <input
+                type="password"
+                className="form-control"
+                id="password"
+                name="password"
+                onChange={handleInput}
+                value={customer.password}
+              />
+            </div>
+
+            <div className="col-md-6 mb-3">
+              <label htmlFor="address" className="form-label">
+                <b>Address</b>
+              </label>
+              <textarea
+                className="form-control"
+                id="address"
+                name="address"
+                rows="3"
+                onChange={handleInput}
+                value={customer.address}
+              />
+            </div>
+
+           
             <div className="d-flex align-items-center justify-content-center">
               <button
                 type="submit"
-                className="btn btn-success bg-color custom-bg-text col-md-4"
+                className="btn btn-primary bg-color custom-bg-text col-md-4"
                 onClick={saveCustomer}
                 style={{ backgroundColor: "#534891", color: "white", padding: "10px", textAlign: "center"}}
               >
-               Transfer
+                Add Customer
               </button>
               <ToastContainer />
             </div>
@@ -202,4 +264,4 @@ const MoneyTransfer = () => {
   );
 };
 
-export default MoneyTransfer;
+export default AddCustomer;

@@ -2,8 +2,8 @@ import { useState } from "react"
 import { Link, redirect } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {login} from "../services/user";
-import Header from "../components/layouts/Header/Header";
+import {login} from "../../services/user";
+import Header from "../../components/layouts/Header/Header";
 
 const Login = () => {
 
@@ -86,11 +86,6 @@ return (
             <label className="form-label">Password</label>
           </div>
 
-          <div className="d-flex justify-content-space-between align-items-center mb-4">
-           
-           
-            <Link to="/register">Don't Have an account?Register</Link>
-          </div>
           <button type="button" data-mdb-button-init data-mdb-ripple-init className="btn btn-primary btn-lg btn-block" 
           onClick={onSubmit}
           >Login</button>

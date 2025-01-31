@@ -4,8 +4,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-import Header from "../components/layouts/Header/Header";
-import Footer from "../components/layouts/Footer/Footer";
+import Header from "../../components/layouts/Header/Header";
+import Footer from "../../components/layouts/Footer/Footer";
 const ViewCustomerTransactions = () => {
   const location = useLocation();
   const customer = location.state;

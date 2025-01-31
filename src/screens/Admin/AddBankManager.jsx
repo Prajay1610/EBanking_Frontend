@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import Header from "../components/layouts/Header/Header";
-import Footer from "../components/layouts/Footer/Footer";
+import Header from "../../components/layouts/Header/Header";
+import Footer from "../../components/layouts/Footer/Footer";
 
 const AddBankManager = () => {
 

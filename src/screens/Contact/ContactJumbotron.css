@@ -10,7 +10,7 @@
     left: 0;
     width: 100%;
     height: 60%;
-    background-image: url('../../../public/Contactimage.png'); /* Set the image as the background */
+    background-image: url('../../../public/assets/Contactimage.png'); /* Set the image as the background */
     background-size: cover; /* Ensure the image covers the entire container */
     background-position: center; /* Center the image */
     z-index: -1; /* Make sure the image is behind the text */

@@ -3,14 +3,14 @@ import { useState, useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import Header from "../components/layouts/Header/Header";
-import Footer from "../components/layouts/Footer/Footer";
-const ViewAllBanks = () => {
+import Header from "../../components/layouts/Header/Header";
+import Footer from "../../components/layouts/Footer/Footer";
+const ViewBankManagers = () => {
   const location = useLocation();
   const customer = location.state;
 
   let navigate = useNavigate();
-  const [allBanks, setAllBanks] = useState([]);
+  const [allManagers, setAllManagers] = useState([]);
   const bank = JSON.parse(sessionStorage.getItem("active-bank"));
 
   let jwtToken;
@@ -28,80 +28,56 @@ const ViewAllBanks = () => {
   }
 
   // Function to retrieve all transactions for the customer
-  const retrieveAllBanks = async () => {
+  const retrieveAllTransactions = async () => {
     // Sample data for transactions
-    const sampleBanks = {
-        banks: [
+    const sampleManagers = {
+        bankManagers: [
           {
-            bankId: "BANK001",
-            name: "State Bank of India",
-            ifsc: "SBIN0001234",
-            address: "Nariman Point, Mumbai, Maharashtra, India",
-            phone: "+91 22 2202 1234",
-            email: "contact@sbi.co.in",
-            website: "https://www.sbi.co.in",
-            country: "India"
+            managerId: "MGR001",
+            name: "Alice Johnson",
+            bank: { name: "Global Trust Bank" },
+            email: "alice.johnson@globaltrust.com",
+            gender: "Female",
+            contact: "+1 555-1234",
+            address: "1234 Elm Street, Springfield, USA",
           },
           {
-            bankId: "BANK002",
-            name: "HDFC Bank",
-            ifsc: "HDFC0005678",
-            address: "Kamala Mills, Lower Parel, Mumbai, Maharashtra, India",
-            phone: "+91 22 6160 6161",
-            email: "support@hdfcbank.com",
-            website: "https://www.hdfcbank.com",
-            country: "India"
+            managerId: "MGR002",
+            name: "Robert Smith",
+            bank: { name: "National Finance Bank" },
+            email: "robert.smith@nationalfinance.com",
+            gender: "Male",
+            contact: "+1 555-5678",
+            address: "5678 Oak Avenue, Metropolis, USA",
           },
           {
-            bankId: "BANK003",
-            name: "ICICI Bank",
-            ifsc: "ICIC0007890",
-            address: "Bandra Kurla Complex, Mumbai, Maharashtra, India",
-            phone: "+91 22 3366 7777",
-            email: "customercare@icicibank.com",
-            website: "https://www.icicibank.com",
-            country: "India"
+            managerId: "MGR003",
+            name: "Sophia Williams",
+            bank: { name: "Unity Bank" },
+            email: "sophia.williams@unitybank.com",
+            gender: "Female",
+            contact: "+1 555-9101",
+            address: "9101 Maple Drive, Gotham, USA",
           },
-          {
-            bankId: "BANK004",
-            name: "Punjab National Bank",
-            ifsc: "PUNB0012345",
-            address: "Dwarka, New Delhi, India",
-            phone: "+91 11 2371 7777",
-            email: "help@pnb.co.in",
-            website: "https://www.pnbindia.in",
-            country: "India"
-          },
-          {
-            bankId: "BANK005",
-            name: "Axis Bank",
-            ifsc: "UTIB0004321",
-            address: "Worli, Mumbai, Maharashtra, India",
-            phone: "+91 22 2425 2525",
-            email: "customer.service@axisbank.com",
-            website: "https://www.axisbank.com",
-            country: "India"
-          }
-        ]
+        ],
       };
-      
       
 
     // Simulate API call delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    return sampleBanks;
+    return sampleManagers;
   };
 
   useEffect(() => {
-    const getAllBanks = async () => {
-      const fetchedBanks = await retrieveAllBanks();
-      if (fetchedBanks) {
-        setAllBanks(fetchedBanks.banks);
+    const getAllManagers = async () => {
+      const managers = await retrieveAllTransactions();
+      if (managers) {
+        setAllManagers(managers.bankManagers);
       }
     };
 
-    getAllBanks();
+    getAllManagers();
   }, []);
 
   // Function to format epoch time to a readable date
@@ -138,7 +114,7 @@ const ViewAllBanks = () => {
          padding: "15px",
        }}
      >
-       <h3>All Banks</h3>
+       <h2>Bank Managers</h2>
      </div>
      <div
        className="card-body"
@@ -162,17 +138,17 @@ const ViewAllBanks = () => {
              }}
            >
              <tr>
+               <th scope="col">Manager Name</th>
                <th scope="col">Bank Name</th>
-               <th scope="col">IFSC</th>
-               <th scope="col">Address</th>
-               <th scope="col">Phone No</th>
                <th scope="col">Email</th>
-               <th scope="col">Website</th>
-               <th scope="col">Country</th>
+               <th scope="col">Gender</th>
+               <th scope="col">Contact</th>
+              
+               <th scope="col">Address</th>
              </tr>
            </thead>
            <tbody>
-             {allBanks.map((bank) => {
+             {allManagers.map((manager) => {
                return (
                  <tr
                 //    key={manager.managerId}
@@ -181,26 +157,23 @@ const ViewAllBanks = () => {
                    }}
                  >
                    <td>
-                     <b>{bank.name}</b>
+                     <b>{manager.name}</b>
                    </td>
                    <td>
-                     <b>{bank.ifsc}</b>
+                     <b>{manager.bank.name}</b>
                    </td>
                    <td>
-                     <b>{bank.address}</b>
+                     <b>{manager.email}</b>
                    </td>
                    <td>
-                     <b>{bank.phone}</b>
+                     <b>{manager.gender}</b>
                    </td>
                    <td>
-                     <b>{bank.email}</b>
+                     <b>{manager.contact}</b>
                    </td>
                   
                    <td>
-                     <b>{bank.website}</b>
-                   </td>
-                   <td>
-                     <b>{bank.country}</b>
+                     <b>{manager.address}</b>
                    </td>
                    
                  </tr>
@@ -220,4 +193,4 @@ const ViewAllBanks = () => {
   );
 };
 
-export default ViewAllBanks;
+export default ViewBankManagers;

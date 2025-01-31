@@ -1,31 +1,30 @@
 import logo from './logo.svg';
 import './App.css';
-import Header from './components/layouts/Header/Header';
-import Footer from './components/layouts/Footer/Footer';
-import Jumbotron from './components/layouts/Jumbotron';
+
+
 import Home from './components/layouts/Home/Home';
 import { Route, Routes } from 'react-router-dom';
-import Login from './screens/Login';
+import Login from './screens/Auth/Login';
 // Toastify imports
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Register from './screens/Register';
-import CustomerProfile from './screens/CustomerProfile';
+import Register from './screens/Auth/Register';
+import CustomerProfile from './screens/Customer/CustomerProfile';
 
-import ViewCustomerTransactions from './screens/CustomerTransactions';
+import ViewCustomerTransactions from './screens/Customer/CustomerTransactions';
 
-import AddBank from './screens/AddBank';
-import AddBankManager from './screens/AddBankManager';
-import AddCustomer from './screens/AddCustomer';
-import AddNewAdmin from './screens/AddNewAdmin';
-import ViewBankManagers from './screens/ViewBankManagers';
-import ViewAllBankAccounts from './screens/ViewAllBankAccounts';
-import ViewAllBankCustomers from './screens/ViewAllBankCustomer';
+import AddBank from './screens/Admin/AddBank';
+import AddBankManager from './screens/Admin/AddBankManager';
+import AddCustomer from './screens/BankManager/AddCustomer';
+import AddNewAdmin from './screens/Admin/AddNewAdmin';
+import ViewBankManagers from './screens/Admin/ViewBankManagers';
+import ViewAllBankAccounts from './screens/BankManager/ViewAllBankAccounts';
+import ViewAllBankCustomers from './screens/BankManager/ViewAllBankCustomer';
 
-import ViewBankAccount from './screens/ViewBankAccount';
+import ViewBankAccount from './screens/Customer/ViewBankAccount';
 
-import ViewAllBanks from './screens/ViewAllBanks';
-import MoneyTransfer from './screens/MoneyTransfer';
+import ViewAllBanks from './screens/Admin/ViewAllBanks';
+import MoneyTransfer from './screens/Customer/MoneyTransfer';
 import About from './screens/About/About';
 import Contact from './screens/Contact/Contact'; 
 
@@ -50,13 +49,6 @@ function App() {
           <Route path='/AddCustomer' element={<AddCustomer/>}/>
           <Route path='/AddNewAdmin' element={<AddNewAdmin/>}/>
           <Route path='/ViewManagers' element={<ViewBankManagers/>}/>
-
-
-
-
-
-
-
 
           <Route path='/ViewAllBankAccounts' element={<ViewAllBankAccounts/>}/>
 
