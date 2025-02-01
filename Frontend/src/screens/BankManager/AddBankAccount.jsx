@@ -4,14 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Header from "../components/layouts/Header/Header";
 import Footer from "../components/layouts/Footer/Footer";
-
 const AddBankAccountForm = () => {
   const [bankUsers, setBankUsers] = useState([]);
-
   const admin_jwtToken = sessionStorage.getItem("admin-jwtToken");
-
   let navigate = useNavigate();
-
   const retrieveAllBankUsers = async () => {
     try {
       const response = await axios.get(
@@ -28,7 +24,6 @@ const AddBankAccountForm = () => {
       throw error;
     }
   };
-
   // useEffect(() => {
   //   const getAllBankUsers = async () => {
   //     const allBankUsers = await retrieveAllBankUsers();
@@ -36,10 +31,8 @@ const AddBankAccountForm = () => {
   //       setBankUsers(allBankUsers.users);
   //     }
   //   };
-
   //   getAllBankUsers();
   // }, []);
-
   const [bank, setBank] = useState({
     name: "",
     code: "",
@@ -50,11 +43,9 @@ const AddBankAccountForm = () => {
     accountNo: "",
     AccountType: "",
   });
-
   const handleInput = (e) => {
     setBank({ ...bank, [e.target.name]: e.target.value });
   };
-
   const saveBank = (e) => {
     fetch("http://localhost:8080/api/bank/register", {
       method: "POST",
@@ -69,10 +60,8 @@ const AddBankAccountForm = () => {
         console.log("result", result);
         result.json().then((res) => {
           console.log(res);
-
           if (res.success) {
             console.log("Got the success response");
-
             toast.success(res.responseMessage, {
               position: "top-center",
               autoClose: 1000,
@@ -82,7 +71,6 @@ const AddBankAccountForm = () => {
               draggable: true,
               progress: undefined,
             });
-
             setTimeout(() => {
               window.location.reload(true);
             }, 1000); // Redirect after 3 seconds
@@ -120,7 +108,6 @@ const AddBankAccountForm = () => {
       });
     e.preventDefault();
   };
-
   return (
    <>
    <Header/>
@@ -144,7 +131,6 @@ const AddBankAccountForm = () => {
                 
               />
             </div>
-
             <div className="col-md-6 mb-3">
               <label htmlFor="code" className="form-label">
                 <b>Bank Code</b>
@@ -157,7 +143,6 @@ const AddBankAccountForm = () => {
                 readOnly
               />
             </div>
-
             <div className="col-md-6 mb-3">
               <label className="form-label">
                 <b>Customer Name</b>
@@ -171,7 +156,6 @@ const AddBankAccountForm = () => {
                     readOnly
                   />
             </div>
-
             <div className="col-md-6 mb-3">
               <label htmlFor="phoneNumber" className="form-label">
                 <b>Customer Phone Number</b>
@@ -185,11 +169,8 @@ const AddBankAccountForm = () => {
                 readOnly
               />
             </div>
-            
-                
 
             
-
             <div className="col-md-6 mb-3">
               <label htmlFor="email" className="form-label">
                 <b>Customer Email</b>
@@ -204,7 +185,6 @@ const AddBankAccountForm = () => {
                 readOnly
               />
             </div>
-
             <div className="col-md-6 mb-3">
               <label htmlFor="accountNo" className="form-label">
                 <b>Account No</b>
@@ -219,7 +199,6 @@ const AddBankAccountForm = () => {
                 value={bank.accountNo}
               />
             </div>
-
             <div className="col-md-6 mb-3">
               <label htmlFor="ifscCode" className="form-label">
                 <b>IFSC Code</b>
@@ -233,7 +212,6 @@ const AddBankAccountForm = () => {
                 value={bank.ifscCode}
               />
             </div>
-
             <div className="col-md-6 mb-3">
               <label htmlFor="AccountType" className="form-label">
                 <b>Account type</b>
@@ -246,7 +224,6 @@ const AddBankAccountForm = () => {
                
               </select>
             </div>
-
            
             <div className="d-flex align-items-center justify-content-center">
               <button
@@ -267,5 +244,4 @@ const AddBankAccountForm = () => {
    </>
   );
 };
-
 export default AddBankAccountForm;
