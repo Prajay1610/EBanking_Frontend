@@ -22,8 +22,8 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class BankServiceImpl implements BankService{
 	
-	@Autowired
-	private ModelMapper modelMapper;
+//	@Autowired
+//	private ModelMapper modelMapper;
 	
 	@Autowired
 	private BankRepository bankRepository;
