@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bank.entities.User;
-
+import com.bank.exception.ResourceNotFoundException;
 import com.bank.repositories.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -19,8 +19,8 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
 	@Override
-	public Optional<User> authenticate(String email, String password) {
-		return userRepository.findByEmail(email).filter(u->u.getPassword().equals(password));
+	public User authenticate(String email, String password) {
+		return userRepository.findByEmail(email).filter(u->u.getPassword().equals(password)).orElseThrow(()->new ResourceNotFoundException("User not found with email : "+email));
 	}
 	@Override
 	public User registerUser(User user) {
