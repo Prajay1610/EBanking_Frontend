@@ -20,5 +20,4 @@ public class BankManager extends BaseEntity {
     @JoinColumn(name = "bank_id", nullable = false)
     private Bank bank;
 
-
 }

@@ -29,5 +29,8 @@ public class BankReqDto {
 	    
 	   
 	    private String bankCountry;
+	    
+	    //For bankManager Tagging
+	    private Long bankManagerId;
 
 }

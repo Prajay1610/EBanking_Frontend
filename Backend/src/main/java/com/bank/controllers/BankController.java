@@ -18,7 +18,7 @@ public class BankController {
 	@Autowired
 	private BankService bankService;
 	
-	@PostMapping
+	@PostMapping("/add")
 	public ResponseEntity<?> addNewBank
 	(@RequestBody BankReqDto 
 			dto) {
