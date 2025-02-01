@@ -11,7 +11,7 @@ import jakarta.transaction.Transactional;
 
 public interface UserService {
 
-	public Optional<User> authenticate(String email, String password);
+	public User authenticate(String email, String password);
 
 	public User registerUser(User user);
 	
