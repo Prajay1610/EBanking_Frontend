@@ -11,10 +11,7 @@ import lombok.*;
 @ToString
 @Table(name = "BankManagers")
 public class BankManager extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer managerId;
-
+ 
     @OneToOne 
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
