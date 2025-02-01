@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bank.dto.LoginRequest;
+import com.bank.dtos.ApiResponse;
 import com.bank.services.UserService;
 
 
@@ -32,7 +33,7 @@ public class AuthController {
 		{
 			return ResponseEntity.ok(user.get());
 		}else {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials!");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse("Invalid credentials"));
 		}
 	}
 	
