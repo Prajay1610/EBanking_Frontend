@@ -2,6 +2,7 @@ package com.bank.entities;
 
 import java.math.BigDecimal;
 
+import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -20,12 +21,11 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "BankAccounts")
+@AttributeOverride(name = "id", column = @Column(name = "account_no"))  
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@SequenceGenerator(name = "account_seq", sequenceName = "account_seq", allocationSize = 1)
-public class BankAccount extends BaseEntity {
-    
+public class BankAccount extends BaseEntity {  
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
@@ -34,21 +34,13 @@ public class BankAccount extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "bank_id", nullable = false)
     private Bank bank;
-    
-
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, unique = true, name = "account_no")
-    private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false,name="account_type")
+    @Column(nullable = false, name = "account_type")
     private AccountType accountType;
-    
-    private BigDecimal balance=BigDecimal.ZERO;
-    
+
+    private BigDecimal balance = BigDecimal.ZERO;
+
     @Column(name = "is_locked")
-    private Boolean isLocked=false;
-
-
-    // Getters and Setters
+    private Boolean isLocked = false;
 }

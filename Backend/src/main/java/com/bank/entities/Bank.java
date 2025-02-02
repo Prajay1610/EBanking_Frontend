@@ -1,4 +1,4 @@
-package com.bank.entities;
+	package com.bank.entities;
 
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
@@ -38,7 +38,6 @@ public class Bank extends BaseEntity{
     
     @Column(nullable=false,name="bank_country")
     private String bankCountry;
-    
 
     // Getters and Setters
 }

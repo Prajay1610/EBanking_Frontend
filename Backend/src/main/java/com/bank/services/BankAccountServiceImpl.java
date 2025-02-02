@@ -11,6 +11,7 @@ import com.bank.dtos.BankAccountReqDto;
 import com.bank.entities.Bank;
 import com.bank.entities.BankAccount;
 import com.bank.entities.Customer;
+import com.bank.exception.ResourceNotFoundException;
 import com.bank.repositories.BankAccountRespository;
 import com.bank.repositories.BankRepository;
 import com.bank.repositories.CustomerRepository;
@@ -34,12 +35,12 @@ public class BankAccountServiceImpl implements BankAccountService{
 	private ModelMapper modelMapper;
 	@Override
 	public ApiResponse addNewBankAccount(BankAccountReqDto bankAccDto) {
-		Optional<Customer> customer = customerRepository.findById(bankAccDto.getCustomerId());
-		Optional<Bank> bank = bankRepository.findById(bankAccDto.getBankId());
+		Customer customer = customerRepository.findById(bankAccDto.getCustomerId()).orElseThrow(()->new ResourceNotFoundException("Can't Find customer with id : "+bankAccDto.getCustomerId()));;
+		Bank bank = bankRepository.findById(bankAccDto.getBankId()).orElseThrow(()->new ResourceNotFoundException("Can't Find bank with id : "+bankAccDto.getBankId()));
 		
 		BankAccount bankAccount = new BankAccount();
-		bankAccount.setCustomer(customer.get());
-		bankAccount.setBank(bank.get());
+		bankAccount.setCustomer(customer);
+		bankAccount.setBank(bank);
 		bankAccount.setAccountType(bankAccDto.getAccountType());
 		
 		BankAccount createdBankAccount=bankAccountRepository.save(bankAccount);

@@ -12,6 +12,7 @@ import com.bank.dtos.BankReqDto;
 import com.bank.entities.Bank;
 import com.bank.entities.BankManager;
 import com.bank.entities.User;
+import com.bank.exception.ResourceNotFoundException;
 import com.bank.repositories.BankManagerRepository;
 import com.bank.repositories.BankRepository;
 import com.bank.repositories.UserRepository;
@@ -53,11 +54,11 @@ public class BankServiceImpl implements BankService{
 	
 	
 	//fetching bank manager based on id
-	Optional<User> user = userRepository.findById(bankDto.getBankManagerId());
+	User user = userRepository.findById(bankDto.getBankManagerId()).orElseThrow(()->new ResourceNotFoundException("Bank manager not found with id : "+bankDto.getBankManagerId()));
 	
 	BankManager bankManager = new BankManager();
 	bankManager.setBank(persistentBank);
-	bankManager.setUser(user.get());
+	bankManager.setUser(user);
 	
 	bankManagerRepository.save(bankManager);
 

@@ -21,8 +21,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class BaseEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 	
 	@CreationTimestamp
 	private LocalDateTime createdOn;
