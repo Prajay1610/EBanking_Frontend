@@ -26,8 +26,9 @@ public class BankAccount extends BaseEntity {
     @JoinColumn(name = "bank_id", nullable = false)
     private Bank bank;
     
-    @Column(nullable = false, unique = true,name="account_no")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_seq")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Use IDENTITY for MySQL
+    @Column(nullable = false, unique = true, name = "account_no")
     private Long id;
 
     @Enumerated(EnumType.STRING)
