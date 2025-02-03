@@ -11,12 +11,12 @@ import com.bank.services.TransferService;
 @RestController
 public class TransferController {
 	
-	@Autowired
-	private TransferService transferService;
-	public ResponseEntity<?> transferMoney(@RequestBody TransferMoneyDto transferMoneyDto)
-	{
-		return null;
-		
-	}
+//	@Autowired
+//	private TransferService transferService;
+//	public ResponseEntity<?> transferMoney(@RequestBody TransferMoneyDto transferMoneyDto)
+//	{
+//		return null;
+//		
+//	}
 	
 }

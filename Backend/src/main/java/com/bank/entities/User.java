@@ -46,6 +46,14 @@ public class User extends BaseEntity{
 
     @Column(nullable = false,name="is_active")
     private Boolean isActive;
+    
+    @Column(nullable = false, name = "Gender")
+    private Gender gender;
+    
+    @Column(nullable = false,name = "phone_no")
+    private String phoneNo;
 
+    @Column(nullable = false,name = "address")
+    private String address;
    
 }
