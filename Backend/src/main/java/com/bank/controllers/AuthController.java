@@ -7,6 +7,7 @@ import com.bank.entities.*;
 import com.bank.repositories.UserRepository;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,6 +52,7 @@ public class AuthController {
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@RequestBody User user)
 	{
+
 		return ResponseEntity.ok(userService.registerUser(user));
 	}
 	
@@ -80,6 +82,7 @@ public class AuthController {
 	    return ResponseEntity.ok()
 	            .header("Content-Type", "image/jpeg") // Adjust content type based on the image format
 	            .body(imageBytes);
+
 	}
 	
 	

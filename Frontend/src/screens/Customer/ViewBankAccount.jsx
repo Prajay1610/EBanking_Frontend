@@ -87,7 +87,7 @@ const ViewBankAccounts = () => {
                 <div className="col-md-4 d-flex align-items-end">
                   <button
                     type="submit"
-                    className="btn custom-primary-btn w-100 py-2"
+                    className="btn custom-primary-btn w-100 py-2 mt-4"
                     // onClick={downloadStatement}
                   >
                     Download PDF Statement
@@ -142,6 +142,8 @@ const ViewBankAccounts = () => {
                       type="number"
                       className="form-control mb-3"
                       placeholder="Enter amount"
+                      min={0}
+                      
                       // value={amountToDeposit}
                       // onChange={(e) => setAmountToDeposit(e.target.value)}
                     />
@@ -164,6 +166,7 @@ const ViewBankAccounts = () => {
                       type="number"
                       className="form-control mb-3"
                       placeholder="Enter amount"
+                      min={0}
                       // value={amountToWithdraw}
                       // onChange={(e) => setAmountToWithdraw(e.target.value)}
                     />
