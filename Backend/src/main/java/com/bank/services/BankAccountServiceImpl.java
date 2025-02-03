@@ -33,6 +33,7 @@ public class BankAccountServiceImpl implements BankAccountService{
 	
 	@Autowired
 	private ModelMapper modelMapper;
+	
 	@Override
 	public ApiResponse addNewBankAccount(BankAccountReqDto bankAccDto) {
 		Customer customer = customerRepository.findById(bankAccDto.getCustomerId()).orElseThrow(()->new ResourceNotFoundException("Can't Find customer with id : "+bankAccDto.getCustomerId()));;
