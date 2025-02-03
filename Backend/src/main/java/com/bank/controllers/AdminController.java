@@ -11,11 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bank.dtos.ApiResponse;
 import com.bank.services.AdminService;
 
-@CrossOrigin(origins="http://localhost:3000")
+@CrossOrigin(origins ="http://localhost:3000")
 @RestController
 @RequestMapping("/admin")
-
-
 public class AdminController {
 	@Autowired
 	private AdminService adminService;

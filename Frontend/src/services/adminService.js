@@ -58,3 +58,14 @@ export const getAllBankManagers = async () => {
 
 
 }
+
+export const getAllBanks = async () => {
+  const url = createUrl('admin/allBanks');
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    console.error("Error while retrieving banks:", error);
+    throw error; // Re-throw the error for further handling if needed
+  }
+}

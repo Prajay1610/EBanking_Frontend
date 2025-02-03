@@ -5,99 +5,29 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
+import { getAllBanks } from "../../services/adminService";
+import { toast } from "react-toastify";
 const ViewAllBanks = () => {
-  const location = useLocation();
-  const customer = location.state;
+ 
 
-  let navigate = useNavigate();
   const [allBanks, setAllBanks] = useState([]);
-  const bank = JSON.parse(sessionStorage.getItem("active-bank"));
-
-  let jwtToken;
-
-  let adminToken = sessionStorage.getItem("admin-jwtToken");
-  let bankToken = sessionStorage.getItem("bank-jwtToken");
-  let customerToken = sessionStorage.getItem("customer-jwtToken");
-
-  if (adminToken) {
-    jwtToken = adminToken;
-  } else if (bankToken) {
-    jwtToken = bankToken;
-  } else if (customerToken) {
-    jwtToken = customerToken;
-  }
-
   // Function to retrieve all transactions for the customer
   const retrieveAllBanks = async () => {
     // Sample data for transactions
-    const sampleBanks = {
-        banks: [
-          {
-            bankId: "BANK001",
-            name: "State Bank of India",
-            ifsc: "SBIN0001234",
-            address: "Nariman Point, Mumbai, Maharashtra, India",
-            phone: "+91 22 2202 1234",
-            email: "contact@sbi.co.in",
-            website: "https://www.sbi.co.in",
-            country: "India"
-          },
-          {
-            bankId: "BANK002",
-            name: "HDFC Bank",
-            ifsc: "HDFC0005678",
-            address: "Kamala Mills, Lower Parel, Mumbai, Maharashtra, India",
-            phone: "+91 22 6160 6161",
-            email: "support@hdfcbank.com",
-            website: "https://www.hdfcbank.com",
-            country: "India"
-          },
-          {
-            bankId: "BANK003",
-            name: "ICICI Bank",
-            ifsc: "ICIC0007890",
-            address: "Bandra Kurla Complex, Mumbai, Maharashtra, India",
-            phone: "+91 22 3366 7777",
-            email: "customercare@icicibank.com",
-            website: "https://www.icicibank.com",
-            country: "India"
-          },
-          {
-            bankId: "BANK004",
-            name: "Punjab National Bank",
-            ifsc: "PUNB0012345",
-            address: "Dwarka, New Delhi, India",
-            phone: "+91 11 2371 7777",
-            email: "help@pnb.co.in",
-            website: "https://www.pnbindia.in",
-            country: "India"
-          },
-          {
-            bankId: "BANK005",
-            name: "Axis Bank",
-            ifsc: "UTIB0004321",
-            address: "Worli, Mumbai, Maharashtra, India",
-            phone: "+91 22 2425 2525",
-            email: "customer.service@axisbank.com",
-            website: "https://www.axisbank.com",
-            country: "India"
-          }
-        ]
-      };
-      
-      
-
-    // Simulate API call delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    return sampleBanks;
+    const sampleBanks = await getAllBanks();
+    if (sampleBanks) {
+      return sampleBanks;
+    }else{
+      toast.error("Error occured while fetching banks");
+    }
   };
 
   useEffect(() => {
     const getAllBanks = async () => {
       const fetchedBanks = await retrieveAllBanks();
+      console.log("fetchedBanks", fetchedBanks);
       if (fetchedBanks) {
-        setAllBanks(fetchedBanks.banks);
+        setAllBanks(fetchedBanks);
       }
     };
 
@@ -181,16 +111,16 @@ const ViewAllBanks = () => {
                    }}
                  >
                    <td>
-                     <b>{bank.name}</b>
+                     <b>{bank.bankName}</b>
                    </td>
                    <td>
-                     <b>{bank.ifsc}</b>
+                     <b>{bank.ifscCode}</b>
                    </td>
                    <td>
                      <b>{bank.address}</b>
                    </td>
                    <td>
-                     <b>{bank.phone}</b>
+                     <b>{bank.phoneNo}</b>
                    </td>
                    <td>
                      <b>{bank.email}</b>
