@@ -28,6 +28,7 @@ import MoneyTransfer from './screens/Customer/MoneyTransfer';
 import About from './screens/About/About';
 import Contact from './screens/Contact/Contact'; 
 import AddBankAccountForm from './screens/BankManager/AddBankAccountForm';
+import ViewSpecificAccountDetails from './screens/Customer/ViewSpecificAccountDetails';
 
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
           <Route path='/customer/bank/account/detail' element={<ViewBankAccount/>}/>
 
           <Route path='/customerProfile' element={<CustomerProfile/>}/>
+          <Route path='/ViewSpecificAccountDetails' element={<ViewSpecificAccountDetails/>}/>
 
           <Route path='/ViewAllBanks' element={<ViewAllBanks/>}/>
           <Route path='/MoneyTransfer' element={<MoneyTransfer/>}/>
