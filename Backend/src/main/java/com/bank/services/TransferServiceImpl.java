@@ -99,7 +99,7 @@ public class TransferServiceImpl  implements TransferService{
             transferDetail.setToAccount(toAccount);
             TransferDetail persistenTransfer = transferRepository.save(transferDetail);
             
-            return ResponseEntity.ok(new ApiResponse("Money tranfer successfull. Transferdetails id : "+persistenTransfer.getId()));
+            return ResponseEntity.ok(new ApiResponse("Money transfer successfull. Transferdetails id : "+persistenTransfer.getId()));
 
 		
 		
