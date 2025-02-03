@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bank.dtos.ApiResponse;
 import com.bank.services.AdminService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/Admin")
@@ -32,4 +34,18 @@ public class AdminController {
 					.body(new ApiResponse(e.getMessage()));
 		}
 	}
+	
+	@GetMapping("/allBanks")
+	public ResponseEntity<?> ViewBanks(){
+		try {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(adminService.viewAllBanks());
+					
+		} catch (RuntimeException e) {
+			return ResponseEntity.
+					status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ApiResponse(e.getMessage()));
+		}
+	}
+
 }
