@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InsufficientBalanceException.class)
     public ResponseEntity<Map<String, String>> handleInsufficientBalanceException(InsufficientBalanceException ex) {
         Map<String, String> response = new HashMap<>();
-        response.put("error", ex.getMessage());
+        response.put("error", ex.getLocalizedMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 

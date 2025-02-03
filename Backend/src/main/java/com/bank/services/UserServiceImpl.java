@@ -1,9 +1,11 @@
 package com.bank.services;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bank.entities.Customer;
 import com.bank.entities.Role;
@@ -38,5 +40,21 @@ public class UserServiceImpl implements UserService {
 		}
 		return persistentUser;
 	}
+	
+	
+	@Override
+	public void uploadProfileImage(Long userId, MultipartFile profileImage) throws IOException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+
+        // Convert the uploaded file to a byte array
+        byte[] imageBytes = profileImage.getBytes();
+
+        // Save the image bytes to the user entity
+        user.setProfileImage(imageBytes);
+
+        // Save the updated user entity
+        userRepository.save(user);
+    }
 
 }
