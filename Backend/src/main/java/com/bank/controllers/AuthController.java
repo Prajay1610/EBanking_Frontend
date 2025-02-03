@@ -1,14 +1,9 @@
 package com.bank.controllers;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import com.bank.entities.*;
-import com.bank.repositories.UserRepository;
-
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,11 +15,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.bank.dtos.ApiResponse;
 import com.bank.dtos.LoginRequest;
+import com.bank.entities.User;
+import com.bank.repositories.UserRepository;
 import com.bank.services.UserService;
 
 
 
-
+@CrossOrigin(origins="http://localhost:3000")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

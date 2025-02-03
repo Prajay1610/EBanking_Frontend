@@ -23,6 +23,7 @@ public class BankManagerRespDto {
 	private Gender gender;
 	private String contactNo;
 	private String Address;
+	private Long managerId;
 	
 
 
