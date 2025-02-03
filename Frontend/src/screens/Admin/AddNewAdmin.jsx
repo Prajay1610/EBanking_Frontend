@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
-import { addNewAdmin } from "../../services/adminService";
+import { addNewUser } from "../../services/adminService";
 
 const AddNewAdmin = () => {
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const AddNewAdmin = () => {
 
     try {
       // Call the addNewAdmin service to send data to the backend
-      const response = await addNewAdmin(admin);
+      const response = await addNewUser(admin);
 
       if (response) {
         toast.success("Admin added successfully!");
@@ -49,8 +49,8 @@ const AddNewAdmin = () => {
           gender: "",
           password: "",
           address: "",
-          role: "ADMIN",
-          isActive: true
+          role: "",
+          isActive: true,
          
         });
         navigate("/addNewAdmin"); // Redirect to the admins list page after successful addition
