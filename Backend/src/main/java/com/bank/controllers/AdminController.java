@@ -14,6 +14,8 @@ import com.bank.services.AdminService;
 @CrossOrigin(origins="http://localhost:3000")
 @RestController
 @RequestMapping("/admin")
+
+
 public class AdminController {
 	@Autowired
 	private AdminService adminService;

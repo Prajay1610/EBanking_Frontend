@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
-import { addNewBank, getAllBankManagers } from "../../services/adminService";
+import { addNewBank, getAllBankManagers, getAllBankManagersFromUser } from "../../services/adminService";
 
 const AddBankForm = () => {
   const [bankUsers, setBankUsers] = useState([]);
@@ -28,7 +28,7 @@ const AddBankForm = () => {
 
   useEffect(()=>{
     const fetchBankManagers = async () => {
-      const managers = await getAllBankManagers(); 
+      const managers = await getAllBankManagersFromUser(); 
       setBankManagers(managers);
     };
     fetchBankManagers();

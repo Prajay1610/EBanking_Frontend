@@ -44,7 +44,7 @@ public class User extends BaseEntity{
     private Role role;
 
     @Column(nullable = false,name="is_active")
-    private Boolean isActive;
+    private Boolean isActive=true;
     
     @Column(nullable = false, name = "Gender")
     private Gender gender;
