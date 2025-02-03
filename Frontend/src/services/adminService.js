@@ -2,6 +2,7 @@ import axios from "axios";
 import { createUrl } from "../utils";
 import { toast } from 'react-toastify';
 
+
 // Function to add a new admin
 export const addNewUser = async (reqBody) => {
     console.log("reqBody", reqBody);
@@ -26,4 +27,5 @@ export const getAllBankManagers = async () => {
     console.error("Error while retrieving bank managers:", error);
     throw error; // Re-throw the error for further handling if needed
   }
+
 }
