@@ -68,7 +68,7 @@ const CustomerProfile = () => {
                 <h6>Recent Transactions</h6>
                 <div className="table-responsive">
                   <table className="table table-striped table-hover" style={{ backgroundColor: "#D6D0F2" }}>
-                    <thead className="table-primary" sty>
+                    <thead className="table-primary">
                       <tr>
                         <th>Date</th>
                         <th>Description</th>

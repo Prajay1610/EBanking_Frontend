@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
+import { addNewAdmin } from "../../services/adminService";
 
 const AddNewAdmin = () => {
 
@@ -11,115 +12,43 @@ const AddNewAdmin = () => {
 
   let navigate = useNavigate();
 
-  // const retrieveAllBankUsers = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       "http://localhost:8080/api/user/fetch/bank/managers",
-  //       {
-  //         headers: {
-  //           Authorization: "Bearer " + admin_jwtToken, // Replace with your actual JWT token
-  //         },
-  //       }
-  //     );
-  //     return response.data;
-  //   } catch (error) {
-  //     console.error("Error fetching bank managers:", error);
-  //     throw error;
-  //   }
-  // };
+  
 
-  // useEffect(() => {
-  //   const getAllBankUsers = async () => {
-  //     const allBankUsers = await retrieveAllBankUsers();
-  //     if (allBankUsers) {
-  //       setBankUsers(allBankUsers.users);
-  //     }
-  //   };
-
-  //   getAllBankUsers();
-  // }, []);
-
-  const [customer, setCustomer] = useState({
-    firstName: "",
-    lastName: "",
+  const [admin, setAdmin] = useState({
+    fname: "",
+    lname: "",
     email: "",
-    phone: "",
+    phoneNo: "",
     gender:"",
-    age: "",
     password: "",
     address: "",
+    role:"ADMIN",
+    isActive:true,
   });
 
   const handleInput = (e) => {
-    setCustomer({ ...customer, [e.target.name]: e.target.value });
+    setAdmin({ ...admin, [e.target.name]: e.target.value });
   };
 
-  const saveCustomer = (e) => {
-    fetch("http://localhost:8080/api/bank/register", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + admin_jwtToken,
-      },
-      body: JSON.stringify(customer),
-    })
-      .then((result) => {
-        console.log("result", result);
-        result.json().then((res) => {
-          console.log(res);
-
-          if (res.success) {
-            console.log("Got the success response");
-
-            toast.success(res.responseMessage, {
-              position: "top-center",
-              autoClose: 1000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-
-            setTimeout(() => {
-              window.location.reload(true);
-            }, 1000); // Redirect after 3 seconds
-          } else {
-            console.log("Didn't got success response");
-            toast.error("It seems server is down", {
-              position: "top-center",
-              autoClose: 1000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-            setTimeout(() => {
-              window.location.reload(true);
-            }, 1000); // Redirect after 3 seconds
-          }
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-        toast.error("It seems server is down", {
-          position: "top-center",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        setTimeout(() => {
-          window.location.reload(true);
-        }, 1000); // Redirect after 3 seconds
-      });
-    e.preventDefault();
+  const saveAdmin = async (e) => {
+    e.preventDefault(); // Prevents default form submission
+    console.log("called!")
+    try {
+      console.log(admin);
+      const result = await addNewAdmin(admin); // Only one API call here
+  
+      if (result) {
+        toast.success("Admin added successfully");
+        navigate("/"); // Navigate only after success
+      } else {
+        toast.error("Admin not added!");
+      }
+    } catch (error) {
+      console.error("Error adding admin:", error);
+      toast.error("An error occurred!");
+    }
   };
-
+  
   return (
    <>
    <Header/>
@@ -129,7 +58,7 @@ const AddNewAdmin = () => {
           <h5 className="card-title">Add Admin</h5>
         </div>
         <div className="card-body text-color" style={{backgroundColor: "#d6d0f2"}}>
-          <form className="row g-3">
+          <form className="row g-3" onSubmit={saveAdmin}>
             <div className="col-md-6 mb-3">
               <label htmlFor="name" className="form-label">
                 <b>First Name</b>
@@ -138,9 +67,9 @@ const AddNewAdmin = () => {
                 type="text"
                 className="form-control"
                 id="firstName"
-                name="firstName"
+                name="fname"
                 onChange={handleInput}
-                value={customer.firstName}
+                value={admin.fname}
               />
             </div>
 
@@ -152,9 +81,9 @@ const AddNewAdmin = () => {
                 type="text"
                 className="form-control"
                 id="lastName"
-                name="lastName"
+                name="lname"
                 onChange={handleInput}
-                value={customer.lastName}
+                value={admin.lname}
               />
             </div>
 
@@ -168,7 +97,7 @@ const AddNewAdmin = () => {
                 id="email"
                 name="email"
                 onChange={handleInput}
-                value={customer.email}
+                value={admin.email}
               />
             </div>
 
@@ -181,27 +110,33 @@ const AddNewAdmin = () => {
                 pattern="[0-9]{10}"
                 className="form-control"
                 id="phone"
-                name="phone"
+                name="phoneNo"
                 onChange={handleInput}
-                value={customer.phone}
+                value={admin.phoneNo}
               />
             </div>
 
             <div className="col-md-6 mb-3">
-              <label htmlFor="address" className="form-label">
+              <label htmlFor="gender" className="form-label">
                 <b>Gender</b>
               </label>
-              <select name="userId" onChange={handleInput} className="form-control">
-                
+              <select
+                id="gender"
+                name="gender"
+                value={admin.gender} // Binds state value
+                onChange={handleInput}
+                className="form-control"
+                required // Ensures selection is required before form submission
+              >
                 <option value="">Select Gender</option>
-                <option value="M">Male</option>
-                <option value="F">Female</option>
-                <option value="O">Other</option>
-               
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
+                <option value="OTHERS">Other</option>
               </select>
             </div>
 
-            <div className="col-md-6 mb-3">
+
+            {/* <div className="col-md-6 mb-3">
               <label htmlFor="quantity" className="form-label">
                 <b>Age</b>
               </label>
@@ -211,9 +146,9 @@ const AddNewAdmin = () => {
                 id="age"
                 name="age"
                 onChange={handleInput}
-                value={customer.age}
+                value={admin.age}
               />
-            </div>
+            </div> */}
 
             <div className="col-md-6 mb-3">
               <label htmlFor="password" className="form-label">
@@ -225,7 +160,7 @@ const AddNewAdmin = () => {
                 id="password"
                 name="password"
                 onChange={handleInput}
-                value={customer.password}
+                value={admin.password}
               />
             </div>
 
@@ -239,7 +174,7 @@ const AddNewAdmin = () => {
                 name="address"
                 rows="3"
                 onChange={handleInput}
-                value={customer.address}
+                value={admin.address}
               />
             </div>
 
@@ -248,7 +183,6 @@ const AddNewAdmin = () => {
               <button
                 type="submit"
                 className="btn btn-primary bg-color custom-bg-text col-md-4"
-                onClick={saveCustomer}
                 style={{ backgroundColor: "#534891", color: "white", padding: "10px", textAlign: "center"}}
               >
                 Add Admin
