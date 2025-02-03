@@ -3,7 +3,7 @@ import './App.css';
 
 
 import Home from './components/layouts/Home/Home';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useParams } from 'react-router-dom';
 import Login from './screens/Auth/Login';
 // Toastify imports
 import { Bounce, ToastContainer, toast } from 'react-toastify';
@@ -31,6 +31,12 @@ import AddBankAccountForm from './screens/BankManager/AddBankAccountForm';
 import ViewSpecificAccountDetails from './screens/Customer/ViewSpecificAccountDetails';
 
 
+//similar for view Statements requires a wrapper
+const ViewBankAccountWrapper = () => {
+  const { accountId } = useParams();
+  return <ViewBankAccount accountId={accountId} />;
+};
+
 function App() {
   return(
     <>
@@ -57,7 +63,7 @@ function App() {
           <Route path='/ViewAllBankCustomers' element={<ViewAllBankCustomers/>}/>
           
 
-          <Route path='/customer/bank/account/detail' element={<ViewBankAccount/>}/>
+          <Route path='/customer/bank/account/detail/:accountId' element={<ViewBankAccountWrapper/>}/>
 
           <Route path='/customerProfile' element={<CustomerProfile/>}/>
           <Route path='/ViewSpecificAccountDetails' element={<ViewSpecificAccountDetails/>}/>

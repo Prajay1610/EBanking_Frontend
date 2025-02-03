@@ -5,62 +5,55 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
+import { getAllBankAccounts } from "../../services/bankManagerService";
 
 const ViewAllBankAccounts = () => {
   let navigate = useNavigate();
-  const [allAccounts, setAccounts] = useState([]);
+  const [allAccounts, setAllAccounts] = useState([]);
   const [accountNumber, setAccountNumber] = useState("");
   const [tempAccountNumber, setTempAccountNumber] = useState("");
-
+  const [loading, setLoading] = useState(true);
+  const [managerId,setManagerId] = useState(2);//Change this with the jwt session's bank_manager id
   // Mock data for testing
-  const mockAccounts = [
-    {
-      user: { name: "John Doe" },
-      bank: { name: "Global Bank" },
-      number: "1234567890",
-      ifscCode: "GLB0001234",
-      type: "Savings",
-      status: "Open",
-    },
-    {
-      user: { name: "Jane Smith" },
-      bank: { name: "National Bank" },
-      number: "9876543210",
-      ifscCode: "NTB0005678",
-      type: "Current",
-      status: "Lock",
-    },
-    {
-      user: { name: "Alice Johnson" },
-      bank: { name: "City Bank" },
-      number: "5678901234",
-      ifscCode: "CTB0009101",
-      type: "Savings",
-      status: "Open",
-    },
-  ];
+  
 
-  // Simulate fetching data from the backend
+  const fetchAllBankAccounts = async () => {
+     try {
+          setLoading(true); // Set loading to true while fetching data
+          const response = await getAllBankAccounts(managerId); // Pass the JWT token if required by the API
+          if (response) {
+            console.log("Bank Accounts:", response);
+            
+            setAllAccounts(response); // Update state with the retrieved data
+          }
+        } catch (error) {
+          console.error("Error fetching bank accounts:", error);
+          alert("Failed to load bank accounts. Please try again later.");
+        } finally {
+          setLoading(false); // Set loading to false after fetching data
+        }
+  };
+
   useEffect(() => {
-    setAccounts(mockAccounts); // Use mock data for testing
+    fetchAllBankAccounts();
   }, []);
 
   const searchBankAccountsByAccountNumber = (e) => {
     e.preventDefault();
     setAccountNumber(tempAccountNumber);
     // Filter mock data based on account number
-    const filteredAccounts = mockAccounts.filter((account) =>
-      account.number.includes(tempAccountNumber)
+    const filteredAccounts = allAccounts.filter((account) =>
+      String(account?.accountId ?? "").includes(tempAccountNumber)
     );
-    setAccounts(filteredAccounts);
+    setAllAccounts(filteredAccounts);
   };
 
-  const viewAccountDetails = (customer) => {
-    navigate("/customer/bank/account/detail", { state: customer });
+  const viewAccountDetails = (accountId) => {
+    navigate(`/customer/bank/account/detail/${accountId}`);
   };
 
-  const viewAccountStatement = (customer) => {
-    navigate("/customer/bank/account/statement", { state: customer });
+  const viewAccountStatement = (accountId) => {
+    navigate(`/customer/bank/account/statement/${accountId}`);
   };
 
   const openAccount = (accountId) => {
@@ -171,23 +164,23 @@ const ViewAllBankAccounts = () => {
                   {allAccounts.map((account, index) => (
                     <tr key={index} style={{ backgroundColor: "#f8f9fa" }}>
                       <td>
-                        <b>{account.user.name}</b>
+                        <b>{account.customerName}</b>
                       </td>
                       <td>
-                        <b>{account.bank.name}</b>
+                        <b>{account.bankName}</b>
                       </td>
                       <td>
-                        <b>{account.number}</b>
+                        <b>{account.accountId}</b>
                       </td>
                       <td>
                         <b>{account.ifscCode}</b>
                       </td>
                       <td>
-                        <b>{account.type}</b>
+                        <b>{account.accountType}</b>
                       </td>
                       <td>
                         <button
-                          onClick={() => viewAccountDetails(account.user)}
+                          onClick={() => viewAccountDetails(account.accountId)}
                           className="btn btn-sm btn-primary"
                           style={{ backgroundColor: "#544892", border: "none" }}
                         >
@@ -199,7 +192,7 @@ const ViewAllBankAccounts = () => {
                       </td>
                       <td>
                         <button
-                          onClick={() => viewAccountStatement(account.user)}
+                          onClick={() => viewAccountStatement(account.accountId)}
                           className="btn btn-sm btn-primary"
                           style={{ backgroundColor: "#544892", border: "none" }}
                         >

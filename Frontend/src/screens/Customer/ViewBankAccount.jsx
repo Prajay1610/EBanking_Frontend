@@ -5,24 +5,85 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
+import { depositFunds, getBankAccountDetails, withdrawFunds } from "../../services/bankManagerService";
 
-const ViewBankAccounts = () => {
+const ViewBankAccounts = ({accountId}) => {
   let navigate = useNavigate();
-  const [allAccounts, setAccounts] = useState([]);
-  // const bank = JSON.parse(sessionStorage.getItem("active-bank"));
+  
 
-  const [accountNumber, setAccountNumber] = useState("");
+  const [accountDetails,setAccountDetails]=useState({
+    bankName:"",
+    ifscCode:"",
+    customerEmail:"",
+    availableBalance:"",
+    accountId:"",
+    status:"",
+    createdOn:"",
+    customerName:""
+  });
 
-  const [tempAccountNumber, setTempAccountNumber] = useState("");
+  const [amountToDeposit, setAmountToDeposit] = useState(0);
+  const [amountToWithdraw, setAmountToWithdraw] = useState(0);
+  const getSpecificAccountDetails = async (accountId) => {
+    try {
+             
+              const response = await getBankAccountDetails(accountId); 
+              if (response) {
+                console.log("Bank Account:", response);
+                
+                setAccountDetails(response); // Update state with the retrieved data
+              }
+            } catch (error) {
+              console.error("Error fetching bank account:", error);
+              alert("Failed to load bank account. Please try again later.");
+            } 
+  };
 
-  const bank_jwtToken = sessionStorage.getItem("bank-jwtToken");
+  const depositAmount = async () => {
+    try {
 
-  const [updateBankAccountStatusRequest, setUpdateBankAccountStatusRequest] =
-    useState({
-      accountId: "",
-      status: "",
-    });
+      const reqbody={
+        accountNo:accountId,
+        amount:amountToDeposit,
+      }
 
+      console.log("Deposit reqbody"+JSON.stringify(reqbody));
+      const response = await depositFunds(reqbody); 
+      if (response) {
+        console.log("Amount Deposited resp:", response);
+        toast.success("Amount deposited successfully!");
+        getSpecificAccountDetails(accountId);
+      }
+    } catch (error) {
+      toast.error("Error while depositing Funds:", error);
+      alert("Failed to deposit funds. Please try again later.");
+    } 
+  };
+  const withdrawAmount = async () => {
+    try {
+
+      const reqbody={
+        accountNo:accountId,
+        amount:amountToWithdraw,
+      }
+
+      console.log("Withdraw reqbody"+JSON.stringify(reqbody));
+      const response = await withdrawFunds(reqbody); 
+      if (response) {
+        console.log("Amount withdrawal resp:", response);
+        toast.success("Amount Withdrawed successfully!");
+        getSpecificAccountDetails(accountId);
+      }
+    } catch (error) {
+      toast.error("Error while withdrawing funds:", error);
+      alert("Failed to withdraw funds. Please try again later.");
+    } 
+  };
+ useEffect(()=>{
+  
+ 
+  getSpecificAccountDetails(accountId);
+ },[]);
   const styles = `
   .custom-primary-bg { background-color: #544892; }
   .custom-secondary-bg { background-color: #6c5ba7; }
@@ -112,7 +173,7 @@ const ViewBankAccounts = () => {
                     <input
                       type="text"
                       className="form-control"
-                      // value={customer?.bank?.name || "N/A"}
+                      value={accountDetails.bankName}
                       readOnly
                     />
                     <label className="form-label custom-primary-text">
@@ -121,7 +182,7 @@ const ViewBankAccounts = () => {
                     <input
                       type="text"
                       className="form-control"
-                      // value={customer?.bank?.name || "N/A"}
+                      value={accountDetails.ifscCode}
                       readOnly
                     />
                     <label className="form-label custom-primary-text">
@@ -130,7 +191,7 @@ const ViewBankAccounts = () => {
                     <input
                       type="text"
                       className="form-control"
-                      // value={customer?.bank?.name || "N/A"}
+                      value={accountDetails.customerEmail}
                       readOnly
                     />
                     <label className="form-label custom-primary-text">
@@ -139,7 +200,7 @@ const ViewBankAccounts = () => {
                     <input
                       type="text"
                       className="form-control"
-                      // value={customer?.bank?.name || "N/A"}
+                      value={accountDetails.balance}
                       readOnly
                     />
                   </div>
@@ -150,16 +211,16 @@ const ViewBankAccounts = () => {
                     <input
                       type="text"
                       className="form-control"
-                      // value={customer?.bank?.name || "N/A"}
+                      value={accountDetails.accountId}
                       readOnly
                     />
                     <label className="form-label custom-primary-text">
-                      <b>Customer</b>
+                      <b>Customer Name</b>
                     </label>
                     <input
                       type="text"
                       className="form-control"
-                      // value={customer?.bank?.name || "N/A"}
+                      value={accountDetails.customerName}
                       readOnly
                     />
                     <label className="form-label custom-primary-text">
@@ -168,7 +229,7 @@ const ViewBankAccounts = () => {
                     <input
                       type="text"
                       className="form-control"
-                      // value={customer?.bank?.name || "N/A"}
+                      value={accountDetails.createdOn}
                       readOnly
                     />
                     <label className="form-label custom-primary-text">
@@ -177,7 +238,7 @@ const ViewBankAccounts = () => {
                     <input
                       type="text"
                       className="form-control"
-                      // value={customer?.bank?.name || "N/A"}
+                      value={accountDetails.status}
                       readOnly
                     />
                   </div>
@@ -205,12 +266,12 @@ const ViewBankAccounts = () => {
                         type="number"
                         className="form-control mb-3"
                         placeholder="Enter amount"
-                        // value={amountToDeposit}
-                        // onChange={(e) => setAmountToDeposit(e.target.value)}
+                        value={amountToDeposit}
+                        onChange={(e) => setAmountToDeposit(e.target.value)}
                       />
                       <button
                         className="btn custom-primary-btn w-100"
-                        // onClick={depositAmount}
+                        onClick={depositAmount}
                       >
                         Deposit
                       </button>
@@ -227,12 +288,12 @@ const ViewBankAccounts = () => {
                         type="number"
                         className="form-control mb-3"
                         placeholder="Enter amount"
-                        // value={amountToWithdraw}
-                        // onChange={(e) => setAmountToWithdraw(e.target.value)}
+                        value={amountToWithdraw}
+                        onChange={(e) => setAmountToWithdraw(e.target.value)}
                       />
                       <button
                         className="btn custom-primary-btn w-100"
-                        // onClick={withdrawAmount}
+                        onClick={withdrawAmount}
                       >
                         Withdraw
                       </button>

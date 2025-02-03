@@ -4,10 +4,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
+import { viewAllBankCustomers } from "../../services/bankManagerService";
 const ViewAllBankCustomers = () => {
   let navigate = useNavigate();
   const [allCustomer, setAllCustomer] = useState([]);
-  const [customerName, setCustomerNumber] = useState("");
+ const [managerId,setManagerId]=useState(1);//set manager id from jwt session
   const [tempCustomerName, setTempCustomerName] = useState("");
 
   // Mock data for testing
@@ -53,24 +54,39 @@ const ViewAllBankCustomers = () => {
     },
   ];
 
+   const getAllBankCustomers = async (accountId) => {
+      try {
+               
+                const response = await viewAllBankCustomers(accountId); 
+                if (response) {
+                  console.log("Bank Customers:", response);
+                  
+                  setAllCustomer(response); // Update state with the retrieved data
+                }
+              } catch (error) {
+                console.error("Error fetching bank customers:", error);
+                alert("Failed to load bank customers. Please try again later.");
+              } 
+    };
+
   // Simulate fetching data from the backend
   useEffect(() => {
-    setAllCustomer(mockCustomers); // Use mock data for testing
+    getAllBankCustomers(managerId);
   }, []);
 
   const searchBankCustomersByName = (e) => {
     e.preventDefault();
-    setCustomerNumber(tempCustomerName);
+    setTempCustomerName(tempCustomerName);
     // Filter mock data based on customer name
-    const filteredCustomers = mockCustomers.filter((customer) =>
-      customer.name.toLowerCase().includes(tempCustomerName.toLowerCase())
+    const filteredCustomers = allCustomer.filter((customer) =>
+      (customer.customerName ?? "").toLowerCase().includes(tempCustomerName.toLowerCase())
     );
     setAllCustomer(filteredCustomers);
   };
 
-  const viewAccountDetails = (customer) => {
-    navigate("/customer/bank/account/detail", { state: customer });
-  };
+  // const viewAccountDetails = (customer) => {
+  //   navigate("/customer/bank/account/detail", { state: customer });
+  // };
 
   const activateUser = (userId) => {
     toast.success("User activated successfully!", {
@@ -169,44 +185,40 @@ const ViewAllBankCustomers = () => {
                     <th scope="col">Email</th>
                     <th scope="col">Gender</th>
                     <th scope="col">Contact</th>
-                    <th scope="col">Street</th>
-                    <th scope="col">City</th>
-                    <th scope="col">Pincode</th>
-                    <th scope="col">Account Details</th>
+                    <th scope="col">Address</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Account Details</th>
+                    
                   </tr>
                 </thead>
                 <tbody>
                   {allCustomer.map((customer) => (
-                    <tr key={customer.id} style={{ backgroundColor: "#f8f9fa" }}>
+                    <tr key={customer.accountId} style={{ backgroundColor: "#f8f9fa" }}>
                       <td>
-                        <b>{customer.name}</b>
+                        <b>{customer.customerName}</b>
                       </td>
                       <td>
-                        <b>{customer.bank.name}</b>
+                        <b>{customer.bankName}</b>
                       </td>
                       <td>
-                        <b>{customer.email}</b>
+                        <b>{customer.customerEmail}</b>
                       </td>
                       <td>
                         <b>{customer.gender}</b>
                       </td>
                       <td>
-                        <b>{customer.contact}</b>
+                        <b>{customer.customerContact}</b>
                       </td>
                       <td>
-                        <b>{customer.street}</b>
+                        <b>{customer.customerAddress}</b>
                       </td>
                       <td>
-                        <b>{customer.city}</b>
-                      </td>
-                      <td>
-                        <b>{customer.pincode}</b>
+                       {customer.customerStatus===true?(<b className="text-success">ACTIVE</b>):(<b className="text-danger">ACTIVE</b>)}
                       </td>
                       <td>
                         {customer.isAccountLinked === "Yes" ? (
                           <button
-                            onClick={() => viewAccountDetails(customer)}
+                            // onClick={() => viewAccountDetails(customer)}
                             className="btn btn-sm btn-primary"
                             style={{ backgroundColor: "#544892", border: "none" }}
                           >
@@ -216,9 +228,7 @@ const ViewAllBankCustomers = () => {
                           <b className="text-danger">NOT LINKED</b>
                         )}
                       </td>
-                      <td>
-                        <b>{customer.status}</b>
-                      </td>
+                      
                     </tr>
                   ))}
                 </tbody>

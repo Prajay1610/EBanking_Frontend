@@ -93,6 +93,7 @@ public class BankAccountServiceImpl implements BankAccountService{
 	            acc.getAccountType().name(), // Account Type
 	            acc.getIsLocked() ? "LOCKED" : "ACTIVE", // Status
 	            acc.getCustomer().getUser().getEmail(),
+	            acc.getBalance(),	            
 	            acc.getCreatedOn()
 	        );
 		

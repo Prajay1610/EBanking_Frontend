@@ -1,5 +1,6 @@
 package com.bank.dtos;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import lombok.Getter;
@@ -17,6 +18,7 @@ public class BankAccountRespDto {
     private String accountType;
     private String status;
     private String customerEmail;
+    private BigDecimal balance;
     private LocalDateTime createdOn;
 
    
@@ -30,5 +32,16 @@ public class BankAccountRespDto {
         this.status = status;
         this.customerEmail=customerEmail;
         this.createdOn=createdOn;
+    }
+    public BankAccountRespDto(String customerName, String bankName, Long accountNo, String ifscCode, String accountType, String status,String customerEmail,BigDecimal balance,LocalDateTime createdOn) {
+    	this.customerName = customerName;
+    	this.bankName = bankName;
+    	this.accountId = accountNo;
+    	this.ifscCode = ifscCode;
+    	this.accountType = accountType;
+    	this.status = status;
+    	this.customerEmail=customerEmail;
+    	this.balance=balance;
+    	this.createdOn=createdOn;
     }
 }

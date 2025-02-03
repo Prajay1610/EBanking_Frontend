@@ -53,7 +53,7 @@ const AddBankForm = () => {
           bankIfsc:"",
           bankEmail:"",
           bankWebsite:"",
-          bankCountry:"",
+          bankCountry:"India",
           bankManagerId:"",
         });
         navigate("/addBank");

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import com.bank.dtos.TransactionDto;
 import com.bank.exception.InvalidAmountException;
 import com.bank.services.TransactionService;
 
+@CrossOrigin(origins="http://localhost:3000")
 @RestController
 @RequestMapping("/transaction")
 public class TransactionController {
