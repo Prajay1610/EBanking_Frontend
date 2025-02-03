@@ -139,7 +139,7 @@ const ViewAllBankAccounts = () => {
                   <div className="col-auto">
                     <button
                       type="submit"
-                      className="btn btn-primary btn-lg"
+                      className="btn btn-primary btn-lg mt-3"
                       style={{ backgroundColor: "#544892", border: "none" }}
                       onClick={searchBankAccountsByAccountNumber}
         

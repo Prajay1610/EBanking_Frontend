@@ -6,48 +6,45 @@ import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
 
 const MoneyTransfer = () => {
-
   const admin_jwtToken = sessionStorage.getItem("admin-jwtToken");
-
   let navigate = useNavigate();
 
-  // const retrieveAllBankUsers = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       "http://localhost:8080/api/user/fetch/bank/managers",
-  //       {
-  //         headers: {
-  //           Authorization: "Bearer " + admin_jwtToken, // Replace with your actual JWT token
-  //         },
-  //       }
-  //     );
-  //     return response.data;
-  //   } catch (error) {
-  //     console.error("Error fetching bank managers:", error);
-  //     throw error;
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const getAllBankUsers = async () => {
-  //     const allBankUsers = await retrieveAllBankUsers();
-  //     if (allBankUsers) {
-  //       setBankUsers(allBankUsers.users);
-  //     }
-  //   };
-
-  //   getAllBankUsers();
-  // }, []);
-
   const [customer, setCustomer] = useState({
-    accno: "",
+    fromAccno: "",
+    toAccno: "",
     ifsc: "",
     amount: "",
     purpose: "",
+    isSameBank: false, // State to track checkbox
   });
+
+  const [bankDetails, setBankDetails] = useState({
+    bankName: "",
+    ifscCode: "SBI00089019",
+  });
+
+  useEffect(() => {
+    // Assuming the JWT contains the bank details (can decode it or retrieve it via API)
+    if (admin_jwtToken) {
+      const decodedToken = JSON.parse(atob(admin_jwtToken.split('.')[1])); // Decoding JWT token
+      const bankInfo = {
+        bankName: decodedToken.bankName,  // Assuming the bank name is in the token
+        ifscCode: decodedToken.ifscCode,  // Assuming the IFSC code is in the token
+      };
+      setBankDetails(bankInfo);  // Set the bank details from JWT token
+    }
+  }, [admin_jwtToken]);
 
   const handleInput = (e) => {
     setCustomer({ ...customer, [e.target.name]: e.target.value });
+  };
+
+  const handleCheckboxChange = () => {
+    setCustomer((prevState) => ({
+      ...prevState,
+      isSameBank: !prevState.isSameBank,
+      ifsc: prevState.isSameBank ? "" : bankDetails.ifscCode, // Auto-populate IFSC if checked
+    }));
   };
 
   const saveCustomer = (e) => {
@@ -61,13 +58,8 @@ const MoneyTransfer = () => {
       body: JSON.stringify(customer),
     })
       .then((result) => {
-        console.log("result", result);
         result.json().then((res) => {
-          console.log(res);
-
           if (res.success) {
-            console.log("Got the success response");
-
             toast.success(res.responseMessage, {
               position: "top-center",
               autoClose: 1000,
@@ -80,9 +72,8 @@ const MoneyTransfer = () => {
 
             setTimeout(() => {
               window.location.reload(true);
-            }, 1000); // Redirect after 3 seconds
+            }, 1000);
           } else {
-            console.log("Didn't got success response");
             toast.error("It seems server is down", {
               position: "top-center",
               autoClose: 1000,
@@ -94,7 +85,7 @@ const MoneyTransfer = () => {
             });
             setTimeout(() => {
               window.location.reload(true);
-            }, 1000); // Redirect after 3 seconds
+            }, 1000);
           }
         });
       })
@@ -111,39 +102,66 @@ const MoneyTransfer = () => {
         });
         setTimeout(() => {
           window.location.reload(true);
-        }, 1000); // Redirect after 3 seconds
+        }, 1000);
       });
     e.preventDefault();
   };
 
   return (
    <>
-   <Header/>
+   <Header />
     <div className="d-flex justify-content-center align-items-center min-vh-100">
       <div className="card form-card border-color custom-bg" style={{ width: "50rem" }}>
-        <div className="card-header  custom-bg-text text-center" style={{ backgroundColor: "#534891", color: "white", padding: "10px", textAlign: "center", borderRadius: "8px 8px 0 0" }}>
+        <div className="card-header custom-bg-text text-center" style={{ backgroundColor: "#534891", color: "white", padding: "10px", textAlign: "center", borderRadius: "8px 8px 0 0" }}>
           <h5 className="card-title">Transfer Money</h5>
         </div>
-        <div className="card-body text-color" style={{backgroundColor: "#d6d0f2"}}>
+        <div className="card-body text-color" style={{ backgroundColor: "#d6d0f2" }}>
           <form className="row g-3">
+            {/* From Account Number Field */}
             <div className="col-md-6 mb-3">
-              <label htmlFor="accno" className="form-label">
-                <b>Account Number</b>
-              </label>
+              <label htmlFor="fromAccno" className="form-label"><b>From Account Number</b></label>
               <input
                 type="number"
                 className="form-control"
-                id="accno"
-                name="accno"
+                id="fromAccno"
+                name="fromAccno"
                 onChange={handleInput}
-                value={customer.accno}
+                min={0}
+                value={customer.fromAccno}
               />
             </div>
 
+            {/* To Account Number Field */}
             <div className="col-md-6 mb-3">
-              <label htmlFor="ifsc" className="form-label">
-                <b>IFSC</b>
-              </label>
+              <label htmlFor="toAccno" className="form-label"><b>To Account Number</b></label>
+              <input
+                type="number"
+                className="form-control"
+                id="toAccno"
+                name="toAccno"
+                onChange={handleInput}
+                value={customer.toAccno}
+                min={0}
+              />
+            </div>
+
+            {/* Same Bank Checkbox */}
+            <div className="col-md-6 mb-3">
+              <label className="form-label"><b>Same Bank?</b></label>
+              <div className="form-check">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  checked={customer.isSameBank}
+                  onChange={handleCheckboxChange}
+                />
+                <label className="form-check-label" htmlFor="isSameBank">Check if same bank</label>
+              </div>
+            </div>
+
+            {/* IFSC Field */}
+            <div className="col-md-6 mb-3">
+              <label htmlFor="ifsc" className="form-label"><b>IFSC</b></label>
               <input
                 type="text"
                 className="form-control"
@@ -151,13 +169,13 @@ const MoneyTransfer = () => {
                 name="ifsc"
                 onChange={handleInput}
                 value={customer.ifsc}
+                disabled={customer.isSameBank}  // Disable if "Same Bank" checkbox is checked
               />
             </div>
 
+            {/* Amount Field */}
             <div className="col-md-6 mb-3">
-              <label htmlFor="code" className="form-label">
-                <b>Amount</b>
-              </label>
+              <label htmlFor="amount" className="form-label"><b>Amount</b></label>
               <input
                 type="number"
                 className="form-control"
@@ -168,26 +186,26 @@ const MoneyTransfer = () => {
               />
             </div>
 
+            {/* Purpose Field */}
             <div className="col-md-6 mb-3">
-              <label htmlFor="purpose" className="form-label">
-                <b>Purpose</b>
-              </label>
+              <label htmlFor="purpose" className="form-label"><b>Purpose</b></label>
               <textarea
                 className="form-control"
                 id="purpose"
                 name="purpose"
-                rows="3"
+                rows="2"
                 onChange={handleInput}
                 value={customer.purpose}
               />
             </div>
 
+            {/* Transfer Button */}
             <div className="d-flex align-items-center justify-content-center">
               <button
                 type="submit"
                 className="btn btn-success bg-color custom-bg-text col-md-4"
                 onClick={saveCustomer}
-                style={{ backgroundColor: "#534891", color: "white", padding: "10px", textAlign: "center"}}
+                style={{ backgroundColor: "#534891", color: "white", padding: "10px", textAlign: "center" }}
               >
                Transfer
               </button>
@@ -197,7 +215,7 @@ const MoneyTransfer = () => {
         </div>
       </div>
     </div>
-    <Footer/>
+    <Footer />
    </>
   );
 };

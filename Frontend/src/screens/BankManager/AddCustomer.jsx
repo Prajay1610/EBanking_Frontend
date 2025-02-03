@@ -47,12 +47,49 @@ const AddCustomer = () => {
     gender:"",
     age: "",
     password: "",
+    confirmPassword: "",
+    profileImage: null, 
     address: "",
   });
 
+  const [file, setFile] = useState(null);
+  const [message, setMessage] = useState("");
+
+  // Handle file selection
+  const handleFileChange = (e) => {
+      const selectedFile = e.target.files[0];
+      console.log(selectedFile)
+      if (selectedFile) {
+          setFile(selectedFile);
+      }
+  };
+
+
   const handleInput = (e) => {
     setCustomer({ ...customer, [e.target.name]: e.target.value });
+
+    console.log(customer.profileImage);
   };
+
+  //=============IMAGE HANDLING CODE================
+  const uploadProfileImage = async (userId, file) => {
+    const formData = new FormData();
+    console.log(file);
+    formData.append("file", file);
+
+   
+
+    // const response = await fetch(`/api/users/${userId}/upload-profile-image`, {
+    //     method: "POST",
+    //     body: formData,
+    // });
+
+//     if (response.ok) {
+//         alert("Profile image uploaded successfully!");
+//     } else {
+//         alert("Failed to upload profile image.");
+//     }
+};
 
   const saveCustomer = (e) => {
     fetch("http://localhost:8080/api/bank/register", {
@@ -123,7 +160,7 @@ const AddCustomer = () => {
   return (
    <>
    <Header/>
-    <div className="d-flex justify-content-center align-items-center min-vh-100">
+    <div className="d-flex justify-content-center align-items-center min-vh-100 mt-2 mb-2">
       <div className="card form-card border-color custom-bg" style={{ width: "50rem" }}>
         <div className="card-header  custom-bg-text text-center" style={{ backgroundColor: "#534891", color: "white", padding: "10px", textAlign: "center", borderRadius: "8px 8px 0 0" }}>
           <h5 className="card-title">Add Customer</h5>
@@ -230,6 +267,21 @@ const AddCustomer = () => {
             </div>
 
             <div className="col-md-6 mb-3">
+              <label htmlFor="confirm-password" className="form-label">
+                <b>Confirm Password</b>
+              </label>
+              <input
+                type="password"
+                className="form-control"
+                id="confirmPassword"
+                name="confirmPassword"
+                onChange={handleInput}
+                value={customer.confirmPassword}
+              />
+            </div>
+            
+
+            <div className="col-md-6 mb-3">
               <label htmlFor="address" className="form-label">
                 <b>Address</b>
               </label>
@@ -237,12 +289,22 @@ const AddCustomer = () => {
                 className="form-control"
                 id="address"
                 name="address"
-                rows="3"
+                rows="1"
                 onChange={handleInput}
                 value={customer.address}
               />
             </div>
 
+            {/* Profile Image Upload Field */}
+            <div className="col-md-6 mb-3">
+                <label htmlFor="profileImage" className="form-label"><b>Profile Image</b></label>
+                <input  type="file"
+                        id="profileImage"
+                        accept="image/*" // Restrict to image files only
+                        className="form-control"
+                        onChange={handleFileChange}
+ />
+            </div>
            
             <div className="d-flex align-items-center justify-content-center">
               <button
