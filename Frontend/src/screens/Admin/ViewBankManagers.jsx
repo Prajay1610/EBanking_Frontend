@@ -143,7 +143,7 @@ const ViewBankManagers = () => {
                               <b>{manager.gender}</b>
                             </td>
                             <td>
-                              <b>{manager.contact}</b>
+                              <b>{manager.contactNo}</b>
                             </td>
                             <td>
                               <b>{manager.address}</b>

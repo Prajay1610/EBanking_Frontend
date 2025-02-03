@@ -46,7 +46,7 @@ export const addNewUser = async (reqBody) => {
 }
 
 export const getAllBankManagers = async () => {
-  const url = createUrl('Admin/allBankManager');
+  const url = createUrl('admin/allBankManager');
   try {
     const response = await axios.get(url);
     console.log("response", response.data);
