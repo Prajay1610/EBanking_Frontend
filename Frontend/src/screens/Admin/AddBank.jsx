@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
+import { addNewBank, getAllBankManagers, getAllBankManagersFromUser } from "../../services/adminService";
 
 const AddBankForm = () => {
   const [bankUsers, setBankUsers] = useState([]);
@@ -12,114 +13,60 @@ const AddBankForm = () => {
 
   let navigate = useNavigate();
 
-  const retrieveAllBankUsers = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:8080/api/user/fetch/bank/managers",
-        {
-          headers: {
-            Authorization: "Bearer " + admin_jwtToken, // Replace with your actual JWT token
-          },
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching bank managers:", error);
-      throw error;
-    }
-  };
-
-  // useEffect(() => {
-  //   const getAllBankUsers = async () => {
-  //     const allBankUsers = await retrieveAllBankUsers();
-  //     if (allBankUsers) {
-  //       setBankUsers(allBankUsers.users);
-  //     }
-  //   };
-
-  //   getAllBankUsers();
-  // }, []);
+ const [managers,setBankManagers]=useState([]);
 
   const [bank, setBank] = useState({
-    name: "",
-    code: "",
-    address: "",
-    phoneNumber: "",
-    email: "",
-    website: "",
-    country: "",
-    userId: "",
+    bankName:"",
+    phone:"",
+    address:"",
+    bankIfsc:"",
+    bankEmail:"",
+    bankWebsite:"",
+    bankCountry:"India",
+    bankManagerId:"",
   });
+
+  useEffect(()=>{
+    const fetchBankManagers = async () => {
+      const managers = await getAllBankManagersFromUser(); 
+      setBankManagers(managers);
+    };
+    fetchBankManagers();
+
+    console.log("Bank Managers: ",managers);
+  },[]);
 
   const handleInput = (e) => {
     setBank({ ...bank, [e.target.name]: e.target.value });
   };
 
-  const saveBank = (e) => {
-    fetch("http://localhost:8080/api/bank/register", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + admin_jwtToken,
-      },
-      body: JSON.stringify(bank),
-    })
-      .then((result) => {
-        console.log("result", result);
-        result.json().then((res) => {
-          console.log(res);
-
-          if (res.success) {
-            console.log("Got the success response");
-
-            toast.success(res.responseMessage, {
-              position: "top-center",
-              autoClose: 1000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-
-            setTimeout(() => {
-              window.location.reload(true);
-            }, 1000); // Redirect after 3 seconds
-          } else {
-            console.log("Didn't got success response");
-            toast.error("It seems server is down", {
-              position: "top-center",
-              autoClose: 1000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-            setTimeout(() => {
-              window.location.reload(true);
-            }, 1000); // Redirect after 3 seconds
-          }
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-        toast.error("It seems server is down", {
-          position: "top-center",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        setTimeout(() => {
-          window.location.reload(true);
-        }, 1000); // Redirect after 3 seconds
-      });
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const result = await addNewBank(bank);
+    try {
+      if(result){
+        toast.success("Bank added successfully");
+        setBank({
+          bankName:"",
+          phone:"",
+          address:"",
+          bankIfsc:"",
+          bankEmail:"",
+          bankWebsite:"",
+          bankCountry:"",
+          bankManagerId:"",
+        });
+        navigate("/addBank");
+      }
+      else{
+        toast.error("Error occured while adding bank");
+      }
+    } catch (error) {
+      toast.error("An unexpected error occured!");
+    }
   };
+
+ 
 
   return (
    <>
@@ -130,7 +77,7 @@ const AddBankForm = () => {
           <h5 className="card-title">Add Bank</h5>
         </div>
         <div className="card-body text-color" style={{backgroundColor: "#d6d0f2"}}>
-          <form className="row g-3">
+          <form className="row g-3" onSubmit={handleSubmit}>
             <div className="col-md-6 mb-3">
               <label htmlFor="name" className="form-label">
                 <b>Bank Name</b>
@@ -139,23 +86,23 @@ const AddBankForm = () => {
                 type="text"
                 className="form-control"
                 id="name"
-                name="name"
+                name="bankName"
                 onChange={handleInput}
-                value={bank.name}
+                value={bank.bankName}
               />
             </div>
 
             <div className="col-md-6 mb-3">
               <label htmlFor="code" className="form-label">
-                <b>Bank Code</b>
+                <b>IFSC Code</b>
               </label>
               <input
                 type="text"
                 className="form-control"
                 id="code"
-                name="code"
+                name="bankIfsc"
                 onChange={handleInput}
-                value={bank.code}
+                value={bank.bankIfsc}
               />
             </div>
 
@@ -163,10 +110,10 @@ const AddBankForm = () => {
               <label className="form-label">
                 <b>Bank Manager</b>
               </label>
-              <select name="userId" onChange={handleInput} className="form-control">
+              <select name="bankManagerId" onChange={handleInput} className="form-control">
                 <option value="">Select Bank Manager</option>
-                {bankUsers.map((user) => {
-                  return <option key={user.id} value={user.id}>{user.name}</option>;
+                {managers.map((manager) => {
+                  return <option key={manager.id} value={manager.id}>{manager.fname +" "+manager.lname}</option>;
                 })}
               </select>
             </div>
@@ -179,9 +126,9 @@ const AddBankForm = () => {
                 type="text"
                 className="form-control"
                 id="website"
-                name="website"
+                name="bankWebsite"
                 onChange={handleInput}
-                value={bank.website}
+                value={bank.bankWebsite}
               />
             </div>
 
@@ -207,9 +154,9 @@ const AddBankForm = () => {
                 type="email"
                 className="form-control"
                 id="email"
-                name="email"
+                name="bankEmail"
                 onChange={handleInput}
-                value={bank.email}
+                value={bank.bankEmail}
               />
             </div>
 
@@ -221,9 +168,9 @@ const AddBankForm = () => {
                 type="number"
                 className="form-control"
                 id="phoneNumber"
-                name="phoneNumber"
+                name="phone"
                 onChange={handleInput}
-                value={bank.phoneNumber}
+                value={bank.phone}
               />
             </div>
 
@@ -237,7 +184,8 @@ const AddBankForm = () => {
                 id="country"
                 name="country"
                 onChange={handleInput}
-                value={bank.country}
+                value={bank.bankCountry}
+                disabled={true}
               />
             </div>
 
@@ -246,7 +194,6 @@ const AddBankForm = () => {
               <button
                 type="submit"
                 className="btn btn-primary bg-color custom-bg-text col-md-4"
-                onClick={saveBank}
                 style={{ backgroundColor: "#534891", color: "white", padding: "10px", textAlign: "center"}}
               >
                 Register Bank

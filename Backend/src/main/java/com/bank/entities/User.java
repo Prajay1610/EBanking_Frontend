@@ -9,7 +9,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,7 +44,7 @@ public class User extends BaseEntity{
     private Role role;
 
     @Column(nullable = false,name="is_active")
-    private Boolean isActive;
+    private Boolean isActive=true;
     
     @Column(nullable = false, name = "Gender")
     private Gender gender;
