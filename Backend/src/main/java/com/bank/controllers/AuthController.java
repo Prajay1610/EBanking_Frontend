@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.bank.entities.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,7 +42,7 @@ public class AuthController {
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@RequestBody User user)
 	{
-		return ResponseEntity.ok(userservice.registerUser(user));
+		return ResponseEntity.status(HttpStatus.CREATED).body(userservice.registerUser(user));
 	}
 	
 	

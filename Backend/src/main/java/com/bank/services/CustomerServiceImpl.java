@@ -10,6 +10,7 @@ import com.bank.dtos.CustomerProfileRespDto;
 import com.bank.entities.AccountType;
 import com.bank.entities.BankAccount;
 import com.bank.entities.Customer;
+import com.bank.entities.Gender;
 import com.bank.repositories.BankAccountRepository;
 import com.bank.repositories.CustomerRepository;
 
@@ -37,8 +38,21 @@ public class CustomerServiceImpl implements CustomerService{
 		BankAccount bankAccount = account.get();
 		AccountType accountType = bankAccount.getAccountType();
 		BigDecimal balance = bankAccount.getBalance();
+		String PhoneNo = customer.getUser().getPhoneNo();
+		Gender gender = customer.getUser().getGender();
+		String Address = customer.getUser().getAddress();
+
+/*private String name;
+	private String email;
+	private AccountType accountType;
+	private BigDecimal accountBalance;
+	private Gender gender;
+	private String contactNo;
+	private String Address;
+	*/
+		
 		//get account type for a customer's account
-		return new CustomerProfileRespDto(customerName,email,accountType,balance);
+		return new CustomerProfileRespDto(customerName,email,accountType,balance,gender,PhoneNo,Address);
 	}
 
 }
