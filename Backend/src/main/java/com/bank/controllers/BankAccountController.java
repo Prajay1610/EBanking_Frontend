@@ -1,8 +1,12 @@
 package com.bank.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bank.dtos.ApiResponse;
 import com.bank.dtos.BankAccountReqDto;
+import com.bank.entities.BankAccount;
 import com.bank.services.BankAccountService;
 
 @RestController
@@ -28,6 +33,32 @@ public class BankAccountController {
 			return ResponseEntity.status(HttpStatus.CREATED)
 					.body(bankAccountService
 							.addNewBankAccount(dto));
+					
+		} catch (RuntimeException e) {
+			return ResponseEntity.
+					status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ApiResponse(e.getMessage()));
+		}
+	}
+	
+	@GetMapping("/all/{managerId}")
+	public ResponseEntity<?> viewAllBankAccounts(@PathVariable Long managerId){
+		try {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(bankAccountService.viewAllBankAccounts(managerId));
+					
+		} catch (RuntimeException e) {
+			return ResponseEntity.
+					status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ApiResponse(e.getMessage()));
+		}
+	}
+	
+	@GetMapping("/{accountId}")
+	public ResponseEntity<?> viewSpecificBankAccount(@PathVariable Long accountId){
+		try {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(bankAccountService.viewSpecificBankAccount(accountId));
 					
 		} catch (RuntimeException e) {
 			return ResponseEntity.
