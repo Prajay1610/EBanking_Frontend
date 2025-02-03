@@ -42,4 +42,11 @@ public class Transaction extends BaseEntity {
     
     @Column(name = "transaction_date")
     private LocalDateTime createdOn;
+    
+    @Column(nullable = false, precision = 15, scale = 2, name = "balance_before_trx")
+    private BigDecimal balanceBeforeTrx;
+    
+    @Column(nullable = false, precision = 15, scale = 2 , name = "balance_after_trx")
+    private BigDecimal balanceAfterTrx;
+    
 }
