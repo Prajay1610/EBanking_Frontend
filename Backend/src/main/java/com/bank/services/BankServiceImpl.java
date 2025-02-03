@@ -1,18 +1,21 @@
 package com.bank.services;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bank.dtos.AllCustomersRespDto;
 import com.bank.dtos.ApiResponse;
 import com.bank.dtos.BankReqDto;
 import com.bank.entities.Bank;
+import com.bank.entities.BankAccount;
 import com.bank.entities.BankManager;
 import com.bank.entities.User;
 import com.bank.exception.ResourceNotFoundException;
+import com.bank.repositories.BankAccountRepository;
 import com.bank.repositories.BankManagerRepository;
 import com.bank.repositories.BankRepository;
 import com.bank.repositories.UserRepository;
@@ -34,6 +37,9 @@ public class BankServiceImpl implements BankService{
 	
 	@Autowired
 	private BankManagerRepository bankManagerRepository;
+	
+	@Autowired
+	private BankAccountRepository bankAccountRepository;
 
 	@Override
 	public ApiResponse addNewBank(BankReqDto bankDto) {
@@ -64,6 +70,20 @@ public class BankServiceImpl implements BankService{
 
 	return new ApiResponse("Bank Added successfully with ID: " 
 					+ persistentBank.getId());
+	}
+
+	@Override
+	public List<AllCustomersRespDto> viewAllBankCustomers(Long bankManagerId) {
+		Optional<BankManager> bankManager = bankManagerRepository.findById(bankManagerId);
+		Long bankId = bankManager.get().getBank().getId();
+		
+		List<BankAccount> allBankAccounts = bankAccountRepository.findByBankId(bankId); 
+		
+		List<AllCustomersRespDto> allCustomersRespDto = new ArrayList<>();
+		
+		return allBankAccounts.stream().map(acc->new AllCustomersRespDto(acc.getCustomer().getUser().getFname()+" "+acc.getCustomer().getUser().getLname(), acc.getBank().getBankName(),acc.getCustomer().getUser().getEmail(),acc.getId(),acc.getCustomer().getUser().getIsActive())).toList();
+		
+		
 	}
 
 }
