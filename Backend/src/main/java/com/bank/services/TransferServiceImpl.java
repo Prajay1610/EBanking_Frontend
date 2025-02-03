@@ -91,12 +91,16 @@ public class TransferServiceImpl  implements TransferService{
 			transferMoney.setBalanceAfterTrx(persistFromAcc.getBalance());
 			transferMoney.setDescription(Description);
 			transferMoney.setTransactionType(TransactionType.TRANSFER);	
-			Transaction persistentTransferTrx=transactionRepository.save(transferMoney);
-            
-            TransferDetail transferDetail = new TransferDetail();
+			
+			TransferDetail transferDetail = new TransferDetail();
             transferDetail.setAmount(amount);
             transferDetail.setFromAccount(fromAccount);
             transferDetail.setToAccount(toAccount);
+            
+            transferMoney.setTransfer(transferDetail);
+			Transaction persistentTransferTrx=transactionRepository.save(transferMoney);
+            
+            
             TransferDetail persistenTransfer = transferRepository.save(transferDetail);
             
             return ResponseEntity.ok(new ApiResponse("Money transfer successfull. Transferdetails id : "+persistenTransfer.getId()));
