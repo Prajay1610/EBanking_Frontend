@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
+import { transferMoney } from "../../services/customerService";
+
 
 const MoneyTransfer = () => {
-  const admin_jwtToken = sessionStorage.getItem("admin-jwtToken");
+
   let navigate = useNavigate();
 
   const accounts = [
@@ -14,103 +15,70 @@ const MoneyTransfer = () => {
     //{ type: "Current" },
   ];
 
-  const [customer, setCustomer] = useState({
-    fromAccno: "",
-    toAccno: "",
+  const [account, setAccount] = useState({
+    fromAcccountNo: "",
+    toAcccountNo: "",
     ifsc: "",
     amount: "",
-    purpose: "",
+    description: "",
     isSameBank: false, // State to track checkbox
   });
 
+  const [editAble,setIsEditAble]=useState(false);
+
   const [bankDetails, setBankDetails] = useState({
     bankName: "",
-    ifscCode: "SBI00089019",
+    ifscCode: "SBI0000789",
   });
 
-  useEffect(() => {
-    // Assuming the JWT contains the bank details (can decode it or retrieve it via API)
-    if (admin_jwtToken) {
-      const decodedToken = JSON.parse(atob(admin_jwtToken.split(".")[1])); // Decoding JWT token
-      const bankInfo = {
-        bankName: decodedToken.bankName, // Assuming the bank name is in the token
-        ifscCode: decodedToken.ifscCode, // Assuming the IFSC code is in the token
-      };
-      setBankDetails(bankInfo); // Set the bank details from JWT token
-    }
-  }, [admin_jwtToken]);
+
+ 
+
 
   const handleInput = (e) => {
-    setCustomer({ ...customer, [e.target.name]: e.target.value });
+    setAccount({ ...account, [e.target.name]: e.target.value });
   };
 
   const handleCheckboxChange = () => {
-    setCustomer((prevState) => ({
+    setAccount((prevState) => ({
       ...prevState,
       isSameBank: !prevState.isSameBank,
       ifsc: prevState.isSameBank ? "" : bankDetails.ifscCode, // Auto-populate IFSC if checked
     }));
   };
 
-  const saveCustomer = (e) => {
-    fetch("http://localhost:8080/api/bank/register", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + admin_jwtToken,
-      },
-      body: JSON.stringify(customer),
-    })
-      .then((result) => {
-        result.json().then((res) => {
-          if (res.success) {
-            toast.success(res.responseMessage, {
-              position: "top-center",
-              autoClose: 1000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
+  const handleUseAccount = (accountNo) => { // Function to use account
+    return () => {
+      setAccount((prevState) => ({
+        ...prevState,
+        fromAcccountNo: accountNo,
+      }));
 
-            setTimeout(() => {
-              window.location.reload(true);
-            }, 1000);
-          } else {
-            toast.error("It seems server is down", {
-              position: "top-center",
-              autoClose: 1000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-            setTimeout(() => {
-              window.location.reload(true);
-            }, 1000);
-          }
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-        toast.error("It seems server is down", {
-          position: "top-center",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        setTimeout(() => {
-          window.location.reload(true);
-        }, 1000);
-      });
+      setIsEditAble(false);
+    };
+  }
+
+  const handleTransfer = async (e) => {
     e.preventDefault();
-  };
+
+    const { fromAcccountNo, toAcccountNo, ifsc, amount, description } = account;
+    console.log("req body"+JSON.stringify(account));
+    if (!fromAcccountNo || !toAcccountNo || !ifsc || !amount || !description) {
+      toast.error("Please fill all the fields.");
+      return;
+    }
+
+    try {
+      const response = await transferMoney(account);
+      console.log(response);
+      toast.success("Money transferred successfully!");
+    
+    } catch (error) {
+      console.error("Error transferring money:", error);
+      toast.error("Error transferring money. Please try again.");
+  }
+  }
+
 
   return (
     <>
@@ -146,13 +114,7 @@ const MoneyTransfer = () => {
                       <td>{account.type}</td>
 
                       <td>
-                        <Link
-                          to=""
-                          className="btn btn-secondary"
-                          style={{ backgroundColor: "#413C69" }}
-                        >
-                          Use Account
-                        </Link>
+                         <button className="btn btn-success" onClick={handleUseAccount(100001)}>Use Account</button> 
                       </td>
                     </tr>
                   ))}
@@ -181,17 +143,18 @@ const MoneyTransfer = () => {
             <form className="row g-3">
               {/* From Account Number Field */}
               <div className="col-md-6 mb-3">
-                <label htmlFor="fromAccno" className="form-label">
+                <label htmlFor="fromAcccountNo" className="form-label">
                   <b>From Account Number</b>
                 </label>
                 <input
                   type="number"
                   className="form-control"
-                  id="fromAccno"
-                  name="fromAccno"
+                  id="fromAcccountNo"
+                  name="fromAcccountNo"
                   onChange={handleInput}
                   min={0}
-                  value={customer.fromAccno}
+                  value={account.fromAcccountNo}
+                  disabled={!editAble}
                 />
               </div>
 
@@ -204,9 +167,9 @@ const MoneyTransfer = () => {
                   type="number"
                   className="form-control"
                   id="toAccno"
-                  name="toAccno"
+                  name="toAcccountNo"
                   onChange={handleInput}
-                  value={customer.toAccno}
+                  value={account.toAccno}
                   min={0}
                 />
               </div>
@@ -220,7 +183,7 @@ const MoneyTransfer = () => {
                   <input
                     type="checkbox"
                     className="form-check-input"
-                    checked={customer.isSameBank}
+                    checked={account.isSameBank}
                     onChange={handleCheckboxChange}
                   />
                   <label className="form-check-label" htmlFor="isSameBank">
@@ -240,8 +203,8 @@ const MoneyTransfer = () => {
                   id="ifsc"
                   name="ifsc"
                   onChange={handleInput}
-                  value={customer.ifsc}
-                  disabled={customer.isSameBank} // Disable if "Same Bank" checkbox is checked
+                  value={account.ifsc}
+                  disabled={account.isSameBank} // Disable if "Same Bank" checkbox is checked
                 />
               </div>
 
@@ -256,22 +219,22 @@ const MoneyTransfer = () => {
                   id="amount"
                   name="amount"
                   onChange={handleInput}
-                  value={customer.amount}
+                  value={account.amount}
                 />
               </div>
 
-              {/* Purpose Field */}
+              {/* description Field */}
               <div className="col-md-6 mb-3">
-                <label htmlFor="purpose" className="form-label">
-                  <b>Purpose</b>
+                <label htmlFor="description" className="form-label">
+                  <b>description</b>
                 </label>
                 <textarea
                   className="form-control"
-                  id="purpose"
-                  name="purpose"
+                  id="description"
+                  name="description"
                   rows="2"
                   onChange={handleInput}
-                  value={customer.purpose}
+                  value={account.description}
                 />
               </div>
 
@@ -280,7 +243,7 @@ const MoneyTransfer = () => {
                 <button
                   type="submit"
                   className="btn btn-success bg-color custom-bg-text col-md-4"
-                  onClick={saveCustomer}
+                  onClick={handleTransfer}
                   style={{
                     backgroundColor: "#534891",
                     color: "white",
