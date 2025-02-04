@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useState} from "react";
+
 import { ToastContainer, toast } from "react-toastify";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
@@ -8,7 +8,7 @@ import { transferMoney } from "../../services/customerService";
 
 const MoneyTransfer = () => {
 
-  let navigate = useNavigate();
+
 
   const accounts = [
     { type: "Savings" },
@@ -24,7 +24,7 @@ const MoneyTransfer = () => {
     isSameBank: false, // State to track checkbox
   });
 
-  const [editAble,setIsEditAble]=useState(false);
+  const [editAble,setIsEditAble]=useState(true);
 
   const [bankDetails, setBankDetails] = useState({
     bankName: "",
@@ -72,11 +72,21 @@ const MoneyTransfer = () => {
       const response = await transferMoney(account);
       console.log(response);
       toast.success("Money transferred successfully!");
+      setAccount({
+        fromAcccountNo: "",
+        toAcccountNo: "",
+        ifsc: "",
+        amount: "",
+        description: "",
+        isSameBank: false,
+      });
+  
+      setIsEditAble(true); // Reset edit state
     
     } catch (error) {
       console.error("Error transferring money:", error);
       toast.error("Error transferring money. Please try again.");
-  }
+    }
   }
 
 
@@ -169,7 +179,7 @@ const MoneyTransfer = () => {
                   id="toAccno"
                   name="toAcccountNo"
                   onChange={handleInput}
-                  value={account.toAccno}
+                  value={account.toAcccountNo}
                   min={0}
                 />
               </div>
@@ -226,7 +236,7 @@ const MoneyTransfer = () => {
               {/* description Field */}
               <div className="col-md-6 mb-3">
                 <label htmlFor="description" className="form-label">
-                  <b>description</b>
+                  <b>Purpose</b>
                 </label>
                 <textarea
                   className="form-control"

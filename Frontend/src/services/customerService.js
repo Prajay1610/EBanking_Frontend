@@ -48,10 +48,10 @@ export const addImage = async (userId, file) => {
     }
   };
 
-  export const transferMoney=(reqbody)=>{
+  export const transferMoney=async(reqbody)=>{
     try {
         const url = createUrl('transfer');
-        const response = axios.post(url,reqbody);
+        const response =await axios.post(url,reqbody);
         return response.data;
     } catch (error) {
         console.error('Error transferring money:', error);
