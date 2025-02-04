@@ -1,59 +1,36 @@
 import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,Link} from "react-router-dom";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
-import { viewAllBankCustomers } from "../../services/bankManagerService";
+import { makeActive, makeInActive, viewAllBankCustomers } from "../../services/bankManagerService";
 const ViewAllBankCustomers = () => {
   let navigate = useNavigate();
   const [allCustomer, setAllCustomer] = useState([]);
  const [managerId,setManagerId]=useState(1);//set manager id from jwt session
   const [tempCustomerName, setTempCustomerName] = useState("");
 
-  // Mock data for testing
-  const mockCustomers = [
-    {
-      id: 1,
-      name: "John Doe",
-      bank: { name: "Global Bank" },
-      email: "john.doe@example.com",
-      gender: "Male",
-      contact: "1234567890",
-      street: "123 Main St",
-      city: "New York",
-      pincode: "10001",
-      isAccountLinked: "Yes",
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      bank: { name: "National Bank" },
-      email: "jane.smith@example.com",
-      gender: "Female",
-      contact: "9876543210",
-      street: "456 Elm St",
-      city: "Los Angeles",
-      pincode: "90001",
-      isAccountLinked: "No",
-      status: "Deactivated",
-    },
-    {
-      id: 3,
-      name: "Alice Johnson",
-      bank: { name: "City Bank" },
-      email: "alice.johnson@example.com",
-      gender: "Female",
-      contact: "5678901234",
-      street: "789 Oak St",
-      city: "Chicago",
-      pincode: "60601",
-      isAccountLinked: "Yes",
-      status: "Active",
-    },
-  ];
+  
+  const makeInActiveVar=async(userId)=>{
 
+    
+    const response = await makeInActive(userId); 
+    if(response){
+      getAllBankCustomers(managerId);
+
+   
+    }
+  }
+  const makeActiveVar=async(userId)=>{
+
+    
+    const response = await makeActive(userId); 
+    if(response){
+    
+      getAllBankCustomers(managerId);
+    }
+  }
    const getAllBankCustomers = async (accountId) => {
       try {
                
@@ -73,6 +50,9 @@ const ViewAllBankCustomers = () => {
   useEffect(() => {
     getAllBankCustomers(managerId);
   }, []);
+  const viewCustomerDetails = () => {
+    navigate(`/customerProfile`);
+  };
 
   const searchBankCustomersByName = (e) => {
     e.preventDefault();
@@ -187,7 +167,9 @@ const ViewAllBankCustomers = () => {
                     <th scope="col">Contact</th>
                     <th scope="col">Address</th>
                     <th scope="col">Status</th>
+                   
                     <th scope="col">Account Details</th>
+                    <th scope="col">Action</th>
                     
                   </tr>
                 </thead>
@@ -212,20 +194,45 @@ const ViewAllBankCustomers = () => {
                       <td>
                         <b>{customer.customerAddress}</b>
                       </td>
+                      <td>{customer.customerStatus==true?(<b className="text-success">Active</b>):(<b className="text-danger">InActive</b>)}</td>
                       <td>
-                       {customer.customerStatus===true?(<b className="text-success">ACTIVE</b>):(<b className="text-danger">ACTIVE</b>)}
-                      </td>
-                      <td>
-                        {customer.isAccountLinked === "Yes" ? (
+                        
                           <button
-                            // onClick={() => viewAccountDetails(customer)}
-                            className="btn btn-sm btn-primary"
+                            //onClick={() => viewAccountDetails(customer)}
+                            className="btn btn-sm btn-primary mx-2"
                             style={{ backgroundColor: "#544892", border: "none" }}
+                            onClick={() => viewCustomerDetails()}
                           >
-                            View Account
+                           
+                    View Customer Profile
+                  
+                          </button>
+                        
+                        
+                      </td>
+                       
+                      <td>
+                      {customer.customerStatus === true ? (
+                          <button
+                           // onClick={() => viewAccountDetails(customer)}
+                            className="btn btn-sm btn-danger mx-2"
+                         
+                            onClick={() => makeInActiveVar(customer.userId)}
+
+                          >
+
+                           InActive
                           </button>
                         ) : (
-                          <b className="text-danger">NOT LINKED</b>
+                          <button
+                          //onClick={() => viewAccountDetails(customer)}
+                          className="btn btn-sm btn-success"
+                          
+                          onClick={() => makeActiveVar(customer.userId)}
+
+                        >
+                         Active
+                        </button>
                         )}
                       </td>
                       

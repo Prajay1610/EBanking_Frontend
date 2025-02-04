@@ -55,8 +55,20 @@ const ViewBankAccounts = ({accountId}) => {
         getSpecificAccountDetails(accountId);
       }
     } catch (error) {
-      toast.error("Error while depositing Funds:", error);
-      alert("Failed to deposit funds. Please try again later.");
+      
+      console.error("Error while depositing funds:", error);
+
+      // Extract error message from API response
+      let errorMessage = "Failed to deposit funds. Please try again later.";
+    
+      if (error.response) {
+        // Extract error message from API response body
+        errorMessage = error.response.data?.error || error.response.data?.message || "Server error occurred.";
+      }
+    
+      // Show error in toast notification
+      toast.error(errorMessage);
+    
     } 
   };
   const withdrawAmount = async () => {
@@ -75,8 +87,18 @@ const ViewBankAccounts = ({accountId}) => {
         getSpecificAccountDetails(accountId);
       }
     } catch (error) {
-      toast.error("Error while withdrawing funds:", error);
-      alert("Failed to withdraw funds. Please try again later.");
+      console.error("Error while Withdrawing funds:", error);
+
+      // Extract error message from API response
+      let errorMessage = "Failed to withdraw funds. Please try again later.";
+    
+      if (error.response) {
+        // Extract error message from API response body
+        errorMessage = error.response.data?.error || error.response.data?.message || "Server error occurred.";
+      }
+    
+      // Show error in toast notification
+      toast.error(errorMessage);
     } 
   };
  useEffect(()=>{

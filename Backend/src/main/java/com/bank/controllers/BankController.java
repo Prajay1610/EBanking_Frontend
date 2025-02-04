@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,6 +55,36 @@ public class BankController {
 			return ResponseEntity.
 					status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(new ApiResponse(e.getMessage()));
+		}}
+		@PutMapping("/customer/makeInActive/{customerId}")
+		public  ResponseEntity<?> makeInActive(@PathVariable Long customerId) {
+			//TODO: process POST request
+			
+			try {
+				return ResponseEntity.status(HttpStatus.CREATED)
+						.body(bankService
+								.makeInActive(customerId));
+						
+			} catch (RuntimeException e) {
+				return ResponseEntity.
+						status(HttpStatus.INTERNAL_SERVER_ERROR)
+						.body(new ApiResponse(e.getMessage()));
+			}
+		}
+		@PutMapping("/customer/makeActive/{customerId}")
+		public  ResponseEntity<?> makeActive(@PathVariable Long customerId) {
+			//TODO: process POST request
+			
+			try {
+				return ResponseEntity.status(HttpStatus.CREATED)
+						.body(bankService
+								.makeActive(customerId));
+						
+			} catch (RuntimeException e) {
+				return ResponseEntity.
+						status(HttpStatus.INTERNAL_SERVER_ERROR)
+						.body(new ApiResponse(e.getMessage()));
+			}
 		}
 	}
-}
+

@@ -34,7 +34,9 @@ export const depositFunds=async(reqbody)=>{
         console.log("response", response.data);
         return response.data;
     } catch (error) {
+        
         throw error; 
+        
     }
 }
 export const withdrawFunds=async(reqbody)=>{
@@ -53,6 +55,55 @@ export const viewAllBankCustomers=async(bankManagerId)=>{
     const url = createUrl(`bank/allCustomers/${bankManagerId}`);
     try {
         const response = await axios.get(url);
+        console.log("response", response.data);
+        return response.data;
+    } catch (error) {
+        throw error; // Re-throw the error for further handling if needed
+    }
+}
+export const makeInActive=async(userId)=>{
+    
+    const url = createUrl(`bank/customer/makeInActive/${userId}`);
+    try {
+        const response = await axios.put(url);
+        console.log("response", response.data);
+        return response.data;
+    } catch (error) {
+        throw error; // Re-throw the error for further handling if needed
+    }
+}
+
+export const makeActive=async(userId)=>{
+    
+    const url = createUrl(`bank/customer/makeActive/${userId}`);
+    try {
+        const response = await axios.put(url);
+        console.log("response", response.data);
+        return response.data;
+    } catch (error) {
+        throw error; // Re-throw the error for further handling if needed
+    }
+}
+
+
+export const lockAccount=async(accountId)=>{
+    
+    const url = createUrl(`bankAccount/lockAccount/${accountId}`);
+    try {
+        const response = await axios.put(url);
+        console.log("response", response.data);
+        return response.data;
+    } catch (error) {
+        throw error; // Re-throw the error for further handling if needed
+    }
+}
+
+
+export const unlockAccount=async(accountId)=>{
+    
+    const url = createUrl(`bankAccount/unlockAccount/${accountId}`);
+    try {
+        const response = await axios.put(url);
         console.log("response", response.data);
         return response.data;
     } catch (error) {
