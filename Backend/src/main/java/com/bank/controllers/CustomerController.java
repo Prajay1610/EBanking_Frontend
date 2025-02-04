@@ -19,7 +19,6 @@ import com.bank.services.CustomerService;
 @CrossOrigin(origins="http://localhost:3000")
 @RestController
 @RequestMapping("/customer")
-@CrossOrigin("*")
 public class CustomerController {
 	@Autowired
 	private CustomerService customerService;

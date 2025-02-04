@@ -2,6 +2,8 @@ package com.bank.dtos;
 
 import java.time.LocalDateTime;
 
+import com.bank.entities.BankAccount;
+
 public class TransactionResponseDto {
 
     private String transactionId;
@@ -10,6 +12,7 @@ public class TransactionResponseDto {
     private BankAccountDto bankAccount;
     private String type; // e.g., "Withdrawal", "Deposit", "Transfer"
     private double amount;
+    private BankDto destinationBank;
     private BankAccountDto destinationBankAccount; // Can be null for withdrawals
     private String narration;
     private Long transactionTime; // Epoch time in milliseconds
@@ -18,7 +21,18 @@ public class TransactionResponseDto {
     public String getTransactionId() {
         return transactionId;
     }
-
+    
+    public BankDto getDestinationBank()
+    {
+    	return destinationBank;
+    }
+    
+    
+    public void setDestinationBank(BankDto destBank)
+    {
+    	this.destinationBank=destBank;
+    }
+    
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }

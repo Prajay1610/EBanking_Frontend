@@ -65,6 +65,10 @@ public class CustomerServiceImpl implements CustomerService{
         TransactionResponseDto dto = new TransactionResponseDto();
         dto.setTransactionId(transaction.getId().toString());
         dto.setBank(new BankDto(transaction.getAccount().getBank().getBankName()));
+        
+        dto.setDestinationBank(transaction.getTransactionType() == TransactionType.TRANSFER 
+                ? new BankDto(transaction.getTransfer().getToAccount().getBank().getBankName()):null);
+        
         dto.setUser(new UserDto(transaction.getAccount().getCustomer().getUser().getFname()));
         dto.setBankAccount(new BankAccountDto(transaction.getAccount().getId()));
         dto.setType(transaction.getTransactionType().name());
