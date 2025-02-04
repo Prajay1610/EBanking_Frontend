@@ -42,13 +42,7 @@ public class AdminSeviceImpl implements AdminService {
 	@Override
 	public List<BankRespDto> viewAllBanks() {
 		// TODO Auto-generated method stub
-		/*private String BankName;
-	private String IfscCode;
-	private String Address;
-	private String PhoneNo;
-	private String email;
-	private String website;
-	private String country;*/
+		
 		List<Bank>banks=bankRepository.findAll();
 		return banks.stream().map(bank->new BankRespDto(bank.getBankName(),bank.getBankIfsc(),bank.getAddress(),bank.getPhone(),bank.getBankEmail(),bank.getBankWebsite(),bank.getBankCountry())).toList();
 		

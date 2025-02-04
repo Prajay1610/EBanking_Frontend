@@ -1,9 +1,5 @@
 package com.bank.dtos;
 
-import java.time.LocalDateTime;
-
-import com.bank.entities.BankAccount;
-
 public class TransactionResponseDto {
 
     private String transactionId;

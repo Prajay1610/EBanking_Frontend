@@ -15,6 +15,7 @@ import com.bank.entities.Customer;
 import com.bank.entities.Gender;
 import com.bank.entities.Transaction;
 import com.bank.entities.TransactionType;
+import com.bank.exception.ResourceNotFoundException;
 import com.bank.repositories.BankAccountRepository;
 import com.bank.repositories.CustomerRepository;
 import com.bank.repositories.TransactionRepository;
@@ -34,9 +35,9 @@ public class CustomerServiceImpl implements CustomerService{
 	
 	@Override
 	public CustomerProfileRespDto getCustomerDetails(Long customerId,Long accountId) {
-		Optional<Customer> cust = customerRepository.findById(customerId);
+		Customer cust = customerRepository.findById(customerId).orElseThrow(()->new ResourceNotFoundException("Can't Find Customer with id: "+customerId));
 		
-		Customer customer = cust.get();
+		Customer customer = cust;
 		String customerName = customer.getUser().getFname()+" "+customer.getUser().getLname();
 		String email = customer.getUser().getEmail();
 		
