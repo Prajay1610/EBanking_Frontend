@@ -11,3 +11,40 @@ export const getAllTransactions = async (userId) => {
         throw error;
     }
 };
+
+export const addCustomer = async (customer) => {
+    try {
+        const url = createUrl('api/auth/register');
+        const response = await axios.post(url, customer);
+        return response.data;
+    } catch (error) {
+        console.error('Error adding customer:', error);
+        throw error;
+    }
+}
+
+
+export const addImage = async (userId, file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+  
+    try {
+      const url = createUrl(`api/auth/${userId}/upload-profile-image`);
+      const response = await axios.post(url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${sessionStorage.getItem("admin-jwtToken")}`,
+        },
+      });
+  
+      // Ensure the backend response contains a `success` field
+      if (!response.data.success) {
+        throw new Error(response.data.message || "Image upload failed.");
+      }
+  
+      return response.data;
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      throw error; // Re-throw the error to be handled by the caller
+    }
+  };
