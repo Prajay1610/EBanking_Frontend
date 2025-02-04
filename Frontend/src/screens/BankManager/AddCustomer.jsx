@@ -1,133 +1,59 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
+import { addCustomer, addImage } from "../../services/customerService";
 
 const AddCustomer = () => {
-  const admin_jwtToken = sessionStorage.getItem("admin-jwtToken");
-  const navigate = useNavigate();
-
-  // State for customer data
   const [customer, setCustomer] = useState({
-    password: "",
-    email: "",
     fname: "",
     lname: "",
-    role: "CUSTOMER", // Default role
-    isActive: true,
-    gender: "", // MALE, FEMALE, OTHER
+    email: "",
     phoneNo: "",
+    gender: "",
     address: "",
-    profileImage: "", // This will store the image URL after upload
+    password: "",
+    role: "CUSTOMER", 
   });
+  const [profileImage, setProfileImage] = useState(null); // To store the selected image file
+  const navigate = useNavigate();
 
-  const [file, setFile] = useState(null); // File object for profile image
-
-  // Handle input changes
+  // Handle form input changes
   const handleInput = (e) => {
     const { name, value } = e.target;
     setCustomer({ ...customer, [name]: value });
   };
 
-  // Handle file selection
+  // Handle file input change
   const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-    }
+    setProfileImage(e.target.files[0]); // Store the selected file
   };
 
-  // Upload profile image to the backend
-  const uploadProfileImage = async (userId, file) => {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const url = `http://localhost:8080/api/users/${userId}/upload-profile-image`;
-      const response = await axios.post(url, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${admin_jwtToken}`,
-        },
-      });
-
-      if (response.data.success) {
-        return response.data.profileImageUrl; // Return the image URL from the backend
-      } else {
-        throw new Error(response.data.message || "Failed to upload profile image.");
-      }
-    } catch (error) {
-      console.error("Error uploading profile image:", error);
-      throw error;
-    }
-  };
-
-  // Save customer details
+  // Handle form submission
   const saveCustomer = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission behavior
 
     try {
-      // Step 1: Register the customer
-      const registerResponse = await axios.post(
-        "http://localhost:8080/api/bank/register",
-        customer,
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${admin_jwtToken}`,
-          },
-        }
-      );
+      // Step 1: Add customer details
+      const response = await addCustomer(customer);
+      console.log(response);
+      const userId = response.id; // Assuming the backend returns the user ID
 
-      const { success, message, userId } = registerResponse.data;
+      // Step 2: Upload profile image if provided
+      if (profileImage) {
+        await addImage(userId, profileImage);
+        toast.success("Customer added successfully with profile image!");
+    } else {
+        toast.success("Customer added successfully!");
+    }
 
-      if (success) {
-        toast.success(message, {
-          position: "top-center",
-          autoClose: 2000,
-        });
-
-        // Step 2: Upload profile image if a file is selected
-        if (file) {
-          const profileImageUrl = await uploadProfileImage(userId, file);
-
-          // Update the customer object with the profile image URL
-          setCustomer((prevCustomer) => ({
-            ...prevCustomer,
-            profileImage: profileImageUrl,
-          }));
-
-          // Optionally, send another request to update the profile image URL in the backend
-          await axios.put(
-            `http://localhost:8080/api/users/${userId}`,
-            { profileImage: profileImageUrl },
-            {
-              headers: {
-                Authorization: `Bearer ${admin_jwtToken}`,
-              },
-            }
-          );
-        }
-
-        // Redirect to the customers list or dashboard
-        setTimeout(() => {
-          navigate("/customers");
-        }, 2000);
-      } else {
-        toast.error(message || "Failed to register customer.", {
-          position: "top-center",
-          autoClose: 2000,
-        });
-      }
+      // Navigate to another page after successful submission
+      navigate("/ViewAllBankCustomers");
     } catch (error) {
-      console.error("Error registering customer:", error);
-      toast.error("It seems the server is down.", {
-        position: "top-center",
-        autoClose: 2000,
-      });
+      console.error("Error adding customer:", error);
+      toast.error("Failed to add customer. Please try again.");
     }
   };
 
@@ -135,10 +61,7 @@ const AddCustomer = () => {
     <>
       <Header />
       <div className="d-flex justify-content-center align-items-center min-vh-100 mt-2 mb-2">
-        <div
-          className="card form-card border-color custom-bg"
-          style={{ width: "50rem" }}
-        >
+        <div className="card form-card border-color custom-bg" style={{ width: "50rem" }}>
           <div
             className="card-header custom-bg-text text-center"
             style={{
@@ -152,7 +75,8 @@ const AddCustomer = () => {
             <h5 className="card-title">Add Customer</h5>
           </div>
           <div className="card-body text-color" style={{ backgroundColor: "#d6d0f2" }}>
-            <form className="row g-3">
+            <form className="row g-3" onSubmit={saveCustomer}>
+              {/* Form fields */}
               <div className="col-md-6 mb-3">
                 <label htmlFor="fname" className="form-label">
                   <b>First Name</b>
@@ -267,12 +191,10 @@ const AddCustomer = () => {
                   onChange={handleFileChange}
                 />
               </div>
-
               <div className="d-flex align-items-center justify-content-center">
                 <button
                   type="submit"
                   className="btn btn-primary bg-color custom-bg-text col-md-4"
-                  onClick={saveCustomer}
                   style={{
                     backgroundColor: "#534891",
                     color: "white",
@@ -282,7 +204,6 @@ const AddCustomer = () => {
                 >
                   Add Customer
                 </button>
-                <ToastContainer />
               </div>
             </form>
           </div>

@@ -13,7 +13,7 @@ const ViewAllBankAccounts = () => {
   const [accountNumber, setAccountNumber] = useState("");
   const [tempAccountNumber, setTempAccountNumber] = useState("");
   const [loading, setLoading] = useState(true);
-  const [managerId,setManagerId] = useState(2);//Change this with the jwt session's bank_manager id
+  const [managerId,setManagerId] = useState(1);//Change this with the jwt session's bank_manager id
   // Mock data for testing
   
 

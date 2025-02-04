@@ -33,12 +33,11 @@ export const addImage = async (userId, file) => {
       const response = await axios.post(url, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${sessionStorage.getItem("admin-jwtToken")}`,
         },
       });
   
       // Ensure the backend response contains a `success` field
-      if (!response.data.success) {
+      if (!response.data) {
         throw new Error(response.data.message || "Image upload failed.");
       }
   
