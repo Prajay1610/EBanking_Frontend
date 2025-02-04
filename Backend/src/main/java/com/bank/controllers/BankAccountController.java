@@ -1,7 +1,5 @@
 package com.bank.controllers;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bank.dtos.ApiResponse;
 import com.bank.dtos.BankAccountReqDto;
-import com.bank.entities.BankAccount;
 import com.bank.services.BankAccountService;
 
 @CrossOrigin(origins="http://localhost:3000")
