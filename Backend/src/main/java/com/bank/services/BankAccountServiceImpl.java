@@ -99,5 +99,23 @@ public class BankAccountServiceImpl implements BankAccountService{
 		
 		
 	}
+	@Override
+	public ApiResponse lockAccount(Long accountId) {
+		// TODO Auto-generated method stub
+		Optional<BankAccount> bankAccount = bankAccountRepository.findById(accountId);
+		bankAccount.get().setIsLocked(true);
+		bankAccountRepository.save(bankAccount.get());
+		
+		return new ApiResponse("Account Locked  ");
+	}
+	@Override
+	public ApiResponse unlockAccount(Long accountId) {
+		// TODO Auto-generated method stub
+		Optional<BankAccount> bankAccount = bankAccountRepository.findById(accountId);
+		bankAccount.get().setIsLocked(false);
+		bankAccountRepository.save(bankAccount.get());
+		
+		return new ApiResponse("Account Unlocked  ");
+	}
 
 }

@@ -13,4 +13,8 @@ public interface BankAccountService {
 	List<BankAccountRespDto> viewAllBankAccounts(Long managerId);
 
 	BankAccountRespDto viewSpecificBankAccount(Long accountId);
+
+	ApiResponse lockAccount(Long accountId);
+
+	ApiResponse unlockAccount(Long accountId);
 }

@@ -10,6 +10,14 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+	// Handle UserLockedException
+    @ExceptionHandler(UserLockedException.class)
+    public ResponseEntity<Map<String, String>> handleUserLockedException(UserLockedException ex) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.LOCKED).body(response);
+    }
+	
     // Handle ResourceNotFoundException
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleResourceNotFoundException(ResourceNotFoundException ex) {
@@ -41,4 +49,5 @@ public class GlobalExceptionHandler {
         response.put("error", "An unexpected error occurred: " + ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
+
 }

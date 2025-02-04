@@ -14,6 +14,7 @@ import com.bank.entities.Transaction;
 import com.bank.entities.TransactionType;
 import com.bank.exception.InsufficientBalanceException;
 import com.bank.exception.ResourceNotFoundException;
+import com.bank.exception.UserLockedException;
 import com.bank.repositories.BankAccountRepository;
 import com.bank.repositories.TransactionRepository;
 
@@ -32,7 +33,12 @@ public class TransactionServiceImpl implements TransactionService {
 	
 	@Override
 	public ResponseEntity<?> depositMoney(Long accountNo, BigDecimal amount) {
+		
 		BankAccount bankAc = bankAccountRepository.findById(accountNo).orElseThrow(()->new ResourceNotFoundException("Invalid account no : "+accountNo));
+		boolean isLocked=bankAc.getIsLocked();
+		if(isLocked) {
+			throw new UserLockedException("User account is locked .");
+		}
 		BigDecimal existingBalance = bankAc.getBalance();
 		bankAc.setBalance(existingBalance.add(amount));
 		BankAccount persistentBankAc = bankAccountRepository.save(bankAc);
@@ -53,7 +59,12 @@ public class TransactionServiceImpl implements TransactionService {
 
 	@Override
 	public ResponseEntity<?> withdrawMoney(Long accountNo, BigDecimal amount) {
+		
 		BankAccount bankAc = bankAccountRepository.findById(accountNo).orElseThrow(()->new ResourceNotFoundException("Invalid account no : "+accountNo));
+		boolean isLocked=bankAc.getIsLocked();
+		if(isLocked) {
+			throw new UserLockedException("User account is locked .");
+		}
 		BigDecimal existingBalance = bankAc.getBalance();
 		
 		if(existingBalance.compareTo(amount)<0)
