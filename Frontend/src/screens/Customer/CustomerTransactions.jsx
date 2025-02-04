@@ -12,21 +12,6 @@ const ViewCustomerTransactions = () => {
   const customer = location.state;
   const [allTransactions, setAllTransactions] = useState([]);
 
-  // // Retrieve JWT token from session storage
-  // let jwtToken;
-  // let adminToken = sessionStorage.getItem("admin-jwtToken");
-  // let bankToken = sessionStorage.getItem("bank-jwtToken");
-  // let customerToken = sessionStorage.getItem("customer-jwtToken");
-
-  // if (adminToken) {
-  //   jwtToken = adminToken;
-  // } else if (bankToken) {
-  //   jwtToken = bankToken;
-  // } else if (customerToken) {
-  //   jwtToken = customerToken;
-  // }
-
-  // Function to fetch all transactions from the backend
   const retrieveAllTransactions = async () => {
     try {
       const response = await getAllTransactions(1000001);
@@ -154,8 +139,8 @@ const ViewCustomerTransactions = () => {
                             )}
                           </td>
                           <td>
-                            {transaction.destinationBankAccount ? (
-                              <b>{transaction.destinationBankAccount.number}</b>
+                            {transaction.destinationBank ? (
+                              <b>{transaction.destinationBank.name}</b>
                             ) : (
                               <b>---</b>
                             )}

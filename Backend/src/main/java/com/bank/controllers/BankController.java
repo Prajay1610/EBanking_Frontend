@@ -15,9 +15,10 @@ import com.bank.dtos.ApiResponse;
 import com.bank.dtos.BankReqDto;
 import com.bank.services.BankService;
 
-@CrossOrigin(origins="http://localhost:3000")
+
 @RestController
 @RequestMapping("/bank")
+@CrossOrigin(origins="http://localhost:3000")
 public class BankController {
 	@Autowired
 	private BankService bankService;

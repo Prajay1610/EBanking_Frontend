@@ -69,7 +69,7 @@ public class TransferServiceImpl  implements TransferService{
             debitTrx.setBalanceBeforeTrx(existingBalanceFrom);
             debitTrx.setBalanceAfterTrx(persistFromAcc.getBalance());
             debitTrx.setDescription("DEBIT");
-            debitTrx.setTransactionType(TransactionType.WITHDRAWAL);
+            debitTrx.setTransactionType(TransactionType.DEBIT);
     		Transaction persistenDebitTrx=transactionRepository.save(debitTrx);
     		
     		
@@ -80,13 +80,13 @@ public class TransferServiceImpl  implements TransferService{
             creditTrx.setBalanceBeforeTrx(existingBalanceTo);
             creditTrx.setBalanceAfterTrx(persistToAcc.getBalance());
             creditTrx.setDescription("CREDIT");
-            creditTrx.setTransactionType(TransactionType.WITHDRAWAL);
+            creditTrx.setTransactionType(TransactionType.CREDIT);
     		Transaction persistenCreditTrx=transactionRepository.save(creditTrx);
     		
     		Transaction transferMoney= new Transaction();
     		transferMoney.setAccount(persistFromAcc);
     		
-			transferMoney.setAmount(persistFromAcc.getBalance());
+			transferMoney.setAmount(amount);
 			transferMoney.setBalanceBeforeTrx(existingBalanceFrom);
 			transferMoney.setBalanceAfterTrx(persistFromAcc.getBalance());
 			transferMoney.setDescription(Description);
