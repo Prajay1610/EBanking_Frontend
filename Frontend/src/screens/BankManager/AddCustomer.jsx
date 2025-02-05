@@ -7,7 +7,7 @@ import Footer from "../../components/layouts/Footer/Footer";
 import { addCustomer, addImage } from "../../services/customerService";
 
 const AddCustomer = () => {
-  const bankId=localStorage.getItem("bankId") || 1;
+  const bankId=localStorage.getItem("bankId") || 2;
 
   const [customer, setCustomer] = useState({
     fname: "",

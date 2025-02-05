@@ -41,7 +41,7 @@ public class CustomerServiceImpl implements CustomerService{
 		String customerName = customer.getUser().getFname()+" "+customer.getUser().getLname();
 		String email = customer.getUser().getEmail();
 		
-		
+		Long userId=customer.getUser().getId();
 
 		
 		String PhoneNo = customer.getUser().getPhoneNo();
@@ -50,7 +50,7 @@ public class CustomerServiceImpl implements CustomerService{
 		Long customerId1=customer.getId();//for testing
 		
 		//get account type for a customer's account
-		return new CustomerProfileRespDto(customerName,email,gender,PhoneNo,Address,customerId1);
+		return new CustomerProfileRespDto(customerName,email,gender,PhoneNo,Address,customerId1,userId);
 	}
 
 	@Autowired

@@ -4,7 +4,7 @@ import "./Header.css";
 import "../../../index.css";
 import logo from "./logoSecureBank.png"
 const Header = () => {
-  const role = "customer"; // Change this dynamically from authentication
+  const role = "bank_manager"; // Change this dynamically from authentication
   const isLoggedIn=true;//toggle this to check
 
   return (
@@ -101,7 +101,7 @@ const Header = () => {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link active text-black nunito-standardfont" to="/transactions">
+                  <Link className="nav-link active text-black nunito-standardfont" to="/bank/transactions">
                   Customer Transactions
                   </Link>
                 </li>

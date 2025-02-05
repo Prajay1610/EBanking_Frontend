@@ -2,15 +2,21 @@ package com.bank.services;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bank.dtos.AllCustomersRespDto;
 import com.bank.dtos.ApiResponse;
+import com.bank.dtos.BankAccountDto;
+import com.bank.dtos.BankDto;
 import com.bank.dtos.BankReqDto;
+import com.bank.dtos.TransactionResponseDto;
+import com.bank.dtos.UserDto;
 import com.bank.entities.AccountType;
 import com.bank.entities.Bank;
 import com.bank.entities.BankAccount;
@@ -18,12 +24,15 @@ import com.bank.entities.BankManager;
 import com.bank.entities.Customer;
 import com.bank.entities.Gender;
 import com.bank.entities.Role;
+import com.bank.entities.Transaction;
+import com.bank.entities.TransactionType;
 import com.bank.entities.User;
 import com.bank.exception.ResourceNotFoundException;
 import com.bank.repositories.BankAccountRepository;
 import com.bank.repositories.BankManagerRepository;
 import com.bank.repositories.BankRepository;
 import com.bank.repositories.CustomerRepository;
+import com.bank.repositories.TransactionRepository;
 import com.bank.repositories.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -40,7 +49,8 @@ public class BankServiceImpl implements BankService{
 	
 	@Autowired
 	private UserRepository userRepository;
-	
+	@Autowired
+	private TransactionRepository transactionRepository;
 	@Autowired
 	private CustomerRepository customerRepository;
 	@Autowired
@@ -144,5 +154,57 @@ public class BankServiceImpl implements BankService{
 		userRepository.save(user.get());		
 		return new ApiResponse("Status updated to active: ");
 	}
+
+	@Override
+	public List<TransactionResponseDto> getAllTransactionsForBank(Long managerId) {
+	    // Retrieve the bank manager
+	    Optional<BankManager> bankManager = bankManagerRepository.findById(managerId);
+	    if (bankManager.isEmpty()) {
+	        throw new RuntimeException("Bank Manager not found");
+	    }
+	    
+	    // Get bank ID from the manager
+	    Long bankId = bankManager.get().getBank().getId();
+
+	    // Fetch all accounts associated with the bank
+	    List<BankAccount> allBankAccounts = bankAccountRepository.findByBankId(bankId);
+	    
+	    // If no bank accounts are found, return an empty list
+	    if (allBankAccounts.isEmpty()) {
+	        return Collections.emptyList();
+	    }
+	    
+	    // Fetch transactions for all bank accounts
+	    List<Transaction> allTransactions = transactionRepository.findByAccountIn(allBankAccounts);
+	    
+	    // Convert transactions to DTOs
+	    return allTransactions.stream()
+	            .map(this::convertToDto)
+	            .collect(Collectors.toList());
+	}
+
+	  private TransactionResponseDto convertToDto(Transaction transaction) {
+	        TransactionResponseDto dto = new TransactionResponseDto();
+	        dto.setTransactionId(transaction.getId().toString());
+	        dto.setBank(new BankDto(transaction.getAccount().getBank().getBankName()));
+	        
+	        dto.setDestinationBank(transaction.getTransactionType() == TransactionType.TRANSFER 
+	                ? new BankDto(transaction.getTransfer().getToAccount().getBank().getBankName()):null);
+	        
+	        dto.setUser(new UserDto(transaction.getAccount().getCustomer().getUser().getFname()));
+	        dto.setBankAccount(new BankAccountDto(transaction.getAccount().getId()));
+	        dto.setType(transaction.getTransactionType().name());
+	        dto.setAmount(transaction.getAmount().doubleValue());
+	        dto.setDestinationBankAccount(
+	                transaction.getTransactionType() == TransactionType.TRANSFER 
+	                        ? new BankAccountDto(transaction.getTransfer().getToAccount().getId())
+	                        : null
+	        );
+	        dto.setNarration(transaction.getDescription());
+	        dto.setTransactionTime(transaction.getCreatedOn().atZone(java.time.ZoneOffset.UTC).toInstant().toEpochMilli());
+	        return dto;
+	    }
+
+		
 
 }

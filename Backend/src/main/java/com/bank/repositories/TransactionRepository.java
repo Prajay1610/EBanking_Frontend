@@ -5,9 +5,12 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.bank.entities.BankAccount;
 import com.bank.entities.Customer;
 import com.bank.entities.Transaction;
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
     List<Transaction> findAllByAccountId(Long accountId);
+    List<Transaction> findByAccountIn(List<BankAccount> accounts);
+
 }
