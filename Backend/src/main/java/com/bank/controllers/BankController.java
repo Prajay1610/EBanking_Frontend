@@ -1,5 +1,7 @@
 package com.bank.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bank.dtos.ApiResponse;
 import com.bank.dtos.BankReqDto;
+import com.bank.dtos.TransactionResponseDto;
 import com.bank.services.BankService;
 
 
@@ -86,5 +89,12 @@ public class BankController {
 						.body(new ApiResponse(e.getMessage()));
 			}
 		}
+		@GetMapping("/transactions/allCustomer/{managerId}")
+		public ResponseEntity<List<TransactionResponseDto>> getAllTransactionsForBank(
+		        @PathVariable Long managerId) {
+		    List<TransactionResponseDto> transactions = bankService.getAllTransactionsForBank(managerId);
+		    return ResponseEntity.ok(transactions);
+		}	
+
 	}
 

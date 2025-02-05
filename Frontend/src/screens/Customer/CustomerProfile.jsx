@@ -143,15 +143,16 @@ const accounts = [
               <div className="card-body">
                 {/* Customer Overview */}
                 <div className="text-center mb-4">
-                  <img
-                    src="https://png.pngtree.com/png-vector/20230831/ourmid/pngtree-businessman-in-formal-suit-thinking-png-image_9194103.png"
-                    alt="Customer Avatar"
-                    className="rounded-circle img-thumbnail"
-                    width="150"
-                  />
-                  <h5 className="mt-3">{customerData.name}</h5>
-                  <p className="text-muted">{customerData.email}</p>
-                </div>
+        <img
+    src={`http://localhost:8080/api/auth/${customerData.userId}/profile-image`}
+    alt="Customer Avatar"
+    className="rounded-circle img-thumbnail"
+    width="150"
+  />
+  <h5 className="mt-3">{customerData.name}</h5>
+  <p className="text-muted">{customerData.email}</p>
+</div>
+
 
                 {/* Banking Information and Nominee Details */}
                 <div className="row mb-4">

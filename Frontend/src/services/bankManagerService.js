@@ -20,7 +20,7 @@ export const getBankAccountDetails = async (accountId) => {
     try {
         const response = await axios.get(url);
         console.log("response", response.data);
-        
+
         return response.data;
     } catch (error) {
         toast.error("Error while retrieving bank account details:", error);
@@ -111,3 +111,15 @@ export const unlockAccount=async(accountId)=>{
         throw error; // Re-throw the error for further handling if needed
     }
 }
+export const getAllBankTransactions = async (managerId) => {
+    try { 
+        const url = createUrl(`bank/transactions/allCustomer/${managerId}`);
+       
+        const response = await axios.get(url);
+        console.log("called fdata",response.data)
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching transactions:', error);
+        throw error;
+    }
+};
