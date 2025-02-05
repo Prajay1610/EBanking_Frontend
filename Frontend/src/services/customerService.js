@@ -1,9 +1,11 @@
 import { createUrl } from "../utils";
 import axios from "axios";
 
+
 export const getAllTransactions = async (customerId) => {
-    try {
+    try { 
         const url = createUrl(`customer/transactions/customer/${customerId}`);
+        console.log("called url",url)
         const response = await axios.get(url);
         return response.data;
     } catch (error) {
@@ -87,7 +89,7 @@ export const addImage = async (userId, file) => {
   }
 
 
-  export const getCustomerAccountData=async(customerId,accountId)=>{
+  export const getCustomerAccountData=async(customerId)=>{
 
     try {
       const url = createUrl(`customer/allAccounts/${customerId}`);
@@ -105,13 +107,17 @@ export const addImage = async (userId, file) => {
 
   export const getAccountStatement = async (reqbody) => {
     try {
+        // Fetch all transactions for the given account ID
         const allTransactions = await getAllTransactions(reqbody.accountId);
 
         // Convert date string (YYYY-MM-DD) to timestamp (start of the day)
         const convertToTimestamp = (dateStr) => new Date(dateStr).setHours(0, 0, 0, 0);
 
+        console.log("Fetched transactions:", allTransactions);
+
+        // Calculate start and end timestamps for filtering
         const startDateTimestamp = convertToTimestamp(reqbody.startDate);
-        const endDateTimestamp = convertToTimestamp(reqbody.endDate) + 86400000 + 1;
+        const endDateTimestamp = convertToTimestamp(reqbody.endDate) + 86400000 - 1; // End of the day
 
         // Filter transactions within the date range
         const filteredTransactions = allTransactions.filter(transaction => {
@@ -119,11 +125,25 @@ export const addImage = async (userId, file) => {
             return transactionDate >= startDateTimestamp && transactionDate <= endDateTimestamp;
         });
 
-        return filteredTransactions;
+        // Transform the filtered transactions into the required format
+        const transformedTransactions = filteredTransactions.map(transaction => {
+            return {
+                transactionId: transaction.transactionId,
+                type: transaction.type , // Normalize type
+                amount: transaction.amount,
+                transactionTime: transaction.transactionTime,
+            };
+        });
 
+        // Return the final response in the required format
+        return transformedTransactions;
     } catch (error) {
         console.error("Error fetching account statement:", error);
-        return [];
+        return {
+            transactions: []
+        };
     }
+
 };
+
 

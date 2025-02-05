@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -54,6 +55,12 @@ public class User extends BaseEntity{
 
     @Column(nullable = false,name = "address")
     private String address;
+    
+    @Transient
+    private AccountType accountType;
+    
+    @Transient
+    private Long bankId;
     
     @Column(name = "profile_image", columnDefinition = "LONGBLOB")
     private byte[] profileImage;
