@@ -67,13 +67,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
 
-        // Convert the uploaded file to a byte array
         byte[] imageBytes = profileImage.getBytes();
 
-        // Save the image bytes to the user entity
         user.setProfileImage(imageBytes);
 
-        // Save the updated user entity
         userRepository.save(user);
     }
 
