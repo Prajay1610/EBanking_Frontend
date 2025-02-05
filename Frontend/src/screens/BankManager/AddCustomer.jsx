@@ -7,6 +7,8 @@ import Footer from "../../components/layouts/Footer/Footer";
 import { addCustomer, addImage } from "../../services/customerService";
 
 const AddCustomer = () => {
+  const bankId=localStorage.getItem("bankId") || 1;
+
   const [customer, setCustomer] = useState({
     fname: "",
     lname: "",
@@ -15,9 +17,12 @@ const AddCustomer = () => {
     gender: "",
     address: "",
     password: "",
-    role: "CUSTOMER", 
+    confirmPassword: "", 
+    accountType: "", 
+    role: "CUSTOMER",
+    bankId: bankId
   });
-  const [profileImage, setProfileImage] = useState(null); // To store the selected image file
+  const [profileImage, setProfileImage] = useState(null); 
   const navigate = useNavigate();
 
   // Handle form input changes
@@ -28,28 +33,34 @@ const AddCustomer = () => {
 
   // Handle file input change
   const handleFileChange = (e) => {
-    setProfileImage(e.target.files[0]); // Store the selected file
+    setProfileImage(e.target.files[0]); 
   };
 
-  // Handle form submission
+
   const saveCustomer = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
+    e.preventDefault(); 
+
+
+    if (customer.password !== customer.confirmPassword) {
+      toast.error("Password and Confirm Password do not match.");
+      return;
+    }
 
     try {
-      // Step 1: Add customer details
+
       const response = await addCustomer(customer);
       console.log(response);
       const userId = response.id; // Assuming the backend returns the user ID
 
-      // Step 2: Upload profile image if provided
+
       if (profileImage) {
         await addImage(userId, profileImage);
         toast.success("Customer added successfully with profile image!");
-    } else {
+      } else {
         toast.success("Customer added successfully!");
-    }
+      }
 
-      // Navigate to another page after successful submission
+
       navigate("/ViewAllBankCustomers");
     } catch (error) {
       console.error("Error adding customer:", error);
@@ -147,7 +158,7 @@ const AddCustomer = () => {
                   <option value="">Select Gender</option>
                   <option value="MALE">Male</option>
                   <option value="FEMALE">Female</option>
-                  <option value="OTHER">Other</option>
+                  <option value="OTHERS">Others</option>
                 </select>
               </div>
               <div className="col-md-6 mb-3">
@@ -177,6 +188,35 @@ const AddCustomer = () => {
                   value={customer.password}
                   required
                 />
+              </div>
+              <div className="col-md-6 mb-3">
+                <label htmlFor="confirmPassword" className="form-label">
+                  <b>Confirm Password</b>
+                </label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  onChange={handleInput}
+                  value={customer.confirmPassword}
+                  required
+                />
+              </div>
+              <div className="col-md-6 mb-3">
+                <label htmlFor="accountType" className="form-label">
+                  <b>Account Type</b>
+                </label>
+                <select
+                  name="accountType"
+                  onChange={handleInput}
+                  className="form-control"
+                  required
+                >
+                  <option value="">Select Account Type</option>
+                  <option value="SAVINGS">Savings</option>
+                  <option value="CURRENT">Current</option>
+                </select>
               </div>
               {/* Profile Image Upload Field */}
               <div className="col-md-6 mb-3">
@@ -214,4 +254,4 @@ const AddCustomer = () => {
   );
 };
 
-export default AddCustomer;
+export default AddCustomer; 
