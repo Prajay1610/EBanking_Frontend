@@ -1,9 +1,9 @@
 import { createUrl } from "../utils";
 import axios from "axios";
 
-export const getAllTransactions = async (userId) => {
+export const getAllTransactions = async (customerId) => {
     try {
-        const url = createUrl(`customer/transactions?userId=${userId}`);
+        const url = createUrl(`customer/transactions/customer/${customerId}`);
         const response = await axios.get(url);
         return response.data;
     } catch (error) {
@@ -23,6 +23,16 @@ export const addCustomer = async (customer) => {
     }
 }
 
+export const getAllSpecificAccountTransactions = async (accountId) => {
+  try {
+      const url = createUrl(`customer/transactions/${accountId}`);
+      const response = await axios.get(url);
+      return response.data;
+  } catch (error) {
+      console.error('Error fetching transactions:', error);
+      throw error;
+  }
+};
 
 export const addImage = async (userId, file) => {
     const formData = new FormData();
@@ -59,6 +69,39 @@ export const addImage = async (userId, file) => {
     }
   }
 
+  
+
+  export const getCustomerData=async(customerId)=>{
+
+    try {
+      console.log("Service of getcust called");
+      const url = createUrl(`customer/${customerId}`);
+      const response =await axios.get(url);
+      
+
+      return response.data;
+  } catch (error) {
+      console.error('Error while feching customer', error);
+      throw error;
+  }
+  }
+
+
+  export const getCustomerAccountData=async(customerId,accountId)=>{
+
+    try {
+      const url = createUrl(`customer/allAccounts/${customerId}`);
+      const response =await axios.get(url);
+      console.log(response)
+
+      return response.data;
+  } catch (error) {
+      console.error('Error while feching customer Accounts', error);
+      throw error;
+  }
+  }
+
+
 
   export const getAccountStatement = async (reqbody) => {
     try {
@@ -83,3 +126,4 @@ export const addImage = async (userId, file) => {
         return [];
     }
 };
+

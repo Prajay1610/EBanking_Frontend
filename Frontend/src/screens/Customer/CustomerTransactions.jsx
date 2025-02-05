@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
 import { getAllTransactions } from "../../services/customerService";
@@ -11,10 +11,10 @@ const ViewCustomerTransactions = () => {
   const location = useLocation();
   const customer = location.state;
   const [allTransactions, setAllTransactions] = useState([]);
-
+  const {customerId} = useParams();
   const retrieveAllTransactions = async () => {
     try {
-      const response = await getAllTransactions(100001);
+      const response = await getAllTransactions(customerId);
       console.log("response", response);
       
         return response; 
@@ -27,19 +27,33 @@ const ViewCustomerTransactions = () => {
 
   // Fetch transactions when the component mounts
   useEffect(() => {
-    const getAllTransactions = async () => {
-      const transactions = await retrieveAllTransactions();
+    const getAllTransactions = async (customerId) => {
+      const transactions = await retrieveAllTransactions(customerId);
       if (transactions) {
         setAllTransactions(transactions || []);
       }
     };
-    getAllTransactions();
+    getAllTransactions(customerId);
   }, []);
 
   // Function to format epoch time to a readable date
   const formatDateFromEpoch = (epochTime) => {
     const date = new Date(Number(epochTime));
-    const formattedDate = date.toLocaleString(); // Adjust the format as needed
+    
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = String(date.getFullYear()).slice(2); // Get last 2 digits of the year
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    
+    // Determine AM or PM
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12; // Convert to 12-hour format
+    hours = hours ? String(hours).padStart(2, '0') : '12'; // The hour '0' should be '12' in 12-hour format
+    
+    const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds} ${ampm}`;
+    
     return formattedDate;
   };
 

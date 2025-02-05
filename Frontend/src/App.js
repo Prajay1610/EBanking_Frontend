@@ -60,7 +60,7 @@ function App() {
           <Route path='/register' element={<Register/>}/>
           <Route path='/customerProfile/:customerId' element={<CustomerProfileWrapper />}/>
 
-          <Route path="/transactions" element={<ViewCustomerTransactions/>}/>
+          <Route path="/transactions/:customerId" element={<ViewCustomerTransactions/>}/>
           
 
           <Route path='/AddBank' element={<AddBank/>}/>
@@ -76,8 +76,8 @@ function App() {
 
           <Route path='/customer/bank/account/detail/:accountId' element={<ViewBankAccountWrapper/>}/>
 
-          <Route path='/customerProfile' element={<CustomerProfile/>}/>
-          <Route path='/ViewSpecificAccountDetails' element={<ViewSpecificAccountDetails/>}/>
+          <Route path='/customerProfile/:customerId' element={<CustomerProfile/>}/>
+          <Route path='/ViewSpecificAccountDetails/:customerId/:accountId' element={<ViewSpecificAccountDetails/>}/>
 
           <Route path='/ViewAllBanks' element={<ViewAllBanks/>}/>
           <Route path='/MoneyTransfer' element={<MoneyTransfer/>}/>
