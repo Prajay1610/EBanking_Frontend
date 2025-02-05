@@ -29,6 +29,7 @@ import About from './screens/About/About';
 import Contact from './screens/Contact/Contact'; 
 import AddBankAccountForm from './screens/BankManager/AddBankAccountForm';
 import ViewSpecificAccountDetails from './screens/Customer/ViewSpecificAccountDetails';
+import ManageBankAccount from './screens/BankManager/ManageBankAccount';
 
 
 //similar for view Statements requires a wrapper
@@ -41,6 +42,11 @@ const CustomerProfileWrapper=()=>{
   const { customerId } = useParams();
   return <CustomerProfile customerId={customerId} />;
 };
+
+const ManageAccountWrapper = ()=>{
+  const { accountId } = useParams();
+  return <ManageBankAccount accountId={accountId} />;
+}
 //test commit
 function App() {
   return(
@@ -76,6 +82,7 @@ function App() {
           <Route path='/ViewAllBanks' element={<ViewAllBanks/>}/>
           <Route path='/MoneyTransfer' element={<MoneyTransfer/>}/>
           <Route path='/AddBankAccount' element={<AddBankAccountForm/>}/>
+          <Route path="/ManageBankAccount/:accountId" element={<ManageAccountWrapper />} />
         </Routes>
     
 

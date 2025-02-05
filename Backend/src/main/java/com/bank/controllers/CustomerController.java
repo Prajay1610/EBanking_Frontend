@@ -49,6 +49,7 @@ public class CustomerController {
         List<TransactionResponseDto> transactions = customerService.getAllTransactions(accountId);
         return ResponseEntity.ok(transactions);
     }	
+
 	
 	@GetMapping("/transactions/customer/{customerId}")
     public ResponseEntity<List<TransactionResponseDto>> getAllTransactionsForCustomer(
@@ -65,7 +66,5 @@ public class CustomerController {
 		
 	}
 	
-	
-	
-	
+
 }

@@ -8,7 +8,7 @@ import Footer from "../../components/layouts/Footer/Footer";
 import { depositFunds, getBankAccountDetails, withdrawFunds } from "../../services/bankManagerService";
 import { getAccountStatement } from "../../services/customerService";
 
-const ViewBankAccounts = ({accountId}) => {
+const ManageBankAccount = ({accountId}) => {
   let navigate = useNavigate();
   
 
@@ -36,7 +36,8 @@ const ViewBankAccounts = ({accountId}) => {
     }));
   }
 
- 
+  const [amountToDeposit, setAmountToDeposit] = useState(0);
+  const [amountToWithdraw, setAmountToWithdraw] = useState(0);
   const getSpecificAccountDetails = async (accountId) => {
     try {
              
@@ -72,11 +73,73 @@ const ViewBankAccounts = ({accountId}) => {
     }
   }
 
+  const depositAmount = async () => {
+    try {
 
+      const reqbody={
+        accountNo:accountId,
+        amount:amountToDeposit,
+      }
+
+      console.log("Deposit reqbody"+JSON.stringify(reqbody));
+      const response = await depositFunds(reqbody); 
+      if (response) {
+        console.log("Amount Deposited resp:", response);
+        toast.success("Amount deposited successfully!");
+        getSpecificAccountDetails(accountId);
+      }
+    } catch (error) {
+      
+      console.error("Error while depositing funds:", error);
+
+      // Extract error message from API response
+      let errorMessage = "Failed to deposit funds. Please try again later.";
+    
+      if (error.response) {
+        // Extract error message from API response body
+        errorMessage = error.response.data?.error || error.response.data?.message || "Server error occurred.";
+      }
+    
+      // Show error in toast notification
+      toast.error(errorMessage);
+    
+    } 
+  };
+  const withdrawAmount = async () => {
+    try {
+
+      const reqbody={
+        accountNo:accountId,
+        amount:amountToWithdraw,
+      }
+
+      console.log("Withdraw reqbody"+JSON.stringify(reqbody));
+      const response = await withdrawFunds(reqbody); 
+      if (response) {
+        console.log("Amount withdrawal resp:", response);
+        toast.success("Amount Withdrawed successfully!");
+        getSpecificAccountDetails(accountId);
+      }
+    } catch (error) {
+      console.error("Error while Withdrawing funds:", error);
+
+      // Extract error message from API response
+      let errorMessage = "Failed to withdraw funds. Please try again later.";
+    
+      if (error.response) {
+        // Extract error message from API response body
+        errorMessage = error.response.data?.error || error.response.data?.message || "Server error occurred.";
+      }
+    
+      // Show error in toast notification
+      toast.error(errorMessage);
+    } 
+  };
  useEffect(()=>{
+  
+ 
   getSpecificAccountDetails(accountId);
  },[]);
-
   const styles = `
   .custom-primary-bg { background-color: #544892; }
   .custom-secondary-bg { background-color: #6c5ba7; }
@@ -151,7 +214,7 @@ const ViewBankAccounts = ({accountId}) => {
           </div>
 
           {/* Account Details Section */}
-          <div className="col-lg-12">
+          <div className="col-lg-8">
             <div className="card shadow">
               <div className="card-header custom-primary-bg text-white">
                 <h4 className="mb-0">Account Details</h4>
@@ -241,7 +304,61 @@ const ViewBankAccounts = ({accountId}) => {
             </div>
           </div>
 
-       
+          {/* Transactions Section */}
+          <div className="col-lg-4">
+            <div className="card shadow">
+              <div className="card-header custom-primary-bg text-white">
+                <h4 className="mb-0">Quick Actions</h4>
+              </div>
+              <div className="card-body">
+                <div className="d-grid gap-3">
+                  {/* Deposit Card */}
+                  <div className="card">
+                    <div className="card-header custom-secondary-bg text-white">
+                      Deposit Funds
+                    </div>
+                    <div className="card-body">
+                      <input
+                        type="number"
+                        className="form-control mb-3"
+                        placeholder="Enter amount"
+                        value={amountToDeposit}
+                        onChange={(e) => setAmountToDeposit(e.target.value)}
+                      />
+                      <button
+                        className="btn custom-primary-btn w-100"
+                        onClick={depositAmount}
+                      >
+                        Deposit
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Withdraw Card */}
+                  <div className="card">
+                    <div className="card-header custom-secondary-bg text-white">
+                      Withdraw Funds
+                    </div>
+                    <div className="card-body">
+                      <input
+                        type="number"
+                        className="form-control mb-3"
+                        placeholder="Enter amount"
+                        value={amountToWithdraw}
+                        onChange={(e) => setAmountToWithdraw(e.target.value)}
+                      />
+                      <button
+                        className="btn custom-primary-btn w-100"
+                        onClick={withdrawAmount}
+                      >
+                        Withdraw
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <ToastContainer position="top-center" autoClose={3000} />
       </div>
@@ -250,4 +367,4 @@ const ViewBankAccounts = ({accountId}) => {
   );
 };
 
-export default ViewBankAccounts;
+export default ManageBankAccount;
