@@ -29,6 +29,7 @@ import About from './screens/About/About';
 import Contact from './screens/Contact/Contact'; 
 import AddBankAccountForm from './screens/BankManager/AddBankAccountForm';
 import ViewSpecificAccountDetails from './screens/Customer/ViewSpecificAccountDetails';
+import ManageBankAccount from './screens/BankManager/ManageBankAccount';
 
 
 //similar for view Statements requires a wrapper
@@ -76,6 +77,7 @@ function App() {
           <Route path='/ViewAllBanks' element={<ViewAllBanks/>}/>
           <Route path='/MoneyTransfer' element={<MoneyTransfer/>}/>
           <Route path='/AddBankAccount' element={<AddBankAccountForm/>}/>
+          <Route path="/ManageBankAccount" element={<ManageBankAccount/>} />
         </Routes>
     
 
