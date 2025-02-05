@@ -6,6 +6,7 @@ import axios from "axios";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
 import { depositFunds, getBankAccountDetails, withdrawFunds } from "../../services/bankManagerService";
+import { getAccountStatement } from "../../services/customerService";
 
 const ViewBankAccounts = ({accountId}) => {
   let navigate = useNavigate();
@@ -21,6 +22,19 @@ const ViewBankAccounts = ({accountId}) => {
     createdOn:"",
     customerName:""
   });
+
+  const [statementDownloadRequest, setStatementDownloadRequest] = useState({
+    startDate: "",
+    endDate: "",
+  });
+
+  const handleUserInput=(e)=>{
+    const { name, value } = e.target;
+    setStatementDownloadRequest((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
 
   const [amountToDeposit, setAmountToDeposit] = useState(0);
   const [amountToWithdraw, setAmountToWithdraw] = useState(0);
@@ -38,6 +52,26 @@ const ViewBankAccounts = ({accountId}) => {
               alert("Failed to load bank account. Please try again later.");
             } 
   };
+
+  const fetchAccountStatement =async(e)=>{
+    e.preventDefault(); 
+   const reqbody={
+    accountId:accountId,
+    startDate:statementDownloadRequest.startDate,
+    endDate:statementDownloadRequest.endDate
+   }
+    try {
+      const response = await getAccountStatement(reqbody);
+      if (response) {
+        console.log("Account Statement:", response);
+        // Show success message in toast notification
+        toast.success("Account statement downloaded successfully!");
+      }
+    }
+    catch (error) { 
+      console.log("Error while fetching account statement:", error);
+    }
+  }
 
   const depositAmount = async () => {
     try {
@@ -144,32 +178,32 @@ const ViewBankAccounts = ({accountId}) => {
                       <b>Start Date</b>
                     </label>
                     <input
-                      type="datetime-local"
+                      type="date"
                       className="form-control"
                       name="startDate"
-                      // onChange={handleUserInput}
-                      // value={statementDownloadRequest.startDate}
+                      onChange={handleUserInput}
+                      value={statementDownloadRequest.startDate}
                       required
-                    />
+                    />    
                   </div>
                   <div className="col-md-4">
                     <label className="form-label custom-primary-text">
                       <b>End Date</b>
                     </label>
                     <input
-                      type="datetime-local"
-                      className="form-control"
-                      name="endDate"
-                      // onChange={handleUserInput}
-                      // value={statementDownloadRequest.endDate}
-                      required
-                    />
+                        type="date"
+                        className="form-control"
+                        name="endDate"
+                        onChange={handleUserInput}
+                        value={statementDownloadRequest.endDate}
+                        required
+                      />
                   </div>
                   <div className="col-md-4 d-flex align-items-end">
                     <button
                       type="submit"
                       className="btn custom-primary-btn w-100 py-2"
-                      // onClick={downloadStatement}
+                      onClick={fetchAccountStatement}
                     >
                       Download PDF Statement
                     </button>
