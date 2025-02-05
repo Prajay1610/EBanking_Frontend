@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
-import { getAllBankAccounts } from "../../services/bankManagerService";
+import { getAllBankAccounts, lockAccount, unlockAccount } from "../../services/bankManagerService";
 
 const ViewAllBankAccounts = () => {
   let navigate = useNavigate();
@@ -15,7 +15,26 @@ const ViewAllBankAccounts = () => {
   const [loading, setLoading] = useState(true);
   const [managerId,setManagerId] = useState(1);//Change this with the jwt session's bank_manager id
   // Mock data for testing
+   const lockAccountVar=async(accountId)=>{
   
+      
+      const response = await lockAccount(accountId); 
+      if(response){
+        fetchAllBankAccounts();
+  
+     
+      }
+    }
+
+    const unlockAccountVar=async(userId)=>{
+  
+      
+      const response = await unlockAccount(userId); 
+      if(response){
+      
+        fetchAllBankAccounts();
+      }
+    }
 
   const fetchAllBankAccounts = async () => {
      try {
@@ -56,30 +75,7 @@ const ViewAllBankAccounts = () => {
     navigate(`/customer/bank/account/statement/${accountId}`);
   };
 
-  const openAccount = (accountId) => {
-    toast.success("Account opened successfully!", {
-      position: "top-center",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
-
-  const lockAccount = (accountId) => {
-    toast.error("Account locked successfully!", {
-      position: "top-center",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
-
+ 
   return (
 
     <>
@@ -155,8 +151,9 @@ const ViewAllBankAccounts = () => {
                     <th scope="col">Account No.</th>
                     <th scope="col">Ifsc Code</th>
                     <th scope="col">Account Type</th>
-                    <th scope="col">Complete Detail</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                    <th scope="col">Complete Details</th>
                     <th scope="col">Statement</th>
                   </tr>
                 </thead>
@@ -178,6 +175,31 @@ const ViewAllBankAccounts = () => {
                       <td>
                         <b>{account.accountType}</b>
                       </td>
+                      <td>{account.status=="ACTIVE"?(<b className="text-success">UnLocked</b>):(<b className="text-danger">Locked</b>)}</td>
+                      <td>
+                      {account.status === "ACTIVE" ? (
+                          <button
+                           // onClick={() => viewAccountDetails(customer)}
+                            className="btn btn-sm btn-danger mx-2"
+                         
+                           onClick={() =>lockAccountVar(account.accountId)}
+
+                          >
+
+                           Lock
+                          </button>
+                        ) : (
+                          <button
+                          //onClick={() => viewAccountDetails(customer)}
+                          className="btn btn-sm btn-success"
+                          
+                         onClick={() => unlockAccountVar(account.accountId)}
+
+                        >
+                         Unlock
+                        </button>
+                        )}
+                      </td>
                       <td>
                         <button
                           onClick={() => viewAccountDetails(account.accountId)}
@@ -187,9 +209,7 @@ const ViewAllBankAccounts = () => {
                           View Detail
                         </button>
                       </td>
-                      <td>
-                        <b>{account.status}</b>
-                      </td>
+                     
                       <td>
                         <button
                           onClick={() => viewAccountStatement(account.accountId)}

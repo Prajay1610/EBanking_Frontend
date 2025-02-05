@@ -1,7 +1,5 @@
 package com.bank.dtos;
 
-import java.math.BigDecimal;
-
 import com.bank.entities.AccountType;
 
 import lombok.Getter;

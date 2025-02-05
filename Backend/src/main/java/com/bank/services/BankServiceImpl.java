@@ -15,12 +15,15 @@ import com.bank.entities.AccountType;
 import com.bank.entities.Bank;
 import com.bank.entities.BankAccount;
 import com.bank.entities.BankManager;
+import com.bank.entities.Customer;
 import com.bank.entities.Gender;
+import com.bank.entities.Role;
 import com.bank.entities.User;
 import com.bank.exception.ResourceNotFoundException;
 import com.bank.repositories.BankAccountRepository;
 import com.bank.repositories.BankManagerRepository;
 import com.bank.repositories.BankRepository;
+import com.bank.repositories.CustomerRepository;
 import com.bank.repositories.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -38,6 +41,8 @@ public class BankServiceImpl implements BankService{
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private CustomerRepository customerRepository;
 	@Autowired
 	private BankManagerRepository bankManagerRepository;
 	
@@ -92,9 +97,52 @@ public class BankServiceImpl implements BankService{
 	private Long accountId;
 	private boolean customerStatus;
 	*/
-		return allBankAccounts.stream().map(acc->new AllCustomersRespDto(acc.getCustomer().getUser().getFname()+" "+acc.getCustomer().getUser().getLname(), acc.getBank().getBankName(),acc.getCustomer().getUser().getEmail(),acc.getCustomer().getUser().getGender(),acc.getCustomer().getUser().getPhoneNo(),acc.getCustomer().getUser().getAddress(),acc.getId(),acc.getCustomer().getUser().getIsActive())).toList();
+		return allBankAccounts.stream().map(acc->new AllCustomersRespDto(acc.getCustomer().getUser().getFname()+" "+acc.getCustomer().getUser().getLname(), acc.getBank().getBankName(),acc.getCustomer().getUser().getEmail(),acc.getCustomer().getUser().getGender(),acc.getCustomer().getUser().getPhoneNo(),acc.getCustomer().getUser().getAddress(),acc.getId(),acc.getCustomer().getUser().getIsActive(),acc.getCustomer().getUser().getId())).distinct().toList();
 		
 		
+	}
+	@Override
+	public ApiResponse makeInActive(Long customerId) {
+		// TODO Auto-generated method stub
+		Optional<User>user=userRepository.findById(customerId);
+	    Optional<Customer> customerOptional = customerRepository.findByUserId(customerId);
+	    
+
+		if(user.get().getRole()==Role.CUSTOMER) {
+			user.get().setIsActive(false);
+		}
+		
+		List<BankAccount> bankAccounts = bankAccountRepository.findByCustomerId(customerOptional.get().getId());
+		System.out.println(bankAccounts);
+
+	    if (!bankAccounts.isEmpty()) {
+	        for (BankAccount account : bankAccounts) {
+	            account.setIsLocked(true); // Lock each bank account
+	        }
+	        bankAccountRepository.saveAll(bankAccounts); // Save all updated accounts
+	    }
+		userRepository.save(user.get());
+		
+		return new ApiResponse("Status updated to inactive: ");
+	}
+
+	@Override
+	public ApiResponse makeActive(Long customerId) {
+		// TODO Auto-generated method stub
+		Optional<User>user=userRepository.findById(customerId);
+		 Optional<Customer> customerOptional = customerRepository.findByUserId(customerId);
+		if(user.get().getRole()==Role.CUSTOMER) {
+			user.get().setIsActive(true);
+		}
+		List<BankAccount> bankAccounts = bankAccountRepository.findByCustomerId(customerOptional.get().getId());
+	    if (!bankAccounts.isEmpty()) {
+	        for (BankAccount account : bankAccounts) {
+	            account.setIsLocked(false); // Lock each bank account
+	        }
+	        bankAccountRepository.saveAll(bankAccounts); // Save all updated accounts
+	    }
+		userRepository.save(user.get());		
+		return new ApiResponse("Status updated to active: ");
 	}
 
 }

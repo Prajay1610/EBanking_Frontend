@@ -37,6 +37,11 @@ const ViewBankAccountWrapper = () => {
   return <ViewBankAccount accountId={accountId} />;
 };
 
+const CustomerProfileWrapper=()=>{
+  const { customerId } = useParams();
+  return <CustomerProfile customerId={customerId} />;
+};
+//test commit
 function App() {
   return(
     <>
@@ -47,7 +52,7 @@ function App() {
            <Route path='/about' element={<About/>}/> 
            <Route path='/contact' element={<Contact/>}/>
           <Route path='/register' element={<Register/>}/>
-          <Route path='/customerProfile' element={<CustomerProfile/>}/>
+          <Route path='/customerProfile/:customerId' element={<CustomerProfileWrapper />}/>
 
           <Route path="/transactions" element={<ViewCustomerTransactions/>}/>
           

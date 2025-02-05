@@ -10,4 +10,8 @@ public interface BankService {
 	 ApiResponse addNewBank(BankReqDto bankDto);
 
 	List<AllCustomersRespDto> viewAllBankCustomers(Long bankManagerId);
+
+	ApiResponse makeInActive(Long customerId);
+
+	ApiResponse makeActive(Long customerId);
 }

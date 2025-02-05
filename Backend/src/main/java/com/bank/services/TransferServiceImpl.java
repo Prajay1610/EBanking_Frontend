@@ -13,6 +13,7 @@ import com.bank.entities.TransactionType;
 import com.bank.entities.TransferDetail;
 import com.bank.exception.InsufficientBalanceException;
 import com.bank.exception.ResourceNotFoundException;
+import com.bank.exception.UserLockedException;
 import com.bank.repositories.BankAccountRepository;
 import com.bank.repositories.BankRepository;
 import com.bank.repositories.TransactionRepository;
@@ -38,6 +39,10 @@ public class TransferServiceImpl  implements TransferService{
 	public ResponseEntity<?> transferMoney(Long fromAccountId, Long toAccountId, BigDecimal amount, String Description,
 			String Ifsc) {
 		BankAccount fromAccount = bankAccRepository.findById(fromAccountId).orElseThrow(()-> new ResourceNotFoundException("Account not found"));
+		boolean isLocked=fromAccount.getIsLocked();
+		if(isLocked) {
+			throw new UserLockedException("User account is locked .");
+		}
 		BankAccount toAccount = bankAccRepository.findById(toAccountId).orElseThrow(()-> new ResourceNotFoundException("Account not found"));
 		
 		BigDecimal existingBalanceFrom = fromAccount.getBalance();

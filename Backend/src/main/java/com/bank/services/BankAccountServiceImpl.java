@@ -38,8 +38,7 @@ public class BankAccountServiceImpl implements BankAccountService{
 	@Autowired
 	private BankManagerRepository bankManagerRepository;
 	
-	@Autowired
-	private ModelMapper modelMapper;
+	
 	
 	@Override
 	public ApiResponse addNewBankAccount(BankAccountReqDto bankAccDto) {
@@ -58,9 +57,9 @@ public class BankAccountServiceImpl implements BankAccountService{
 	}
 	@Override
 	public List<BankAccountRespDto> viewAllBankAccounts(Long managerId) {
-		Optional<BankManager> bankManager = bankManagerRepository.findById(managerId);
+		BankManager bankManager = bankManagerRepository.findById(managerId).orElseThrow(()->new ResourceNotFoundException("Can't Find manager with id: "+managerId));
 		
-		Bank associatedBank = bankManager.get().getBank();
+		Bank associatedBank = bankManager.getBank();
 		
 		List<BankAccount> allBankAccounts = bankAccountRepository.findByBankId(associatedBank.getId());
 		
@@ -69,11 +68,11 @@ public class BankAccountServiceImpl implements BankAccountService{
 		return allBankAccounts.stream().map(acc -> 
         new BankAccountRespDto(
             acc.getCustomer().getUser().getFname() + " " + acc.getCustomer().getUser().getLname(), // Customer Name
-            acc.getBank().getBankName(), // Bank Name
-            acc.getId(), // Account Id.
-            acc.getBank().getBankIfsc(), // IFSC Code
-            acc.getAccountType().name(), // Account Type
-            acc.getIsLocked() ? "LOCKED" : "ACTIVE", // Status
+            acc.getBank().getBankName(), 
+            acc.getId(), 
+            acc.getBank().getBankIfsc(), 
+            acc.getAccountType().name(), 
+            acc.getIsLocked() ? "LOCKED" : "ACTIVE", 
             acc.getCustomer().getUser().getEmail(),
             acc.getCreatedOn()
         )
@@ -82,22 +81,40 @@ public class BankAccountServiceImpl implements BankAccountService{
 	}
 	@Override
 	public BankAccountRespDto viewSpecificBankAccount(Long accountId) {
-		Optional<BankAccount> bankAccount = bankAccountRepository.findById(accountId);
+		BankAccount bankAccount = bankAccountRepository.findById(accountId).orElseThrow(()->new ResourceNotFoundException("Can't bankAccount  with account number: "+accountId));
 		
-		BankAccount acc = bankAccount.get(); 
+		BankAccount acc = bankAccount; 
 		return  new BankAccountRespDto(
 				acc.getCustomer().getUser().getFname() + " " + acc.getCustomer().getUser().getLname(), // Customer Name
-	            acc.getBank().getBankName(), // Bank Name
-	            acc.getId(), // Account Id.
-	            acc.getBank().getBankIfsc(), // IFSC Code
-	            acc.getAccountType().name(), // Account Type
-	            acc.getIsLocked() ? "LOCKED" : "ACTIVE", // Status
+	            acc.getBank().getBankName(), 
+	            acc.getId(),
+	            acc.getBank().getBankIfsc(), 
+	            acc.getAccountType().name(),
+	            acc.getIsLocked() ? "LOCKED" : "ACTIVE",
 	            acc.getCustomer().getUser().getEmail(),
 	            acc.getBalance(),	            
 	            acc.getCreatedOn()
 	        );
 		
 		
+	}
+	@Override
+	public ApiResponse lockAccount(Long accountId) {
+		// TODO Auto-generated method stub
+		Optional<BankAccount> bankAccount = bankAccountRepository.findById(accountId);
+		bankAccount.get().setIsLocked(true);
+		bankAccountRepository.save(bankAccount.get());
+		
+		return new ApiResponse("Account Locked  ");
+	}
+	@Override
+	public ApiResponse unlockAccount(Long accountId) {
+		// TODO Auto-generated method stub
+		Optional<BankAccount> bankAccount = bankAccountRepository.findById(accountId);
+		bankAccount.get().setIsLocked(false);
+		bankAccountRepository.save(bankAccount.get());
+		
+		return new ApiResponse("Account Unlocked  ");
 	}
 
 }
