@@ -29,6 +29,7 @@ const ViewCustomerTransactions = () => {
   useEffect(() => {
     const getAllTransactions = async (customerId) => {
       const transactions = await retrieveAllTransactions(customerId);
+      console.log("transactions", transactions);
       if (transactions) {
         setAllTransactions(transactions || []);
       }

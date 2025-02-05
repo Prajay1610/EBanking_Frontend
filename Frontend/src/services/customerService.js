@@ -2,10 +2,10 @@ import { createUrl } from "../utils";
 import axios from "axios";
 
 
-export const getAllTransactions = async (userId) => {
+export const getAllTransactions = async (customerId) => {
     try { 
-        const url = createUrl(`customer/transactions?userId=${userId}`);
-
+        const url = createUrl(`customer/transactions/customer/${customerId}`);
+        console.log("called url",url)
         const response = await axios.get(url);
         return response.data;
     } catch (error) {
@@ -89,7 +89,7 @@ export const addImage = async (userId, file) => {
   }
 
 
-  export const getCustomerAccountData=async(customerId,accountId)=>{
+  export const getCustomerAccountData=async(customerId)=>{
 
     try {
       const url = createUrl(`customer/allAccounts/${customerId}`);
