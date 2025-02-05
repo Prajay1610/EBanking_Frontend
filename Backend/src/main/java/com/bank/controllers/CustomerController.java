@@ -45,4 +45,5 @@ public class CustomerController {
         List<TransactionResponseDto> transactions = customerService.getAllTransactions(userId);
         return ResponseEntity.ok(transactions);
     }	
+
 }
