@@ -58,3 +58,28 @@ export const addImage = async (userId, file) => {
         throw error;
     }
   }
+
+
+  export const getAccountStatement = async (reqbody) => {
+    try {
+        const allTransactions = await getAllTransactions(reqbody.accountId);
+
+        // Convert date string (YYYY-MM-DD) to timestamp (start of the day)
+        const convertToTimestamp = (dateStr) => new Date(dateStr).setHours(0, 0, 0, 0);
+
+        const startDateTimestamp = convertToTimestamp(reqbody.startDate);
+        const endDateTimestamp = convertToTimestamp(reqbody.endDate) + 86400000 + 1;
+
+        // Filter transactions within the date range
+        const filteredTransactions = allTransactions.filter(transaction => {
+            const transactionDate = new Date(Number(transaction.transactionTime)).setHours(0, 0, 0, 0);
+            return transactionDate >= startDateTimestamp && transactionDate <= endDateTimestamp;
+        });
+
+        return filteredTransactions;
+
+    } catch (error) {
+        console.error("Error fetching account statement:", error);
+        return [];
+    }
+};
