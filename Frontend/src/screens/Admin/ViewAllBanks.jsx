@@ -114,7 +114,7 @@ const ViewAllBanks = () => {
                      <b>{bank.bankName}</b>
                    </td>
                    <td>
-                     <b>{bank.ifscCode}</b>
+                     <b>{bank.bankIfsc}</b>
                    </td>
                    <td>
                      <b>{bank.address}</b>
