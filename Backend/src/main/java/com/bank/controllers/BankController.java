@@ -59,11 +59,10 @@ public class BankController {
 					status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(new ApiResponse(e.getMessage()));
 		}}
+
 		@PutMapping("/customer/makeInActive/{userId}")
 		public  ResponseEntity<?> makeInActive(@PathVariable Long userId) {
-			//TODO: process POST request
-			
-			try {
+try {
 				return ResponseEntity.status(HttpStatus.CREATED)
 						.body(bankService
 								.makeInActive(userId));
