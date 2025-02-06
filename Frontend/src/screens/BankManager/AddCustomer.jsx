@@ -7,7 +7,7 @@ import Footer from "../../components/layouts/Footer/Footer";
 import { addCustomer, addImage } from "../../services/customerService";
 
 const AddCustomer = () => {
-  const bankId=localStorage.getItem("bankId") || 2;
+  const bankId = localStorage.getItem("bankId") || 2;
 
   const [customer, setCustomer] = useState({
     fname: "",
@@ -17,12 +17,12 @@ const AddCustomer = () => {
     gender: "",
     address: "",
     password: "",
-    confirmPassword: "", 
-    accountType: "", 
+    confirmPassword: "",
+    accountType: "",
     role: "CUSTOMER",
-    bankId: bankId
+    bankId: bankId,
   });
-  const [profileImage, setProfileImage] = useState(null); 
+  const [profileImage, setProfileImage] = useState(null);
   const navigate = useNavigate();
 
   // Handle form input changes
@@ -33,13 +33,11 @@ const AddCustomer = () => {
 
   // Handle file input change
   const handleFileChange = (e) => {
-    setProfileImage(e.target.files[0]); 
+    setProfileImage(e.target.files[0]);
   };
 
-
   const saveCustomer = async (e) => {
-    e.preventDefault(); 
-
+    e.preventDefault();
 
     if (customer.password !== customer.confirmPassword) {
       toast.error("Password and Confirm Password do not match.");
@@ -47,11 +45,9 @@ const AddCustomer = () => {
     }
 
     try {
-
       const response = await addCustomer(customer);
       console.log(response);
       const userId = response.id; // Assuming the backend returns the user ID
-
 
       if (profileImage) {
         await addImage(userId, profileImage);
@@ -59,7 +55,6 @@ const AddCustomer = () => {
       } else {
         toast.success("Customer added successfully!");
       }
-
 
       navigate("/ViewAllBankCustomers");
     } catch (error) {
@@ -72,7 +67,10 @@ const AddCustomer = () => {
     <>
       <Header />
       <div className="d-flex justify-content-center align-items-center min-vh-100 mt-2 mb-2">
-        <div className="card form-card border-color custom-bg" style={{ width: "50rem" }}>
+        <div
+          className="card form-card border-color custom-bg"
+          style={{ width: "50rem" }}
+        >
           <div
             className="card-header custom-bg-text text-center"
             style={{
@@ -85,7 +83,10 @@ const AddCustomer = () => {
           >
             <h5 className="card-title">Add Customer</h5>
           </div>
-          <div className="card-body text-color" style={{ backgroundColor: "#d6d0f2" }}>
+          <div
+            className="card-body text-color"
+            style={{ backgroundColor: "#d6d0f2" }}
+          >
             <form className="row g-3" onSubmit={saveCustomer}>
               {/* Form fields */}
               <div className="col-md-6 mb-3">
@@ -254,4 +255,4 @@ const AddCustomer = () => {
   );
 };
 
-export default AddCustomer; 
+export default AddCustomer;

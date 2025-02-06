@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Header from "../../components/layouts/Header/Header";
@@ -18,8 +17,9 @@ const AddNewAdmin = () => {
     gender: "",
     password: "",
     address: "",
+    website: "",
     isActive: true,
-    role: "ADMIN"
+    role: "ADMIN",
   });
 
   // Handle input changes
@@ -31,9 +31,77 @@ const AddNewAdmin = () => {
     }));
   };
 
+  // Validate inputs
+  const validateInputs = () => {
+    if (!admin.fname.trim()) {
+      toast.error("First Name is required!");
+      return false;
+    }
+    if (!admin.lname.trim()) {
+      toast.error("Last Name is required!");
+      return false;
+    }
+    if (!admin.email.trim()) {
+      toast.error("Email is required!");
+      return false;
+    }
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/.test(admin.email)) {
+      toast.error("Please enter a valid email address!");
+      return false;
+    }
+    if (!admin.phoneNo.trim()) {
+      toast.error("Phone number is required!");
+      return false;
+    }
+    if (!/^\d{10}$/.test(admin.phoneNo)) {
+      toast.error("Phone number must be 10 digits!");
+      return false;
+    }
+
+    if (!admin.gender) {
+      toast.error("Please select a gender!");
+      return false;
+    }
+
+    if (!admin.password) {
+      toast.error("Password is required!");
+      return false;
+    }
+    if (
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+        admin.password
+      )
+    ) {
+      toast.error(
+        "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a digit, and a special character."
+      );
+      return false;
+    }
+    if (!admin.address.trim()) {
+      toast.error("Address is required!");
+      return false;
+    }
+    if (!admin.website.trim()) {
+      toast.error("Website is required!");
+      return false;
+    }
+
+    if (!/^www\.[a-zA-Z0-9-]+\.com$/.test(admin.website)) {
+      toast.error("Website must be in the format 'www.test.com'!");
+      return false;
+    }
+
+    return true;
+  };
+
   // Handle form submission
   const saveAdmin = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
+
+    // Validate inputs before proceeding
+    if (!validateInputs()) {
+      return; // Stop form submission if validation fails
+    }
 
     try {
       // Call the addNewAdmin service to send data to the backend
@@ -49,9 +117,9 @@ const AddNewAdmin = () => {
           gender: "",
           password: "",
           address: "",
-          role: "",
+          website: "",
           isActive: true,
-         
+          role: "ADMIN",
         });
         navigate("/addNewAdmin"); // Redirect to the admins list page after successful addition
       } else {
@@ -67,7 +135,10 @@ const AddNewAdmin = () => {
     <>
       <Header />
       <div className="d-flex justify-content-center align-items-center min-vh-100">
-        <div className="card form-card border-color custom-bg" style={{ width: "50rem" }}>
+        <div
+          className="card form-card border-color custom-bg"
+          style={{ width: "50rem" }}
+        >
           <div
             className="card-header custom-bg-text text-center"
             style={{
@@ -80,7 +151,10 @@ const AddNewAdmin = () => {
           >
             <h5 className="card-title">Add Admin</h5>
           </div>
-          <div className="card-body text-color" style={{ backgroundColor: "#d6d0f2" }}>
+          <div
+            className="card-body text-color"
+            style={{ backgroundColor: "#d6d0f2" }}
+          >
             <form className="row g-3" onSubmit={saveAdmin}>
               <div className="col-md-6 mb-3">
                 <label htmlFor="name" className="form-label">
@@ -93,7 +167,6 @@ const AddNewAdmin = () => {
                   name="fname"
                   onChange={handleInput}
                   value={admin.fname}
-                  required
                 />
               </div>
 
@@ -108,7 +181,6 @@ const AddNewAdmin = () => {
                   name="lname"
                   onChange={handleInput}
                   value={admin.lname}
-                  required
                 />
               </div>
 
@@ -117,13 +189,12 @@ const AddNewAdmin = () => {
                   <b>Email</b>
                 </label>
                 <input
-                  type="email"
+                  type="text"
                   className="form-control"
                   id="email"
                   name="email"
                   onChange={handleInput}
                   value={admin.email}
-                  required
                 />
               </div>
 
@@ -133,13 +204,11 @@ const AddNewAdmin = () => {
                 </label>
                 <input
                   type="tel"
-                  pattern="[0-9]{10}"
                   className="form-control"
                   id="phone"
                   name="phoneNo"
                   onChange={handleInput}
                   value={admin.phoneNo}
-                  required
                 />
               </div>
 
@@ -153,7 +222,6 @@ const AddNewAdmin = () => {
                   value={admin.gender}
                   onChange={handleInput}
                   className="form-control"
-                  required
                 >
                   <option value="">Select Gender</option>
                   <option value="MALE">Male</option>
@@ -173,7 +241,6 @@ const AddNewAdmin = () => {
                   name="password"
                   onChange={handleInput}
                   value={admin.password}
-                  required
                 />
               </div>
 
@@ -188,7 +255,20 @@ const AddNewAdmin = () => {
                   rows="3"
                   onChange={handleInput}
                   value={admin.address}
-                  required
+                />
+              </div>
+
+              <div className="col-md-6 mb-3">
+                <label htmlFor="website" className="form-label">
+                  <b>Website</b>
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="website"
+                  name="website"
+                  onChange={handleInput}
+                  value={admin.website}
                 />
               </div>
 
@@ -205,7 +285,6 @@ const AddNewAdmin = () => {
                 >
                   Add Admin
                 </button>
-                <ToastContainer />
               </div>
             </form>
           </div>
