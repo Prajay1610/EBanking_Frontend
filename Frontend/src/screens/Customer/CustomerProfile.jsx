@@ -98,22 +98,21 @@ const accounts = [
         return null;
       }
     };
-  
+    
+    const getAllTransactions = async (customerId) => {
+      const transactions = await retrieveAllTransactions(customerId);
+      
+      if (transactions) {
+        setAllTransactions(transactions.slice(-3) || []); // Always keep last 3 transactions
+      }
+    };
     // Fetch transactions when the component mounts
     useEffect(() => {
-      const getAllTransactions = async (customerId) => {
-        const transactions = await retrieveAllTransactions(customerId);
-        
-        if (transactions) {
-          setAllTransactions(transactions.slice(-3) || []); // Always keep last 3 transactions
-        }
-      };
       getAllTransactions(customerId);
     }, []);
   
   const viewTransactions = (customerId) => {
     navigate(`/transactions/${customerId}`);
-
   };
 
   if (loading) {
