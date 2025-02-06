@@ -5,6 +5,7 @@ import "../../../index.css";
 import logo from "./logoSecureBank.png";
 import { jwtDecode } from "jwt-decode";  
 
+
 const Header = () => {
   
   const jwtToken = localStorage.getItem("token");
