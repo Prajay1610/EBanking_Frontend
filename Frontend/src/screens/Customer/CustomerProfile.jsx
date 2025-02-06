@@ -12,10 +12,10 @@ import {
 import { Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 
-const CustomerProfile = () => {
+const CustomerProfile = ({customerId}) => {
   let navigate = useNavigate();
   const [isDefaultImage, setIsDefaultImage] = useState(false);
-  const { customerId } = useParams(); // Get IDs from URL
+  
   const [customerData, setCustomerData] = useState(null); // State for customer data
   const [accountsData, setAccountsData] = useState([]); // State for customer data
   const [loading, setLoading] = useState(true); // State for loading

@@ -95,7 +95,7 @@ export const toggleManagerStatus = async (managerId) => {
       {
         headers: {
           "Content-Type": "application/json",
-          // "Authorization": `Bearer ${token}`, // Add JWT token
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
         },
       }
     );
