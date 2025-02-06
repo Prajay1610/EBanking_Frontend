@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
-import { getAllBankManagers } from "../../services/adminService"; // Import the service function
+import { getAllBankManagers, toggleManagerStatus } from "../../services/adminService"; // Import the service function
+import { toast } from "react-toastify";
 
 const ViewBankManagers = () => {
   const location = useLocation();
@@ -43,6 +44,19 @@ const ViewBankManagers = () => {
       alert("Failed to load bank managers. Please try again later.");
     } finally {
       setLoading(false); // Set loading to false after fetching data
+    }
+  };
+
+  const handleManagerStatusToggle = async (managerId) => {
+    try {
+      const response = await toggleManagerStatus(managerId);
+      if (response) {
+       toast.success("BankManager Status Changed Successfully");
+        fetchAllManagers();
+      }
+    } catch (error) {
+      console.error("Error making bank manager InActive:", error);
+      alert("Failed to make bank manager InActive. Please try again later.");
     }
   };
 
@@ -119,6 +133,8 @@ const ViewBankManagers = () => {
                         <th scope="col">Gender</th>
                         <th scope="col">Contact</th>
                         <th scope="col">Address</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -148,6 +164,24 @@ const ViewBankManagers = () => {
                             <td>
                               <b>{manager.address}</b>
                             </td>
+                            <td>{manager.isActive==true?(<b className="text-success">Active</b>):(<b className="text-danger">InActive</b>)}</td>
+                            <td>
+                      {manager.isActive === true ? (
+                          <button
+                            className="btn btn-sm btn-danger mx-2"                        
+                            onClick={()=>handleManagerStatusToggle(manager.managerId)}
+                          >
+                           Inactivate Manager
+                          </button>
+                        ) : (
+                          <button 
+                          className="btn btn-sm btn-success"   
+                          onClick={()=>handleManagerStatusToggle(manager.managerId)}
+                        >
+                         Activate Manager
+                        </button>
+                        )}
+                      </td>
                           </tr>
                         ))
                       ) : (
