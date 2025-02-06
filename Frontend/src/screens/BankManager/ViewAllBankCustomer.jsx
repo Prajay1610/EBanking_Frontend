@@ -5,9 +5,11 @@ import { useNavigate ,Link} from "react-router-dom";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
 import { makeActive, makeInActive, viewAllBankCustomers } from "../../services/bankManagerService";
+
 const ViewAllBankCustomers = () => {
   let navigate = useNavigate();
   const [allCustomer, setAllCustomer] = useState([]);
+  const [filteredCustomers, setFilteredCustomers] = useState([]);
  const [managerId,setManagerId]=useState(1);//set manager id from jwt session
   const [tempCustomerName, setTempCustomerName] = useState("");
 
@@ -39,6 +41,7 @@ const ViewAllBankCustomers = () => {
                   console.log("Bank Customers:", response);
                   
                   setAllCustomer(response); // Update state with the retrieved data
+                  setFilteredCustomers(response);
                 }
               } catch (error) {
                 console.error("Error fetching bank customers:", error);
@@ -54,6 +57,18 @@ const ViewAllBankCustomers = () => {
     navigate(`/customerProfile/${customerId}`);
 
   };
+
+  useEffect(() => {
+    // Filter dynamically as user types
+    if (tempCustomerName.trim() === "") {
+      setFilteredCustomers(allCustomer); // Restore original data if search box is empty
+    } else {
+      const filtered = allCustomer.filter((customer) =>
+        (customer.customerName ?? "").toLowerCase().includes(tempCustomerName.toLowerCase())
+      );
+      setFilteredCustomers(filtered);
+    }
+  }, [tempCustomerName, allCustomer]);
 
   const searchBankCustomersByName = (e) => {
     e.preventDefault();
@@ -135,13 +150,13 @@ const ViewAllBankCustomers = () => {
                       type="text"
                       className="form-control"
                       placeholder="Enter customer name..."
-                      onChange={(e) => setTempCustomerName(e.target.value)}
+                      onChange={(e) => {setTempCustomerName(e.target.value);}}
                       value={tempCustomerName}
                       required
                       style={{ border: "1px solid #544892" }}
                     />
                   </div>
-                  <div className="col-auto">
+                  {/* <div className="col-auto">
                     <button
                       type="submit"
                       className="btn btn-primary btn-lg"
@@ -150,7 +165,7 @@ const ViewAllBankCustomers = () => {
                     >
                       Search
                     </button>
-                  </div>
+                  </div> */}
                 </form>
               </div>
             </div>
@@ -169,13 +184,13 @@ const ViewAllBankCustomers = () => {
                     <th scope="col">Address</th>
                     <th scope="col">Status</th>
                    
-                    <th scope="col">view customer profile</th>
+                    <th scope="col">View customer profile</th>
                     <th scope="col">Action</th>
                     
                   </tr>
                 </thead>
                 <tbody>
-                  {allCustomer.map((customer) => (
+                  {filteredCustomers.map((customer) => (
                     <tr key={customer.accountId} style={{ backgroundColor: "#f8f9fa" }}>
                       <td>
                         <b>{customer.customerName}</b>
@@ -245,7 +260,7 @@ const ViewAllBankCustomers = () => {
           </div>
         </div>
       </div>
-   
+      <ToastContainer />
     </div>
 <Footer/>
     </>

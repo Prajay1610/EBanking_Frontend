@@ -2,23 +2,61 @@ import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import Header from "../../components/layouts/Header/Header";
-import Footer from "../../components/layouts/Footer/Footer";
 import {
   getAllBankAccounts,
   lockAccount,
   unlockAccount,
 } from "../../services/bankManagerService";
+import Header from "../../components/layouts/Header/Header";
+import Footer from "../../components/layouts/Footer/Footer";
 
 const ViewAllBankAccounts = () => {
   let navigate = useNavigate();
-  const [allAccounts, setAllAccounts] = useState([]);
-  const [accountNumber, setAccountNumber] = useState("");
+  const [allAccounts, setAllAccounts] = useState([]); // Filtered list
+  const [originalAccounts, setOriginalAccounts] = useState([]); // Full list (unchanged)
   const [tempAccountNumber, setTempAccountNumber] = useState("");
   const [loading, setLoading] = useState(true);
-  const [managerId, setManagerId] = useState(1); //Change this with the jwt session's bank_manager id
-  // Mock data for testing
+  const [managerId, setManagerId] = useState(1); // Change with JWT session bank_manager id
+
+  const fetchAllBankAccounts = async () => {
+    try {
+      setLoading(true);
+      const response = await getAllBankAccounts(managerId);
+      if (response) {
+        console.log("Bank Accounts:", response);
+        setOriginalAccounts(response); // Store original data
+        setAllAccounts(response); // Display full list initially
+      }
+    } catch (error) {
+      console.error("Error fetching bank accounts:", error);
+      alert("Failed to load bank accounts. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllBankAccounts();
+  }, []);
+
+  const handleSearchChange = (e) => {
+    const searchValue = e.target.value;
+    setTempAccountNumber(searchValue);
+
+    if (searchValue.trim() === "") {
+      setAllAccounts(originalAccounts); // Reset when search is empty
+    } else {
+      const filteredAccounts = originalAccounts.filter((account) =>
+        String(account?.accountId ?? "").includes(searchValue)
+      );
+      setAllAccounts(filteredAccounts);
+    }
+  };
+
+  const viewAccountDetails = (accountId) => {
+    navigate(`/ManageBankAccount/${accountId}`);
+  };
+
   const lockAccountVar = async (accountId) => {
     const response = await lockAccount(accountId);
     if (response) {
@@ -31,41 +69,6 @@ const ViewAllBankAccounts = () => {
     if (response) {
       fetchAllBankAccounts();
     }
-  };
-
-  const fetchAllBankAccounts = async () => {
-    try {
-      setLoading(true); // Set loading to true while fetching data
-      const response = await getAllBankAccounts(managerId); // Pass the JWT token if required by the API
-      if (response) {
-        console.log("Bank Accounts:", response);
-
-        setAllAccounts(response); // Update state with the retrieved data
-      }
-    } catch (error) {
-      console.error("Error fetching bank accounts:", error);
-      alert("Failed to load bank accounts. Please try again later.");
-    } finally {
-      setLoading(false); // Set loading to false after fetching data
-    }
-  };
-
-  useEffect(() => {
-    fetchAllBankAccounts();
-  }, []);
-
-  const searchBankAccountsByAccountNumber = (e) => {
-    e.preventDefault();
-    setAccountNumber(tempAccountNumber);
-    // Filter mock data based on account number
-    const filteredAccounts = allAccounts.filter((account) =>
-      String(account?.accountId ?? "").includes(tempAccountNumber)
-    );
-    setAllAccounts(filteredAccounts);
-  };
-
-  const viewAccountDetails = (accountId) => {
-    navigate(`/ManageBankAccount/${accountId}`);
   };
 
   return (
@@ -93,12 +96,7 @@ const ViewAllBankAccounts = () => {
             >
               <h2>All Bank Accounts</h2>
             </div>
-            <div
-              className="card-body"
-              style={{
-                overflowY: "auto",
-              }}
-            >
+            <div className="card-body" style={{ overflowY: "auto" }}>
               <div className="row mb-3">
                 <div className="col">
                   <form className="row g-3 align-items-center">
@@ -110,21 +108,11 @@ const ViewAllBankAccounts = () => {
                         type="number"
                         className="form-control"
                         placeholder="Enter account no..."
-                        onChange={(e) => setTempAccountNumber(e.target.value)}
+                        onChange={handleSearchChange}
                         value={tempAccountNumber}
                         required
                         style={{ border: "1px solid #544892" }}
                       />
-                    </div>
-                    <div className="col-auto">
-                      <button
-                        type="submit"
-                        className="btn btn-primary btn-lg mt-3"
-                        style={{ backgroundColor: "#544892", border: "none" }}
-                        onClick={searchBankAccountsByAccountNumber}
-                      >
-                        Search
-                      </button>
                     </div>
                   </form>
                 </div>
@@ -165,7 +153,7 @@ const ViewAllBankAccounts = () => {
                           <b>{account.accountType}</b>
                         </td>
                         <td>
-                          {account.status == "ACTIVE" ? (
+                          {account.status === "ACTIVE" ? (
                             <b className="text-success">Active</b>
                           ) : (
                             <b className="text-danger">Locked</b>
@@ -174,7 +162,6 @@ const ViewAllBankAccounts = () => {
                         <td>
                           {account.status === "ACTIVE" ? (
                             <button
-                              // onClick={() => viewAccountDetails(customer)}
                               className="btn btn-sm btn-danger mx-2"
                               onClick={() => lockAccountVar(account.accountId)}
                             >
@@ -182,7 +169,6 @@ const ViewAllBankAccounts = () => {
                             </button>
                           ) : (
                             <button
-                              //onClick={() => viewAccountDetails(customer)}
                               className="btn btn-sm btn-success"
                               onClick={() =>
                                 unlockAccountVar(account.accountId)
@@ -194,9 +180,7 @@ const ViewAllBankAccounts = () => {
                         </td>
                         <td>
                           <button
-                            onClick={() =>
-                              viewAccountDetails(account.accountId)
-                            }
+                            onClick={() => viewAccountDetails(account.accountId)}
                             className="btn btn-sm btn-primary"
                             style={{
                               backgroundColor: "#544892",
@@ -210,6 +194,11 @@ const ViewAllBankAccounts = () => {
                     ))}
                   </tbody>
                 </table>
+                {allAccounts.length === 0 && (
+                  <p className="text-center mt-3">
+                    No accounts found. Try another search.
+                  </p>
+                )}
               </div>
             </div>
           </div>
