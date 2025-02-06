@@ -11,6 +11,7 @@ import com.bank.entities.BankAccount;
 import com.bank.entities.Transaction;
 import com.bank.entities.TransactionType;
 import com.bank.entities.TransferDetail;
+import com.bank.exception.InavlidIfscException;
 import com.bank.exception.InsufficientBalanceException;
 import com.bank.exception.ResourceNotFoundException;
 import com.bank.exception.UserLockedException;
@@ -38,12 +39,19 @@ public class TransferServiceImpl  implements TransferService{
 	@Override
 	public ResponseEntity<?> transferMoney(Long fromAccountId, Long toAccountId, BigDecimal amount, String Description,
 			String Ifsc) {
-		BankAccount fromAccount = bankAccRepository.findById(fromAccountId).orElseThrow(()-> new ResourceNotFoundException("Account not found"));
+		BankAccount fromAccount = bankAccRepository.findById(fromAccountId).orElseThrow(()-> new ResourceNotFoundException("Sender Account not found"));
 		boolean isLocked=fromAccount.getIsLocked();
 		if(isLocked) {
 			throw new UserLockedException("User account is locked .");
 		}
-		BankAccount toAccount = bankAccRepository.findById(toAccountId).orElseThrow(()-> new ResourceNotFoundException("Account not found"));
+		
+		BankAccount toAccount = bankAccRepository.findById(toAccountId).orElseThrow(()-> new ResourceNotFoundException("Reciever Account not found"));
+		
+		String originalRecieverIfsc=toAccount.getBank().getBankIfsc();
+		
+		if(!originalRecieverIfsc.equals(Ifsc)) {
+			throw new InavlidIfscException("Ifsc code is invalid,Please retry!");
+		}
 		
 		BigDecimal existingBalanceFrom = fromAccount.getBalance();
 		BigDecimal existingBalanceTo = toAccount.getBalance();
