@@ -49,7 +49,7 @@ const ViewBankAccounts = ({accountId}) => {
               }
             } catch (error) {
               console.error("Error fetching bank account:", error);
-              alert("Failed to load bank account. Please try again later.");
+              toast.error("Failed to load bank account. Please try again later.");
             } 
   };
 
@@ -65,7 +65,7 @@ const ViewBankAccounts = ({accountId}) => {
       if (response) {
         const filteredTransactions = response;
         if (filteredTransactions.length === 0) {
-          alert("No transactions found for the selected date range.");
+          toast.error("No transactions found for the selected date range.");
           return;
         }
     

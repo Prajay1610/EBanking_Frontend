@@ -5,6 +5,7 @@ import "../../../index.css";
 import logo from "./logoSecureBank.png";
 import { jwtDecode } from "jwt-decode";  
 
+
 const Header = () => {
   
   const jwtToken = localStorage.getItem("token");
@@ -142,7 +143,7 @@ const Header = () => {
               )}
 
               {/* Common Links for All Users */}
-              {isLoggedIn && (
+              { (role !=="ROLE_BANKMANAGER" && role!=="ROLE_ADMIN") && (
                 <>
                   <li className="nav-item">
                     <Link className="nav-link active text-black nunito-standardfont" to="/About">

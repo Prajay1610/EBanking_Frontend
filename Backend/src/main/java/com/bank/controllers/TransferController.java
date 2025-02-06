@@ -22,6 +22,7 @@ public class TransferController {
 	public ResponseEntity<?> transferMoney(@RequestBody TransferMoneyDto transferMoneyDto)
 	{
 		return transferService.transferMoney(transferMoneyDto.getFromAcccountNo(), transferMoneyDto.getToAcccountNo(), transferMoneyDto.getAmount(), transferMoneyDto.getDescription(), transferMoneyDto.getIfsc());
+
 	}
 	
 }

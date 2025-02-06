@@ -184,7 +184,7 @@ const ViewCustomerTransactions = () => {
         </div>
       </div>
       <Footer />
-      <ToastContainer />
+ 
     </>
   );
 };
