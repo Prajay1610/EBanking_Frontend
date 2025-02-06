@@ -3,7 +3,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
-import { addNewBankManager, addNewUser } from "../../services/adminService"; // Import the service function
+import { addNewUser } from "../../services/adminService"; // Import the service function
 
 const AddBankManager = () => {
   // State to manage form inputs
@@ -26,22 +26,67 @@ const AddBankManager = () => {
     }));
   };
 
-  // Function to handle form submission
+  // Validate inputs
+  const validateInputs = () => {
+    if (!bank.firstName.trim()) {
+      toast.error("First Name is required!");
+      return false;
+    }
+    if (!bank.lastName.trim()) {
+      toast.error("Last Name is required!");
+      return false;
+    }
+    if (!bank.email.trim()) {
+      toast.error("Email is required!");
+      return false;
+    }
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/.test(bank.email)) {
+      toast.error("Please enter a valid email address!");
+      return false;
+    }
+    if (!bank.phone.trim()) {
+      toast.error("Phone number is required!");
+      return false;
+    }
+    if (!/^\d{10}$/.test(bank.phone)) {
+      toast.error("Phone number must be 10 digits!");
+      return false;
+    }
+
+    if (!bank.gender) {
+      toast.error("Please select a gender!");
+      return false;
+    }
+
+    if (!bank.password.trim) {
+      toast.error("Password is required!");
+      return false;
+    }
+    if (
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+        bank.password
+      )
+    ) {
+      toast.error(
+        "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a digit, and a special character."
+      );
+      return false;
+    }
+    if (!bank.address.trim()) {
+      toast.error("Address is required!");
+      return false;
+    }
+
+    return true;
+  };
+
+  // Handle form submission
   const saveBank = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
 
-    // Validate required fields
-    if (
-      !bank.firstName ||
-      !bank.lastName ||
-      !bank.email ||
-      !bank.phone ||
-      !bank.gender ||
-      !bank.password ||
-      !bank.address
-    ) {
-      toast.error("Please fill in all required fields.");
-      return;
+    // Validate inputs before proceeding
+    if (!validateInputs()) {
+      return; // Stop form submission if validation fails
     }
 
     // Prepare request body
@@ -100,7 +145,10 @@ const AddBankManager = () => {
           >
             <h5 className="card-title">Add Bank Manager</h5>
           </div>
-          <div className="card-body text-color" style={{ backgroundColor: "#d6d0f2" }}>
+          <div
+            className="card-body text-color"
+            style={{ backgroundColor: "#d6d0f2" }}
+          >
             <form className="row g-3" onSubmit={saveBank}>
               <div className="col-md-6 mb-3">
                 <label htmlFor="firstName" className="form-label">
@@ -113,7 +161,6 @@ const AddBankManager = () => {
                   name="firstName"
                   onChange={handleInput}
                   value={bank.firstName}
-                  required
                 />
               </div>
               <div className="col-md-6 mb-3">
@@ -127,7 +174,6 @@ const AddBankManager = () => {
                   name="lastName"
                   onChange={handleInput}
                   value={bank.lastName}
-                  required
                 />
               </div>
               <div className="col-md-6 mb-3">
@@ -141,7 +187,6 @@ const AddBankManager = () => {
                   name="email"
                   onChange={handleInput}
                   value={bank.email}
-                  required
                 />
               </div>
               <div className="col-md-6 mb-3">
@@ -150,13 +195,11 @@ const AddBankManager = () => {
                 </label>
                 <input
                   type="tel"
-                  pattern="[0-9]{10}"
                   className="form-control"
                   id="phone"
                   name="phone"
                   onChange={handleInput}
                   value={bank.phone}
-                  required
                 />
               </div>
               <div className="col-md-6 mb-3">
@@ -168,7 +211,6 @@ const AddBankManager = () => {
                   onChange={handleInput}
                   className="form-control"
                   value={bank.gender}
-                  required
                 >
                   <option value="">Select Gender</option>
                   <option value="MALE">Male</option>
@@ -187,7 +229,6 @@ const AddBankManager = () => {
                   name="password"
                   onChange={handleInput}
                   value={bank.password}
-                  required
                 />
               </div>
               <div className="col-md-12 mb-3">
@@ -201,7 +242,6 @@ const AddBankManager = () => {
                   rows="3"
                   onChange={handleInput}
                   value={bank.address}
-                  required
                 />
               </div>
               <div className="d-flex align-items-center justify-content-center">
@@ -217,7 +257,6 @@ const AddBankManager = () => {
                 >
                   Register Bank Manager
                 </button>
-                <ToastContainer />
               </div>
             </form>
           </div>
