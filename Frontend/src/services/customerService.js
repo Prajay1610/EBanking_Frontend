@@ -72,6 +72,8 @@ export const addImage = async (userId, file) => {
     }
   };
 
+
+  
   export const transferMoney=async(reqbody)=>{
     try {
         const url = createUrl('transfer');
@@ -168,5 +170,6 @@ export const addImage = async (userId, file) => {
     }
 
 };
+
 
 

@@ -243,10 +243,10 @@ const ViewBankAccounts = ({accountId}) => {
                         required
                       />
                   </div>
-                  <div className="col-md-4 d-flex align-items-end">
+                  <div className="col-md-3 d-flex align-items-end">
                     <button
                       type="submit"
-                      className="btn custom-primary-btn w-100 py-2"
+                      className="btn custom-primary-btn w-100 py-2 mt-4"
                       onClick={fetchAccountStatement}
                     >
                       Download PDF Statement
@@ -258,7 +258,7 @@ const ViewBankAccounts = ({accountId}) => {
           </div>
 
           {/* Account Details Section */}
-          <div className="col-lg-8">
+          <div className="col-lg-12">
             <div className="card shadow">
               <div className="card-header custom-primary-bg text-white">
                 <h4 className="mb-0">Account Details</h4>
@@ -348,61 +348,7 @@ const ViewBankAccounts = ({accountId}) => {
             </div>
           </div>
 
-          {/* Transactions Section */}
-          <div className="col-lg-4">
-            <div className="card shadow">
-              <div className="card-header custom-primary-bg text-white">
-                <h4 className="mb-0">Quick Actions</h4>
-              </div>
-              <div className="card-body">
-                <div className="d-grid gap-3">
-                  {/* Deposit Card */}
-                  <div className="card">
-                    <div className="card-header custom-secondary-bg text-white">
-                      Deposit Funds
-                    </div>
-                    <div className="card-body">
-                      <input
-                        type="number"
-                        className="form-control mb-3"
-                        placeholder="Enter amount"
-                        value={amountToDeposit}
-                        onChange={(e) => setAmountToDeposit(e.target.value)}
-                      />
-                      <button
-                        className="btn custom-primary-btn w-100"
-                        onClick={depositAmount}
-                      >
-                        Deposit
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Withdraw Card */}
-                  <div className="card">
-                    <div className="card-header custom-secondary-bg text-white">
-                      Withdraw Funds
-                    </div>
-                    <div className="card-body">
-                      <input
-                        type="number"
-                        className="form-control mb-3"
-                        placeholder="Enter amount"
-                        value={amountToWithdraw}
-                        onChange={(e) => setAmountToWithdraw(e.target.value)}
-                      />
-                      <button
-                        className="btn custom-primary-btn w-100"
-                        onClick={withdrawAmount}
-                      >
-                        Withdraw
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+    
         </div>
         <ToastContainer position="top-center" autoClose={3000} />
       </div>

@@ -23,8 +23,10 @@ public class CustomerProfileRespDto {
 	private String contactNo;
 	private String Address;
 	private Long customerId;
+	private Long userId;
+
 	public CustomerProfileRespDto(String name, String email,
-			Gender gender, String contactNo, String address,Long customerId ) {
+			Gender gender, String contactNo, String address,Long customerId ,Long userId) {
 		super();
 		this.name = name;
 		this.email = email;
@@ -33,6 +35,7 @@ public class CustomerProfileRespDto {
 		this.contactNo = contactNo;
 		Address = address;
 		this.customerId=customerId;
+		this.userId=userId;
 	}
 	
 //	private List<Transaction> lastThreeTransactions;

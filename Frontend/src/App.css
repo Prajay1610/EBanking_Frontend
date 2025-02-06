@@ -15,6 +15,15 @@ th{
     animation: App-logo-spin infinite 20s linear;
   }
 }
+.default-profile {
+  width: 150px; /* Match the normal profile image size */
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover; /* Ensures the image fully covers the circle */
+  border: 2px solid #ccc; /* Normal solid border */
+  background-color: #f0f0f0; /* Light background in case image fails to load */
+}
+
 
 .App-header {
   background-color: #282c34;

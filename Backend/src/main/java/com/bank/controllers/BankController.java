@@ -1,5 +1,7 @@
 package com.bank.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bank.dtos.ApiResponse;
 import com.bank.dtos.BankReqDto;
+import com.bank.dtos.TransactionResponseDto;
 import com.bank.services.BankService;
 
 
@@ -56,14 +59,13 @@ public class BankController {
 					status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(new ApiResponse(e.getMessage()));
 		}}
-		@PutMapping("/customer/makeInActive/{customerId}")
-		public  ResponseEntity<?> makeInActive(@PathVariable Long customerId) {
-			//TODO: process POST request
-			
-			try {
+
+		@PutMapping("/customer/makeInActive/{userId}")
+		public  ResponseEntity<?> makeInActive(@PathVariable Long userId) {
+try {
 				return ResponseEntity.status(HttpStatus.CREATED)
 						.body(bankService
-								.makeInActive(customerId));
+								.makeInActive(userId));
 						
 			} catch (RuntimeException e) {
 				return ResponseEntity.
@@ -71,14 +73,14 @@ public class BankController {
 						.body(new ApiResponse(e.getMessage()));
 			}
 		}
-		@PutMapping("/customer/makeActive/{customerId}")
-		public  ResponseEntity<?> makeActive(@PathVariable Long customerId) {
+		@PutMapping("/customer/makeActive/{userId}")
+		public  ResponseEntity<?> makeActive(@PathVariable Long userId) {
 			//TODO: process POST request
 			
 			try {
 				return ResponseEntity.status(HttpStatus.CREATED)
 						.body(bankService
-								.makeActive(customerId));
+								.makeActive(userId));
 						
 			} catch (RuntimeException e) {
 				return ResponseEntity.
@@ -86,5 +88,12 @@ public class BankController {
 						.body(new ApiResponse(e.getMessage()));
 			}
 		}
+		@GetMapping("/transactions/allCustomer/{managerId}")
+		public ResponseEntity<List<TransactionResponseDto>> getAllTransactionsForBank(
+		        @PathVariable Long managerId) {
+		    List<TransactionResponseDto> transactions = bankService.getAllTransactionsForBank(managerId);
+		    return ResponseEntity.ok(transactions);
+		}	
+
 	}
 
