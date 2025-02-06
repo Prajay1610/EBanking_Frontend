@@ -113,7 +113,7 @@ const Header = () => {
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link active text-black nunito-standardfont" to="/transactions">
+                    <Link className="nav-link active text-black nunito-standardfont" to="/bank/transactions">
                       Customer Transactions
                     </Link>
                   </li>

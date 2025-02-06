@@ -90,7 +90,7 @@ export const makeInActive=async(userId)=>{
         "Authorization": `Bearer ${localStorage.getItem('token')}`
     }
     try {
-        const response = await axios.put(url,{headers});
+        const response = await axios.put(url,{},{headers});
         console.log("response", response.data);
         return response.data;
     } catch (error) {
@@ -106,7 +106,7 @@ export const makeActive=async(userId)=>{
         "Authorization": `Bearer ${localStorage.getItem('token')}`
     }
     try {
-        const response = await axios.put(url,{headers});
+        const response = await axios.put(url,{},{headers});
         console.log("response", response.data);
         return response.data;
     } catch (error) {
@@ -123,7 +123,7 @@ export const lockAccount=async(accountId)=>{
         "Authorization": `Bearer ${localStorage.getItem('token')}`
     }
     try {
-        const response = await axios.put(url,{headers});
+        const response = await axios.put(url,{},{headers});
         console.log("response", response.data);
         return response.data;
     } catch (error) {
@@ -140,7 +140,7 @@ export const unlockAccount=async(accountId)=>{
         "Authorization": `Bearer ${localStorage.getItem('token')}`
     }
     try {
-        const response = await axios.put(url,{headers});
+        const response = await axios.put(url,{},{headers});
         console.log("response", response.data);
         return response.data;
     } catch (error) {
@@ -149,10 +149,14 @@ export const unlockAccount=async(accountId)=>{
 }
 export const getAllBankTransactions = async (managerId) => {
     try { 
+        const headers = {
+            "Content-Type": 'application/json',
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }
         const url = createUrl(`bank/transactions/allCustomer/${managerId}`);
        
-        const response = await axios.get(url);
-        console.log("called fdata",response.data)
+        const response = await axios.get(url,{headers});
+        console.log("called",response.data)
         return response.data;
     } catch (error) {
         console.error('Error fetching transactions:', error);

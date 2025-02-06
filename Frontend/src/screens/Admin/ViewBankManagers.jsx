@@ -171,7 +171,7 @@ const ViewBankManagers = () => {
                             className="btn btn-sm btn-danger mx-2"                        
                             onClick={()=>handleManagerStatusToggle(manager.managerId)}
                           >
-                           Inactivate Manager
+                           Deactivate Manager
                           </button>
                         ) : (
                           <button 

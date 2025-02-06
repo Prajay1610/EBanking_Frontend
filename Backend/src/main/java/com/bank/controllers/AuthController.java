@@ -27,6 +27,7 @@ import com.bank.dtos.AuthResponse;
 import com.bank.entities.User;
 import com.bank.exception.UnauthorizedAccessException;
 import com.bank.repositories.BankManagerRepository;
+import com.bank.repositories.CustomerRepository;
 import com.bank.repositories.UserRepository;
 import com.bank.security.CustomUserDetailsService;
 import com.bank.security.JwtUtil;
@@ -57,6 +58,8 @@ public class AuthController {
     @Autowired
     private PasswordEncoder encoder;
     
+    @Autowired
+    private CustomerRepository customerRepo;
     
     @Autowired
     private JwtUtil jwtUtil;
@@ -77,12 +80,21 @@ public class AuthController {
         boolean isBankManager = userDetails.getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equals("ROLE_BANKMANAGER"));
         
+        boolean isCustomer = userDetails.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_CUSTOMER"));
+        
         Map<String, Object> additionalClaims = new HashMap<>();
         if (isBankManager) {
             Long bankId = bankManagerRepo.findByUserId(userRepository.findByEmail(authRequest.getEmail()).get().getId()).getId();
             additionalClaims.put("bankId", bankId);
         }
         
+        if(isCustomer)
+        {
+        	Long customerId=customerRepo.findByUserId(userRepository.findByEmail(authRequest.getEmail()).get().getId()).get().getId();
+        	System.out.println("Customer id : "+customerId);
+        	additionalClaims.put("customerId", customerId);
+        }
        
         final String jwt = jwtUtil.generateToken(userDetails,additionalClaims);
         return ResponseEntity.ok(new AuthResponse(jwt));
