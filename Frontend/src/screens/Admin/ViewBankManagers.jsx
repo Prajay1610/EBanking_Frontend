@@ -166,19 +166,19 @@ const ViewBankManagers = () => {
                             </td>
                             <td>{manager.isActive==true?(<b className="text-success">Active</b>):(<b className="text-danger">InActive</b>)}</td>
                             <td>
-                      {manager.status === true ? (
+                      {manager.isActive === true ? (
                           <button
                             className="btn btn-sm btn-danger mx-2"                        
                             onClick={()=>handleManagerStatusToggle(manager.managerId)}
                           >
-                           InActive
+                           Inactivate Manager
                           </button>
                         ) : (
                           <button 
                           className="btn btn-sm btn-success"   
                           onClick={()=>handleManagerStatusToggle(manager.managerId)}
                         >
-                         Active
+                         Activate Manager
                         </button>
                         )}
                       </td>
