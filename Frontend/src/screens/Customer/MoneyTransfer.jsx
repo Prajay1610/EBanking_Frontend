@@ -1,9 +1,9 @@
-import { useState} from "react";
+import { useEffect, useState} from "react";
 
 import { ToastContainer, toast } from "react-toastify";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
-import { transferMoney } from "../../services/customerService";
+import { getCustomerAccountData, transferMoney } from "../../services/customerService";
 
 
 const MoneyTransfer = () => {
@@ -15,6 +15,8 @@ const MoneyTransfer = () => {
     //{ type: "Current" },
   ];
 
+  const [customerId, setCustomerId] = useState(1); // State for customer ID later fetch using jwt
+
   const [account, setAccount] = useState({
     fromAcccountNo: "",
     toAcccountNo: "",
@@ -24,6 +26,8 @@ const MoneyTransfer = () => {
     isSameBank: false, // State to track checkbox
   });
 
+   const [accountsData, setAccountsData] = useState([]); // State for customer data
+  const [loading, setLoading] = useState(true); // State for loading
   const [editAble,setIsEditAble]=useState(true);
 
   const [bankDetails, setBankDetails] = useState({
@@ -90,13 +94,34 @@ const MoneyTransfer = () => {
   }
 
 
+   const fetchAccountData = async () => {
+        try {
+          const data = await getCustomerAccountData(customerId);
+          console.log("data"+data)
+         
+          if (data) {
+            setAccountsData(data || []); 
+          }
+        } catch (error) {
+          toast.error("Error fetching customer data. Please try again.");
+          console.error("Error fetching customer data:", error);
+        } finally {
+          setLoading(false); 
+        }
+    };
+
+    useEffect(()=>{
+      fetchAccountData();
+    },[])
+
+
   return (
     <>
       <Header />
 
       <div className="d-flex justify-content-center align-items-center min-vh-100">
         <div
-          className="card form-card border-color custom-bg"
+          className="card form-card border-color custom-bg my-3"
           style={{ width: "50rem" }}
         >
           <div
@@ -117,14 +142,14 @@ const MoneyTransfer = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {accounts.map((account, index) => (
+                  {accountsData.map((account, index) => (
                     <tr key={index}>
-                      <td>1090987890</td>
-                      <td>State bank of India</td>
-                      <td>{account.type}</td>
+                      <td>{account.accountId}</td>
+                      <td>{account.bankName}</td>
+                      <td>{account.accountType}</td>
 
                       <td>
-                         <button className="btn btn-success" onClick={handleUseAccount(100001)}>Use Account</button> 
+                         <button className="btn btn-success" onClick={handleUseAccount(account.accountId)}>Use Account</button> 
                       </td>
                     </tr>
                   ))}
