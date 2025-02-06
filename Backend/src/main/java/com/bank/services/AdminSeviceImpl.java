@@ -1,17 +1,22 @@
 package com.bank.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bank.dtos.ApiResponse;
 import com.bank.dtos.BankManagerRespDto;
 import com.bank.dtos.BankRespDto;
 import com.bank.entities.Bank;
+import com.bank.entities.BankAccount;
 import com.bank.entities.BankManager;
+import com.bank.entities.Customer;
 import com.bank.entities.Role;
 import com.bank.entities.User;
+import com.bank.exception.ResourceNotFoundException;
 import com.bank.repositories.BankManagerRepository;
 import com.bank.repositories.BankRepository;
 import com.bank.repositories.UserRepository;
@@ -35,7 +40,7 @@ public class AdminSeviceImpl implements AdminService {
 		List<BankManager>bankManagers=bankManagerRepository.findAll();
 		
 		return bankManagers.stream().
-				map(manager->new BankManagerRespDto(manager.getUser().getFname()+ " "+manager.getUser().getLname(),manager.getBank().getBankName(),manager.getUser().getEmail(),manager.getUser().getGender(),manager.getUser().getPhoneNo(),manager.getUser().getAddress(),manager.getId())).toList();
+				map(manager->new BankManagerRespDto(manager.getUser().getFname()+ " "+manager.getUser().getLname(),manager.getBank().getBankName(),manager.getUser().getEmail(),manager.getUser().getGender(),manager.getUser().getPhoneNo(),manager.getUser().getAddress(),manager.getId(),manager.getUser().getIsActive())).toList();
 		// TODO Auto-generated method stub
 		
 	}
@@ -65,5 +70,18 @@ public class AdminSeviceImpl implements AdminService {
 		return unlinkedBankManagers;
 
 	}
+	@Override
+	public ApiResponse toggleManagerStatus(Long managerId) {
+		// TODO Auto-generated method stub
+		
+	    BankManager manager  = bankManagerRepository.findById(managerId).orElseThrow(()->new ResourceNotFoundException("Can't find manager with id: "+managerId));
+	    
+
+		manager.getUser().setIsActive(!manager.getUser().getIsActive());
+		
+		return new ApiResponse("Status of manager updated to: "+manager.getUser().getIsActive());
+	}
+	
+	
 
 }
