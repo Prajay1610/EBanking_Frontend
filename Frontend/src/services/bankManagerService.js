@@ -4,8 +4,12 @@ import { toast } from "react-toastify";
 
 export const getAllBankAccounts = async (managerId) => {
     const url = createUrl(`bankAccount/all/${managerId}`);
+    const headers = {
+        "Content-Type": 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+    }
     try {
-        const response = await axios.get(url);
+        const response = await axios.get(url,{headers});
         console.log("response", response.data);
         return response.data;
     } catch (error) {
@@ -17,8 +21,12 @@ export const getAllBankAccounts = async (managerId) => {
 
 export const getBankAccountDetails = async (accountId) => {
     const url = createUrl(`bankAccount/${accountId}`);
+    const headers = {
+        "Content-Type": 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+    }
     try {
-        const response = await axios.get(url);
+        const response = await axios.get(url,{headers});
         console.log("response", response.data);
 
         return response.data;
@@ -30,8 +38,12 @@ export const getBankAccountDetails = async (accountId) => {
 
 export const depositFunds=async(reqbody)=>{
     const url = createUrl(`transaction/deposit`);
+    const headers = {
+        "Content-Type": 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+    }
     try {
-        const response = await axios.post(url,reqbody);
+        const response = await axios.post(url,reqbody,{headers});
         console.log("response", response.data);
         return response.data;
     } catch (error) {
@@ -42,8 +54,12 @@ export const depositFunds=async(reqbody)=>{
 }
 export const withdrawFunds=async(reqbody)=>{
     const url = createUrl(`transaction/withdraw`);
+    const headers = {
+        "Content-Type": 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+    }
     try {
-        const response = await axios.post(url,reqbody);
+        const response = await axios.post(url,reqbody,{headers});
         console.log("response", response.data);
         return response.data;
     } catch (error) {
@@ -54,19 +70,27 @@ export const withdrawFunds=async(reqbody)=>{
 
 export const viewAllBankCustomers=async(bankManagerId)=>{
     const url = createUrl(`bank/allCustomers/${bankManagerId}`);
+    const headers = {
+        "Content-Type": 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+    }
     try {
-        const response = await axios.get(url);
+        const response = await axios.get(url,{headers});
         console.log("response", response.data);
         return response.data;
     } catch (error) {
-        throw error; // Re-throw the error for further handling if needed
+        throw error; 
     }
 }
 export const makeInActive=async(userId)=>{
     
     const url = createUrl(`bank/customer/makeInActive/${userId}`);
+    const headers = {
+        "Content-Type": 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+    }
     try {
-        const response = await axios.put(url);
+        const response = await axios.put(url,{headers});
         console.log("response", response.data);
         return response.data;
     } catch (error) {
@@ -77,8 +101,12 @@ export const makeInActive=async(userId)=>{
 export const makeActive=async(userId)=>{
     
     const url = createUrl(`bank/customer/makeActive/${userId}`);
+    const headers = {
+        "Content-Type": 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+    }
     try {
-        const response = await axios.put(url);
+        const response = await axios.put(url,{headers});
         console.log("response", response.data);
         return response.data;
     } catch (error) {
@@ -90,8 +118,12 @@ export const makeActive=async(userId)=>{
 export const lockAccount=async(accountId)=>{
     
     const url = createUrl(`bankAccount/lockAccount/${accountId}`);
+    const headers = {
+        "Content-Type": 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+    }
     try {
-        const response = await axios.put(url);
+        const response = await axios.put(url,{headers});
         console.log("response", response.data);
         return response.data;
     } catch (error) {
@@ -103,8 +135,12 @@ export const lockAccount=async(accountId)=>{
 export const unlockAccount=async(accountId)=>{
     
     const url = createUrl(`bankAccount/unlockAccount/${accountId}`);
+    const headers = {
+        "Content-Type": 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+    }
     try {
-        const response = await axios.put(url);
+        const response = await axios.put(url,{headers});
         console.log("response", response.data);
         return response.data;
     } catch (error) {

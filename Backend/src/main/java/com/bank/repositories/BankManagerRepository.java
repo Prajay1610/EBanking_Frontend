@@ -10,5 +10,7 @@ import com.bank.entities.BankManager;
 public interface BankManagerRepository extends JpaRepository<BankManager, Long>{
 	 @Query("SELECT bm.user.id FROM BankManager bm")
 	List<Long> findAllUserIds();
+
+	BankManager findByUserId(Long userId);
 	
 }

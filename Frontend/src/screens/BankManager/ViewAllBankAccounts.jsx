@@ -2,21 +2,49 @@ import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import {
-  getAllBankAccounts,
-  lockAccount,
-  unlockAccount,
-} from "../../services/bankManagerService";
+
+import axios from "axios";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
+import { getAllBankAccounts, lockAccount, unlockAccount } from "../../services/bankManagerService";
+import {jwtDecode} from "jwt-decode";
+
+
 
 const ViewAllBankAccounts = () => {
+      
+  const token = localStorage.getItem("token");
+  const bankId= jwtDecode(token).bankId;
+
+
   let navigate = useNavigate();
   const [allAccounts, setAllAccounts] = useState([]); // Filtered list
   const [originalAccounts, setOriginalAccounts] = useState([]); // Full list (unchanged)
   const [tempAccountNumber, setTempAccountNumber] = useState("");
   const [loading, setLoading] = useState(true);
-  const [managerId, setManagerId] = useState(1); // Change with JWT session bank_manager id
+
+
+  const [managerId,setManagerId] = useState(bankId);
+  
+   const lockAccountVar=async(accountId)=>{
+  
+      
+      const response = await lockAccount(accountId); 
+      if(response){
+        fetchAllBankAccounts();
+  
+     
+      }
+    }
+  
+
+  const unlockAccountVar = async (userId) => {
+    const response = await unlockAccount(userId);
+    if (response) {
+      fetchAllBankAccounts();
+    }
+  };
+
 
   const fetchAllBankAccounts = async () => {
     try {
@@ -208,6 +236,7 @@ const ViewAllBankAccounts = () => {
       <Footer />
     </>
   );
-};
+}
+
 
 export default ViewAllBankAccounts;

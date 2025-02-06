@@ -1,50 +1,45 @@
 import { useState } from "react"
-import { Link, redirect } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {login} from "../../services/user";
 import Header from "../../components/layouts/Header/Header";
+const jwtDecode = require('jwt-decode');
 
 const Login = () => {
 
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
 
+  const navigate=useNavigate();
 
-// make an api call using axios
-async function onSubmit(){
-  console.log('On submit claled')
 
-  if(email==""){
-    toast.error('Please enter email')
-  }
-  else if(password==""){
-    toast.error('Please enter password')
-  }
-  else{
-   try {
-    const response = await login(email,password);
-
-    if(response.status=="error"){
-      toast.error(`error occured!`)
+  const onSubmit = async () => {
+    if (!email || !password) {
+      toast.error('Please enter email and password');
+      return;
     }
-    else{
-      toast.success(`Welcome ${response.data.firstName}`);
-      localStorage.setItem('token',response.data.token)
-
-      
-      console.log('Your token: '+ localStorage.getItem('token'));
-     
-      return redirect('/home')
-    }
-   } catch (error) {
-    toast.error(error)
-   }
-   
-    
+    try {
+      const response = await login(email, password);
+      console.log("Response from backend:", response);
+      if (response.status === "error") {
+        toast.error('An error occurred!');
+      } else {
+        console.log("Login successful");
+        
+        await new Promise((resolve) => {
+          localStorage.setItem('token', response.token);
+          console.log('Token stored:', localStorage.getItem('token'));
+          resolve();
+        });
   
-  }
-}
+       
+        navigate('/home');
+      }
+    } catch (error) {
+      toast.error(error.message || 'An error occurred');
+    }
+  };
 
 
 
@@ -68,7 +63,7 @@ return (
           <div data-mdb-input-init className="form-outline mb-4">
             <input type="email" id="form1Example13" className="form-control form-control-lg"
             
-            onChange={(e)=>{
+            onChange={(e)=>{  
               setEmail(e.target.value)
             }}  
             
@@ -94,6 +89,7 @@ return (
     </div>
   </div>
     </section>
+    <ToastContainer position="top-right" autoClose={3000} />
     </div>
   </>
   )
