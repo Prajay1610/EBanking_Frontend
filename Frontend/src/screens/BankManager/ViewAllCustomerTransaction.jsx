@@ -7,13 +7,18 @@ import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
 import { getAllTransactions } from "../../services/customerService";
 import { getAllBankTransactions } from "../../services/bankManagerService";
+import { jwtDecode } from "jwt-decode";
 
 const ViewAllCustomerTransactions = () => {
+
+  const token = localStorage.getItem("token");
+  const bankId= jwtDecode(token).bankId;
+
   const location = useLocation();
   const customer = location.state;
   const [allTransactions, setAllTransactions] = useState([]);
   //const {managerId} = useParams();
-const [managerId,setManagerId]=useState(1)
+const [managerId,setManagerId]=useState(bankId)
   const retrieveAllTransactions = async () => {
     try {
       const response = await getAllBankTransactions(managerId);
@@ -29,14 +34,14 @@ const [managerId,setManagerId]=useState(1)
 
   // Fetch transactions when the component mounts
   useEffect(() => {
-    const getAllTransactions = async (managerId) => {
-      const transactions = await retrieveAllTransactions(managerId);
+    const getAllTransactions = async (bankId) => {
+      const transactions = await retrieveAllTransactions(bankId);
       console.log("transactions", transactions);
       if (transactions) {
         setAllTransactions(transactions || []);
       }
     };
-    getAllTransactions(managerId);
+    getAllTransactions(bankId);
   }, []);
 
   // Function to format epoch time to a readable date
@@ -183,7 +188,7 @@ const [managerId,setManagerId]=useState(1)
         </div>
       </div>
       <Footer />
-      <ToastContainer />
+
     </>
   );
 };

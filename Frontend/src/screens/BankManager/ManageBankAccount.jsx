@@ -28,6 +28,71 @@ const ManageBankAccount = ({accountId}) => {
     endDate: "",
   });
 
+  const fetchAccountStatement =async(e)=>{
+    e.preventDefault(); 
+   const reqbody={
+    accountId:accountId,
+    startDate:statementDownloadRequest.startDate,
+    endDate:statementDownloadRequest.endDate
+   }
+    try {
+      const response = await getAccountStatement(reqbody);
+      if (response) {
+        const filteredTransactions = response;
+        if (filteredTransactions.length === 0) {
+          toast.error("No transactions found for the selected date range.");
+          return;
+        }
+    
+        const reqBody = {
+          accountNumber: accountId,
+          transactions: filteredTransactions,
+        };
+        
+        console.log("Data sent to nodejs ",reqBody)
+        try {
+          const response = await fetch("http://localhost:3001/generate-pdf", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(reqBody),
+          });
+          console.log("Response from node js :", response);
+          if (!response.ok) {
+            throw new Error("Failed to generate PDF");
+          }
+          // Get the PDF as a blob
+      const blob = await response.blob();
+
+      // Create a temporary URL for the blob
+      const url = window.URL.createObjectURL(blob);
+
+      // Create a link element and trigger the download
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "account_statement.pdf";
+      document.body.appendChild(a);
+      a.click();
+
+      // Clean up
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error("Error downloading PDF:", error);
+    } 
+
+
+        // Show success message in toast notification
+        toast.success("Account statement downloaded successfully!");
+      }
+    }
+    catch (error) { 
+      console.log("Error while fetching account statement:", error);
+    }
+  }
+
+
   const handleUserInput=(e)=>{
     const { name, value } = e.target;
     setStatementDownloadRequest((prev) => ({
@@ -49,29 +114,11 @@ const ManageBankAccount = ({accountId}) => {
               }
             } catch (error) {
               console.error("Error fetching bank account:", error);
-              alert("Failed to load bank account. Please try again later.");
+              toast.error("Failed to load bank account. Please try again later.");
             } 
   };
 
-  const fetchAccountStatement =async(e)=>{
-    e.preventDefault(); 
-   const reqbody={
-    accountId:accountId,
-    startDate:statementDownloadRequest.startDate,
-    endDate:statementDownloadRequest.endDate
-   }
-    try {
-      const response = await getAccountStatement(reqbody);
-      if (response) {
-        console.log("Account Statement:", response);
-        // Show success message in toast notification
-        toast.success("Account statement downloaded successfully!");
-      }
-    }
-    catch (error) { 
-      console.log("Error while fetching account statement:", error);
-    }
-  }
+  
 
   const depositAmount = async () => {
     try {

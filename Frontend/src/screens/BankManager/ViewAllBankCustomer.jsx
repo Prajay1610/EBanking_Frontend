@@ -6,12 +6,26 @@ import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
 import { makeActive, makeInActive, viewAllBankCustomers } from "../../services/bankManagerService";
 
+import {jwtDecode} from "jwt-decode"; 
+
 const ViewAllBankCustomers = () => {
+  const token = localStorage.getItem("token");
+  const bankId= jwtDecode(token).bankId;
   let navigate = useNavigate();
   const [allCustomer, setAllCustomer] = useState([]);
+
   const [filteredCustomers, setFilteredCustomers] = useState([]);
- const [managerId,setManagerId]=useState(1);//set manager id from jwt session
+
+ const [managerId,setManagerId]=useState(bankId);
+
   const [tempCustomerName, setTempCustomerName] = useState("");
+
+ 
+ 
+
+
+  
+  
 
   
   const makeInActiveVar=async(userId)=>{
@@ -45,7 +59,7 @@ const ViewAllBankCustomers = () => {
                 }
               } catch (error) {
                 console.error("Error fetching bank customers:", error);
-                alert("Failed to load bank customers. Please try again later.");
+                toast.error("Failed to load bank customers. Please try again later.");
               } 
     };
 
@@ -260,7 +274,7 @@ const ViewAllBankCustomers = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
+    
     </div>
 <Footer/>
     </>

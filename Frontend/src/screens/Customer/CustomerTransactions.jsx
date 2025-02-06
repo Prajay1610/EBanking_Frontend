@@ -6,12 +6,15 @@ import { useLocation, useParams } from "react-router-dom";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
 import { getAllTransactions } from "../../services/customerService";
+import { use } from "react";
+const {jwtDecode} = require("jwt-decode");
 
 const ViewCustomerTransactions = () => {
+  const {customerId}=useParams();
   const location = useLocation();
   const customer = location.state;
   const [allTransactions, setAllTransactions] = useState([]);
-  const {customerId} = useParams();
+  
   const retrieveAllTransactions = async () => {
     try {
       const response = await getAllTransactions(customerId);
@@ -181,7 +184,7 @@ const ViewCustomerTransactions = () => {
         </div>
       </div>
       <Footer />
-      <ToastContainer />
+ 
     </>
   );
 };

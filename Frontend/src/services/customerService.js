@@ -5,8 +5,12 @@ import axios from "axios";
 export const getAllTransactions = async (customerId) => {
     try { 
         const url = createUrl(`customer/transactions/customer/${customerId}`);
+        const headers = {
+          "Content-Type": 'application/json',
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
+      }
         console.log("called url",url)
-        const response = await axios.get(url);
+        const response = await axios.get(url,{headers});
         return response.data;
     } catch (error) {
         console.error('Error fetching transactions:', error);
@@ -17,7 +21,11 @@ export const getAllTransactions = async (customerId) => {
 export const addCustomer = async (customer) => {
     try {
         const url = createUrl('api/auth/register');
-        const response = await axios.post(url, customer);
+        const headers = {
+          "Content-Type": 'application/json',
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
+      }
+        const response = await axios.post(url, customer,{headers});
         return response.data;
     } catch (error) {
         console.error('Error adding customer:', error);
@@ -28,7 +36,11 @@ export const addCustomer = async (customer) => {
 export const getAllSpecificAccountTransactions = async (accountId) => {
   try {
       const url = createUrl(`customer/transactions/${accountId}`);
-      const response = await axios.get(url);
+      const headers = {
+        "Content-Type": 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+    }
+      const response = await axios.get(url,{headers});
       return response.data;
   } catch (error) {
       console.error('Error fetching transactions:', error);
@@ -42,11 +54,11 @@ export const addImage = async (userId, file) => {
   
     try {
       const url = createUrl(`api/auth/${userId}/upload-profile-image`);
-      const response = await axios.post(url, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const headers = {
+        "Content-Type": "multipart/form-data",
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+    }
+      const response = await axios.post(url, formData, headers);
   
       // Ensure the backend response contains a `success` field
       if (!response.data) {
@@ -65,7 +77,11 @@ export const addImage = async (userId, file) => {
   export const transferMoney=async(reqbody)=>{
     try {
         const url = createUrl('transfer');
-        const response =await axios.post(url,reqbody);
+        const headers = {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
+      }
+        const response =await axios.post(url,reqbody,{headers});
         return response.data;
     } catch (error) {
         console.error('Error transferring money:', error);
@@ -78,9 +94,12 @@ export const addImage = async (userId, file) => {
   export const getCustomerData=async(customerId)=>{
 
     try {
-      console.log("Service of getcust called");
       const url = createUrl(`customer/${customerId}`);
-      const response =await axios.get(url);
+      const headers = {
+        "Content-Type": "multipart/form-data",
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+    }
+      const response =await axios.get(url,{headers});
       
 
       return response.data;
@@ -95,7 +114,11 @@ export const addImage = async (userId, file) => {
 
     try {
       const url = createUrl(`customer/allAccounts/${customerId}`);
-      const response =await axios.get(url);
+      const headers = {
+        "Content-Type": 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+    }
+      const response =await axios.get(url,{headers});
       console.log(response)
 
       return response.data;
@@ -110,7 +133,7 @@ export const addImage = async (userId, file) => {
   export const getAccountStatement = async (reqbody) => {
     try {
         // Fetch all transactions for the given account ID
-        const allTransactions = await getAllTransactions(reqbody.accountId);
+        const allTransactions = await getAllSpecificAccountTransactions(reqbody.accountId);
 
         // Convert date string (YYYY-MM-DD) to timestamp (start of the day)
         const convertToTimestamp = (dateStr) => new Date(dateStr).setHours(0, 0, 0, 0);

@@ -12,7 +12,7 @@ import {
 
 const AddBankForm = () => {
   const [bankUsers, setBankUsers] = useState([]);
-
+  const [selectedManager, setSelectedManager] = useState("");
   const admin_jwtToken = sessionStorage.getItem("admin-jwtToken");
 
   let navigate = useNavigate();
@@ -30,11 +30,12 @@ const AddBankForm = () => {
     bankManagerId: "",
   });
 
+  const fetchBankManagers = async () => {
+    const managers = await getAllBankManagersFromUser();
+    setBankManagers(managers);
+  };
   useEffect(() => {
-    const fetchBankManagers = async () => {
-      const managers = await getAllBankManagersFromUser();
-      setBankManagers(managers);
-    };
+   
     fetchBankManagers();
 
     console.log("Bank Managers: ", managers);
@@ -42,6 +43,7 @@ const AddBankForm = () => {
 
   const handleInput = (e) => {
     setBank({ ...bank, [e.target.name]: e.target.value });
+    setSelectedManager(e.target.value);
   };
 
   // Validate inputs
@@ -123,6 +125,8 @@ const AddBankForm = () => {
           bankCountry: "India",
           bankManagerId: "",
         });
+        setSelectedManager("");
+        fetchBankManagers();
         navigate("/addBank");
       } else {
         toast.error("Error occured while adding bank");
@@ -189,9 +193,11 @@ const AddBankForm = () => {
                 <label className="form-label">
                   <b>Bank Manager</b>
                 </label>
-                <select
+                {managers && managers.length > 0 ? (
+                  <select
                   name="bankManagerId"
                   onChange={handleInput}
+                  value={selectedManager}
                   className="form-control"
                 >
                   <option value="">Select Bank Manager</option>
@@ -203,6 +209,10 @@ const AddBankForm = () => {
                     );
                   })}
                 </select>
+                ):(
+                  <p>Unable to fetch bank Managers!</p>
+                )}
+                
               </div>
 
               <div className="col-md-6 mb-3">
