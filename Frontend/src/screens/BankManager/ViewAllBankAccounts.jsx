@@ -26,24 +26,7 @@ const ViewAllBankAccounts = () => {
 
   const [managerId,setManagerId] = useState(bankId);
   
-   const lockAccountVar=async(accountId)=>{
-  
-      
-      const response = await lockAccount(accountId); 
-      if(response){
-        fetchAllBankAccounts();
-  
-     
-      }
-    }
-  
 
-  const unlockAccountVar = async (userId) => {
-    const response = await unlockAccount(userId);
-    if (response) {
-      fetchAllBankAccounts();
-    }
-  };
 
 
   const fetchAllBankAccounts = async () => {
@@ -57,7 +40,7 @@ const ViewAllBankAccounts = () => {
       }
     } catch (error) {
       console.error("Error fetching bank accounts:", error);
-      alert("Failed to load bank accounts. Please try again later.");
+      toast.error("Failed to fetch bank accounts. Please try again later: "+error);
     } finally {
       setLoading(false);
     }
@@ -231,7 +214,7 @@ const ViewAllBankAccounts = () => {
             </div>
           </div>
         </div>
-        <ToastContainer />
+     
       </div>
       <Footer />
     </>
