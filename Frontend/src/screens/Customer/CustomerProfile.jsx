@@ -219,12 +219,17 @@ const CustomerProfile = () => {
   </Link>
 </td>
                             <td>
+                            <Link 
+                              to={`/customer/bank/account/detail/${account.accountId}`} 
+                            >
                               <button
-                                className="btn btn-secondary"
-                                style={{ backgroundColor: "#413C69" }}
+                                className="btn btn-success"
+                               
                               >
-                                Print Statement
+                              
+                              Download Statement
                               </button>
+                              </Link>
                             </td>
                           </tr>
                         ))

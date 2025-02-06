@@ -7,7 +7,7 @@ import Footer from "../../components/layouts/Footer/Footer";
 import { addCustomer, addImage } from "../../services/customerService";
 
 const AddCustomer = () => {
-  const bankId = localStorage.getItem("bankId") || 2;
+  const bankId = localStorage.getItem("bankId") || 1;
 
   const [customer, setCustomer] = useState({
     fname: "",
@@ -36,12 +36,91 @@ const AddCustomer = () => {
     setProfileImage(e.target.files[0]);
   };
 
-  const saveCustomer = async (e) => {
-    e.preventDefault();
+  // Validate all the required inputs
+  const validateInputs = () => {
+    if (!customer.fname.trim()) {
+      toast.error("First Name is required!");
+      return false;
+    }
+    if (!customer.lname.trim()) {
+      toast.error("Last Name is required!");
+      return false;
+    }
+    if (!customer.email.trim()) {
+      toast.error("Email is required!");
+      return false;
+    }
+    if (
+      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(customer.email)
+    ) {
+      toast.error("Please enter a valid email address!");
+      return false;
+    }
+    if (!customer.phoneNo.trim()) {
+      toast.error("Phone number is required!");
+      return false;
+    }
+    if (!/^\d{10}$/.test(customer.phoneNo)) {
+      toast.error("Phone number must be 10 digits!");
+      return false;
+    }
 
+    if (!customer.gender) {
+      toast.error("Please select a gender!");
+      return false;
+    }
+    if (!customer.address.trim()) {
+      toast.error("Address is required!");
+      return false;
+    }
+
+    if (!customer.password) {
+      toast.error("Password is required!");
+      return false;
+    }
+    if (
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+        customer.password
+      )
+    ) {
+      toast.error(
+        "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a digit, and a special character."
+      );
+      return false;
+    }
+
+    if (!customer.confirmPassword) {
+      toast.error("Conform password is required!");
+      return false;
+    }
+    if (
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+        customer.confirmPassword
+      )
+    ) {
+      toast.error(
+        "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a digit, and a special character."
+      );
+      return false;
+    }
     if (customer.password !== customer.confirmPassword) {
       toast.error("Password and Confirm Password do not match.");
       return;
+    }
+
+    if (!customer.accountType.trim()) {
+      toast.error("Account Type is required!");
+      return false;
+    }
+
+    return true;
+  };
+
+  const saveCustomer = async (e) => {
+    e.preventDefault();
+    // Validate inputs before proceeding
+    if (!validateInputs()) {
+      return; // Stop form submission if validation fails
     }
 
     try {
@@ -100,7 +179,6 @@ const AddCustomer = () => {
                   name="fname"
                   onChange={handleInput}
                   value={customer.fname}
-                  required
                 />
               </div>
               <div className="col-md-6 mb-3">
@@ -114,7 +192,6 @@ const AddCustomer = () => {
                   name="lname"
                   onChange={handleInput}
                   value={customer.lname}
-                  required
                 />
               </div>
               <div className="col-md-6 mb-3">
@@ -128,7 +205,6 @@ const AddCustomer = () => {
                   name="email"
                   onChange={handleInput}
                   value={customer.email}
-                  required
                 />
               </div>
               <div className="col-md-6 mb-3">
@@ -137,13 +213,11 @@ const AddCustomer = () => {
                 </label>
                 <input
                   type="tel"
-                  pattern="[0-9]{10}"
                   className="form-control"
                   id="phoneNo"
                   name="phoneNo"
                   onChange={handleInput}
                   value={customer.phoneNo}
-                  required
                 />
               </div>
               <div className="col-md-6 mb-3">
@@ -154,7 +228,6 @@ const AddCustomer = () => {
                   name="gender"
                   onChange={handleInput}
                   className="form-control"
-                  required
                 >
                   <option value="">Select Gender</option>
                   <option value="MALE">Male</option>
@@ -173,7 +246,6 @@ const AddCustomer = () => {
                   rows="1"
                   onChange={handleInput}
                   value={customer.address}
-                  required
                 />
               </div>
               <div className="col-md-6 mb-3">
@@ -187,7 +259,6 @@ const AddCustomer = () => {
                   name="password"
                   onChange={handleInput}
                   value={customer.password}
-                  required
                 />
               </div>
               <div className="col-md-6 mb-3">
@@ -201,7 +272,6 @@ const AddCustomer = () => {
                   name="confirmPassword"
                   onChange={handleInput}
                   value={customer.confirmPassword}
-                  required
                 />
               </div>
               <div className="col-md-6 mb-3">
@@ -212,7 +282,6 @@ const AddCustomer = () => {
                   name="accountType"
                   onChange={handleInput}
                   className="form-control"
-                  required
                 >
                   <option value="">Select Account Type</option>
                   <option value="SAVINGS">Savings</option>
