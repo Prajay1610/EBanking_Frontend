@@ -112,17 +112,17 @@ public class BankServiceImpl implements BankService{
 		
 	}
 	@Override
-	public ApiResponse makeInActive(Long customerId) {
+	public ApiResponse makeInActive(Long userId) {
 		// TODO Auto-generated method stub
-		Optional<User>user=userRepository.findById(customerId);
-	    Optional<Customer> customerOptional = customerRepository.findByUserId(customerId);
+		User user=userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("user id not found with id : "+ userId));;
+	  Customer customerOptional = customerRepository.findByUserId(userId).orElseThrow(()->new ResourceNotFoundException(" user not found with id : "+userId));
 	    
 
-		if(user.get().getRole()==Role.CUSTOMER) {
-			user.get().setIsActive(false);
+		if(user.getRole()==Role.CUSTOMER) {
+			user.setIsActive(false);
 		}
 		
-		List<BankAccount> bankAccounts = bankAccountRepository.findByCustomerId(customerOptional.get().getId());
+		List<BankAccount> bankAccounts = bankAccountRepository.findByCustomerId(customerOptional.getId());
 		System.out.println(bankAccounts);
 
 	    if (!bankAccounts.isEmpty()) {
@@ -131,27 +131,27 @@ public class BankServiceImpl implements BankService{
 	        }
 	        bankAccountRepository.saveAll(bankAccounts); // Save all updated accounts
 	    }
-		userRepository.save(user.get());
+		userRepository.save(user);
 		
 		return new ApiResponse("Status updated to inactive: ");
 	}
 
 	@Override
-	public ApiResponse makeActive(Long customerId) {
+	public ApiResponse makeActive(Long userId) {
 		// TODO Auto-generated method stub
-		Optional<User>user=userRepository.findById(customerId);
-		 Optional<Customer> customerOptional = customerRepository.findByUserId(customerId);
-		if(user.get().getRole()==Role.CUSTOMER) {
-			user.get().setIsActive(true);
+		User user=userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("user id not found with id : "+ userId));
+		Customer customerOptional = customerRepository.findByUserId(userId).orElseThrow(()->new ResourceNotFoundException("user id not found with id : "+ userId));
+		if(user.getRole()==Role.CUSTOMER) {
+			user.setIsActive(true);
 		}
-		List<BankAccount> bankAccounts = bankAccountRepository.findByCustomerId(customerOptional.get().getId());
+		List<BankAccount> bankAccounts = bankAccountRepository.findByCustomerId(customerOptional.getId());
 	    if (!bankAccounts.isEmpty()) {
 	        for (BankAccount account : bankAccounts) {
 	            account.setIsLocked(false); // Lock each bank account
 	        }
 	        bankAccountRepository.saveAll(bankAccounts); // Save all updated accounts
 	    }
-		userRepository.save(user.get());		
+		userRepository.save(user);		
 		return new ApiResponse("Status updated to active: ");
 	}
 
