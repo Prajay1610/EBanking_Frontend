@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
+import { getAllBankAccounts, lockAccount, unlockAccount } from "../../services/bankManagerService";
+import {jwtDecode} from "jwt-decode";
 import {
   getAllBankAccounts,
   lockAccount,
@@ -12,12 +14,27 @@ import {
 } from "../../services/bankManagerService";
 
 const ViewAllBankAccounts = () => {
+      
+  const token = localStorage.getItem("token");
+  const bankId= jwtDecode(token).bankId;
+
+
   let navigate = useNavigate();
   const [allAccounts, setAllAccounts] = useState([]);
   const [accountNumber, setAccountNumber] = useState("");
   const [tempAccountNumber, setTempAccountNumber] = useState("");
   const [loading, setLoading] = useState(true);
-  const [managerId, setManagerId] = useState(1); //Change this with the jwt session's bank_manager id
+  const [managerId,setManagerId] = useState(bankId);
+   const lockAccountVar=async(accountId)=>{
+  
+      
+      const response = await lockAccount(accountId); 
+      if(response){
+        fetchAllBankAccounts();
+  
+     
+      }
+  
   // Mock data for testing
   const lockAccountVar = async (accountId) => {
     const response = await lockAccount(accountId);
@@ -219,6 +236,7 @@ const ViewAllBankAccounts = () => {
       <Footer />
     </>
   );
+}
 };
 
 export default ViewAllBankAccounts;

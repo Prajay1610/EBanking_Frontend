@@ -5,8 +5,12 @@ import { toast } from 'react-toastify';
 export const addNewBank = async(reqbody)=>{
     const url = createUrl('bank/add');
     console.log("reqbody"+JSON.stringify(reqbody));
+    const headers = {
+      "Content-Type": 'application/json',
+      "Authorization": `Bearer ${localStorage.getItem('token')}`
+  }
     try {
-        const response = await axios.post(url,reqbody);
+        const response = await axios.post(url,reqbody,{headers});
         console.log("resp data"+JSON.stringify(response.data));
         return response.data;
     } catch (error) {
@@ -17,8 +21,12 @@ export const addNewBank = async(reqbody)=>{
 
 export const getAllBankManagersFromUser=async(reqbody)=>{
     const url = createUrl('admin/getAllBankManagersFromUser');
+    const headers = {
+      "Content-Type": 'application/json',
+      "Authorization": `Bearer ${localStorage.getItem('token')}`
+  }
     try {
-        const response = await axios.get(url);
+        const response = await axios.get(url,{headers});
         console.log("resp data"+JSON.stringify(response.data));
         return response.data;
     } catch (error) {
@@ -30,8 +38,12 @@ export const getAllBankManagersFromUser=async(reqbody)=>{
 export const addNewUser = async (reqBody) => {
     console.log("reqBody", reqBody);
   const url = createUrl('api/auth/register');
+  const headers = {
+    "Content-Type": 'application/json',
+    "Authorization": `Bearer ${localStorage.getItem('token')}`
+}
   try {
-    const response = await axios.post(url, reqBody);
+    const response = await axios.post(url, reqBody,{headers});
     return response.data;
   } catch (error) {
     console.error("Error while adding admin:", error);
@@ -42,8 +54,12 @@ export const addNewUser = async (reqBody) => {
 
 export const getAllBankManagers = async () => {
   const url = createUrl('admin/allBankManager');
+  const headers = {
+    "Content-Type": 'application/json',
+    "Authorization": `Bearer ${localStorage.getItem('token')}`
+}
   try {
-    const response = await axios.get(url);
+    const response = await axios.get(url,{headers});
     console.log("response", response.data);
     return response.data;
   } catch (error) {
@@ -56,8 +72,12 @@ export const getAllBankManagers = async () => {
 
 export const getAllBanks = async () => {
   const url = createUrl('admin/allBanks');
+  const headers = {
+    "Content-Type": 'application/json',
+    "Authorization": `Bearer ${localStorage.getItem('token')}`
+}
   try {
-    const response = await axios.get(url);
+    const response = await axios.get(url,{headers});
     return response.data;
   } catch (error) {
     console.error("Error while retrieving banks:", error);
