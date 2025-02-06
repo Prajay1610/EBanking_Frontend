@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Footer from "../../components/layouts/Footer/Footer";
 import { Link, useNavigate, useParams } from "react-router-dom"; // Import Link from react-router-dom
 import Header from "../../components/layouts/Header/Header";
+
 import {
   getAllTransactions,
   getCustomerAccountData,
@@ -13,7 +14,7 @@ import { toast } from "react-toastify";
 
 const CustomerProfile = () => {
   let navigate = useNavigate();
-
+  const [isDefaultImage, setIsDefaultImage] = useState(false);
   const { customerId } = useParams(); // Get IDs from URL
   const [customerData, setCustomerData] = useState(null); // State for customer data
   const [accountsData, setAccountsData] = useState([]); // State for customer data
@@ -138,12 +139,21 @@ const CustomerProfile = () => {
               <div className="card-body">
                 {/* Customer Overview */}
                 <div className="text-center mb-4">
-                  <img
-                    src={`http://localhost:8080/api/auth/${customerData.userId}/profile-image`}
-                    alt="Customer Avatar"
-                    className="rounded-circle img-thumbnail"
-                    width="150"
-                  />
+               
+
+                <img
+  src={`http://localhost:8080/api/auth/${customerData.userId}/profile-image`}
+  alt="Customer Avatar"
+  className={`rounded-circle img-thumbnail ${isDefaultImage ? "default-profile" : ""}`}
+  width="150"
+  height="150"
+  onError={(e) => {
+    e.target.onerror = null;
+    e.target.src = "/assets/default_image.png"; // Fallback image
+    setIsDefaultImage(true);
+  }}
+/>
+
                   <h5 className="mt-3">{customerData.name}</h5>
                   <p className="text-muted">{customerData.email}</p>
                 </div>
@@ -200,19 +210,14 @@ const CustomerProfile = () => {
                             <td>{account.bankName}</td>
                             <td>{account.accountType}</td>
                             <td>
-                              <button
-                                onClick={() =>
-                                  viewAccountSpecificDetails(
-                                    customerId,
-                                    account.accountId
-                                  )
-                                }
-                                className="btn btn-secondary"
-                                style={{ backgroundColor: "#413C69" }}
-                              >
-                                View Details
-                              </button>
-                            </td>
+  <Link 
+    to={`/ViewSpecificAccountDetails/${customerId}/${account.accountId}`} 
+    className="btn btn-secondary"
+    style={{ backgroundColor: "#413C69", textDecoration: 'none' }} 
+  >
+    View Details
+  </Link>
+</td>
                             <td>
                               <button
                                 className="btn btn-secondary"

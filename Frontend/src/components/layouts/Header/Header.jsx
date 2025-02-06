@@ -4,7 +4,10 @@ import "./Header.css";
 import "../../../index.css";
 import logo from "./logoSecureBank.png";
 const Header = () => {
+
   const role = "customer"; // Change this dynamically from authentication
+
+
   const isLoggedIn = true; //toggle this to check
 
   return (

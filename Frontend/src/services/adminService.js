@@ -2,11 +2,6 @@ import axios from "axios";
 import { createUrl } from "../utils";
 import { toast } from 'react-toastify';
 
-
-
-
-
-
 export const addNewBank = async(reqbody)=>{
     const url = createUrl('bank/add');
     console.log("reqbody"+JSON.stringify(reqbody));
@@ -40,7 +35,7 @@ export const addNewUser = async (reqBody) => {
     return response.data;
   } catch (error) {
     console.error("Error while adding admin:", error);
-    throw error; // Re-throw the error for further handling if needed
+    throw error; 
   }
 
 }
@@ -53,7 +48,7 @@ export const getAllBankManagers = async () => {
     return response.data;
   } catch (error) {
     console.error("Error while retrieving bank managers:", error);
-    throw error; // Re-throw the error for further handling if needed
+    throw error; 
   }
 
 
@@ -66,6 +61,27 @@ export const getAllBanks = async () => {
     return response.data;
   } catch (error) {
     console.error("Error while retrieving banks:", error);
-    throw error; // Re-throw the error for further handling if needed
+    throw error; 
+  }
+}
+
+
+export const toggleManagerStatus = async (managerId) => {
+  const url = createUrl(`admin/toggleManagerStatus/${managerId}`);
+  try {
+    const response = await axios.patch(
+      url, 
+      {}, 
+      {
+        headers: {
+          "Content-Type": "application/json",
+          // "Authorization": `Bearer ${token}`, // Add JWT token
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error while toggling bank manager status:", error);
+    throw error; 
   }
 }
