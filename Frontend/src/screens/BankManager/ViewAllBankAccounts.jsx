@@ -7,6 +7,7 @@ import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
 import { getAllBankAccounts, lockAccount, unlockAccount } from "../../services/bankManagerService";
 import {jwtDecode} from "jwt-decode";
+
 const ViewAllBankAccounts = () => {
       
   const token = localStorage.getItem("token");
@@ -19,6 +20,7 @@ const ViewAllBankAccounts = () => {
   const [tempAccountNumber, setTempAccountNumber] = useState("");
   const [loading, setLoading] = useState(true);
   const [managerId,setManagerId] = useState(bankId);
+  
    const lockAccountVar=async(accountId)=>{
   
       
