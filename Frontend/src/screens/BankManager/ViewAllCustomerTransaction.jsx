@@ -188,7 +188,7 @@ const [managerId,setManagerId]=useState(bankId)
         </div>
       </div>
       <Footer />
-      <ToastContainer />
+
     </>
   );
 };

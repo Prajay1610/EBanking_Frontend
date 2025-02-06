@@ -234,7 +234,7 @@ const AddBankAccountForm = () => {
               >
                 Add Bank Account
               </button>
-              <ToastContainer />
+         
             </div>
           </form>
         </div>

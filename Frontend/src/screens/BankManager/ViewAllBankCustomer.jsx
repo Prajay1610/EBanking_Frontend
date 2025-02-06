@@ -9,11 +9,8 @@ import { makeActive, makeInActive, viewAllBankCustomers } from "../../services/b
 import {jwtDecode} from "jwt-decode"; 
 
 const ViewAllBankCustomers = () => {
-
   const token = localStorage.getItem("token");
-    const bankId= jwtDecode(token).bankId;
-
-
+  const bankId= jwtDecode(token).bankId;
   let navigate = useNavigate();
   const [allCustomer, setAllCustomer] = useState([]);
 
@@ -22,6 +19,13 @@ const ViewAllBankCustomers = () => {
  const [managerId,setManagerId]=useState(bankId);
 
   const [tempCustomerName, setTempCustomerName] = useState("");
+
+ 
+ 
+
+
+  
+  
 
   
   const makeInActiveVar=async(userId)=>{
@@ -55,7 +59,7 @@ const ViewAllBankCustomers = () => {
                 }
               } catch (error) {
                 console.error("Error fetching bank customers:", error);
-                alert("Failed to load bank customers. Please try again later.");
+                toast.error("Failed to load bank customers. Please try again later.");
               } 
     };
 
@@ -270,7 +274,7 @@ const ViewAllBankCustomers = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
+    
     </div>
 <Footer/>
     </>
