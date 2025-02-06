@@ -9,6 +9,7 @@ const Header = () => {
   
   const jwtToken = localStorage.getItem("token");
 
+
   let role = null;
   let isLoggedIn = false;
 
@@ -133,7 +134,7 @@ const Header = () => {
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link active text-black nunito-standardfont" to="/transactions">
+                    <Link className="nav-link active text-black nunito-standardfont" to="customer/transactions/">
                       Transaction History
                     </Link>
                   </li>

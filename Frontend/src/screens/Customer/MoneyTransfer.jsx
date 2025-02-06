@@ -7,6 +7,7 @@ import {
   getCustomerAccountData,
   transferMoney,
 } from "../../services/customerService";
+const {jwtDecode} = require("jwt-decode");
 
 const MoneyTransfer = () => {
   const accounts = [
@@ -14,7 +15,7 @@ const MoneyTransfer = () => {
     //{ type: "Current" },
   ];
 
-  const [customerId, setCustomerId] = useState(4); // State for customer ID later fetch using jwt
+  const [customerId, setCustomerId] = useState(jwtDecode(localStorage.getItem('token')).customerId); 
 
   const [account, setAccount] = useState({
     fromAcccountNo: "",

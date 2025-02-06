@@ -78,7 +78,7 @@ export const addImage = async (userId, file) => {
     try {
         const url = createUrl('transfer');
         const headers = {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
           "Authorization": `Bearer ${localStorage.getItem('token')}`
       }
         const response =await axios.post(url,reqbody,{headers});

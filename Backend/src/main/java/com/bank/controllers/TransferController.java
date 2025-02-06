@@ -21,7 +21,7 @@ public class TransferController {
 	@PostMapping
 	public ResponseEntity<?> transferMoney(@RequestBody TransferMoneyDto transferMoneyDto)
 	{
-		return transferService.transferMoney(transferMoneyDto.getFromAcccountNo(), transferMoneyDto.getToAcccountNo(), transferMoneyDto.getAmount(), transferMoneyDto.getDescription(), transferMoneyDto.getDescription());
+		return transferService.transferMoney(transferMoneyDto.getFromAcccountNo(), transferMoneyDto.getToAcccountNo(), transferMoneyDto.getAmount(), transferMoneyDto.getDescription(), transferMoneyDto.getIfsc());
 	}
 	
 }
