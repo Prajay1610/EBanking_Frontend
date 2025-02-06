@@ -48,6 +48,7 @@ public class TransferServiceImpl  implements TransferService{
 		BankAccount toAccount = bankAccRepository.findById(toAccountId).orElseThrow(()-> new ResourceNotFoundException("Reciever Account not found"));
 		
 		String originalRecieverIfsc=toAccount.getBank().getBankIfsc();
+		System.out.println("Receiver ifsc "+originalRecieverIfsc+" entered ifsc "+Ifsc);
 		
 		if(!originalRecieverIfsc.equals(Ifsc)) {
 			throw new InavlidIfscException("Ifsc code is invalid,Please retry!");

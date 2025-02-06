@@ -68,19 +68,7 @@ const ViewAllBankAccounts = () => {
     navigate(`/ManageBankAccount/${accountId}`);
   };
 
-  const lockAccountVar = async (accountId) => {
-    const response = await lockAccount(accountId);
-    if (response) {
-      fetchAllBankAccounts();
-    }
-  };
 
-  const unlockAccountVar = async (userId) => {
-    const response = await unlockAccount(userId);
-    if (response) {
-      fetchAllBankAccounts();
-    }
-  };
 
   return (
     <>

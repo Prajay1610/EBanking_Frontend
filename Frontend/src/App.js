@@ -33,6 +33,7 @@ import ManageBankAccount from './screens/BankManager/ManageBankAccount';
 import ViewAllCustomerTransactions from './screens/BankManager/ViewAllCustomerTransaction';
 
 import { jwtDecode } from 'jwt-decode';
+import CustomerProfileForManager from './screens/BankManager/CustomerProfileForManager';
 
 //similar for view Statements requires a wrapper
 const ViewBankAccountWrapper = () => {
@@ -75,10 +76,11 @@ function App() {
 
           <Route path='/ViewAllBankCustomers' element={<ViewAllBankCustomers/>}/>
           
+          <Route path='/transactions/:customerId' element={<ViewCustomerTransactions/>}/>
 
           <Route path='/customer/bank/account/detail/:accountId' element={<ViewBankAccountWrapper/>}/>
 
-          <Route path='/customerProfile/:customerId' element={<CustomerProfile/>}/>
+          <Route path='/customerProfile/:customerId' element={<CustomerProfileForManager/>}/>
 
           <Route path='/ViewSpecificAccountDetails/:customerId/:accountId' element={<ViewSpecificAccountDetails/>}/>
 
