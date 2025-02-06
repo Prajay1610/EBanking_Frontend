@@ -158,13 +158,11 @@ public class BankServiceImpl implements BankService{
 	@Override
 	public List<TransactionResponseDto> getAllTransactionsForBank(Long managerId) {
 	    // Retrieve the bank manager
-	    Optional<BankManager> bankManager = bankManagerRepository.findById(managerId);
-	    if (bankManager.isEmpty()) {
-	        throw new RuntimeException("Bank Manager not found");
-	    }
+	    BankManager bankManager = bankManagerRepository.findById(managerId).orElseThrow(()->new ResourceNotFoundException("manager id not found with id : "+ managerId));
+	    
 	    
 	    // Get bank ID from the manager
-	    Long bankId = bankManager.get().getBank().getId();
+	    Long bankId = bankManager.getBank().getId();
 
 	    // Fetch all accounts associated with the bank
 	    List<BankAccount> allBankAccounts = bankAccountRepository.findByBankId(bankId);
