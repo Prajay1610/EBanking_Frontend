@@ -29,7 +29,9 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable()).cors().
         	and()
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/login" , "/api/auth/register").permitAll() // Allow login endpoint
+            		.requestMatchers("/api/auth/login", "/api/auth/register", 
+                            "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
+
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/customer/**").hasAnyRole("CUSTOMER", "BANKMANAGER")
                 .requestMatchers("/transaction/**").hasRole("BANKMANAGER")
