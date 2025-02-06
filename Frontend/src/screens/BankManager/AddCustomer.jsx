@@ -36,7 +36,7 @@ const AddCustomer = () => {
     setProfileImage(e.target.files[0]);
   };
 
-  // Validate inputs
+  // Validate all the required inputs
   const validateInputs = () => {
     if (!customer.fname.trim()) {
       toast.error("First Name is required!");

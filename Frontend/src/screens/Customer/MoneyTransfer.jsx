@@ -303,7 +303,6 @@ const MoneyTransfer = () => {
             >
               Transfer
             </button>
-            <ToastContainer />
           </div>
         </form>
       </div>
