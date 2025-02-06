@@ -11,8 +11,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
-
 public class BankManagerRespDto {
 
 	
@@ -24,6 +22,8 @@ public class BankManagerRespDto {
 	private String contactNo;
 	private String Address;
 	private Long managerId;
+	private Boolean isActive;
+	
 	
 
 

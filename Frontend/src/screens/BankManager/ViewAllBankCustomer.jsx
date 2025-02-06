@@ -245,7 +245,7 @@ const ViewAllBankCustomers = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
+   
     </div>
 <Footer/>
     </>
