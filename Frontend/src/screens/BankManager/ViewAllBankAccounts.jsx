@@ -7,11 +7,7 @@ import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
 import { getAllBankAccounts, lockAccount, unlockAccount } from "../../services/bankManagerService";
 import {jwtDecode} from "jwt-decode";
-import {
-  getAllBankAccounts,
-  lockAccount,
-  unlockAccount,
-} from "../../services/bankManagerService";
+
 
 const ViewAllBankAccounts = () => {
       
@@ -25,6 +21,7 @@ const ViewAllBankAccounts = () => {
   const [tempAccountNumber, setTempAccountNumber] = useState("");
   const [loading, setLoading] = useState(true);
   const [managerId,setManagerId] = useState(bankId);
+  
    const lockAccountVar=async(accountId)=>{
   
       
@@ -34,14 +31,8 @@ const ViewAllBankAccounts = () => {
   
      
       }
-  
-  // Mock data for testing
-  const lockAccountVar = async (accountId) => {
-    const response = await lockAccount(accountId);
-    if (response) {
-      fetchAllBankAccounts();
     }
-  };
+  
 
   const unlockAccountVar = async (userId) => {
     const response = await unlockAccount(userId);
@@ -237,6 +228,6 @@ const ViewAllBankAccounts = () => {
     </>
   );
 }
-};
+
 
 export default ViewAllBankAccounts;
