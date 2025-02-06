@@ -54,7 +54,7 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails, Map<String, Object> additionalClaims) {
         Map<String, Object> claims = new HashMap<>();
 
         // Extract user roles from authorities
@@ -63,6 +63,11 @@ public class JwtUtil {
                 .collect(Collectors.toList());
 
         claims.put("role", roles); // Add roles to token
+        
+        if(additionalClaims != null)
+        {
+        	claims.putAll(additionalClaims);
+        }
 
         return createToken(claims, userDetails.getUsername());
     }

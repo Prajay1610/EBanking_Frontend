@@ -31,10 +31,10 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/login" , "/api/auth/register").permitAll() // Allow login endpoint
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/customer/**").hasAnyRole("CUSTOMER", "BANK-MANAGER")
-                .requestMatchers("/transaction/**").hasRole("BANK-MANAGER")
-                .requestMatchers("/bank/**").hasAnyRole("ADMIN", "BANK-MANAGER")
-                .requestMatchers("/bankAccount/**").hasAnyRole("CUSTOMER", "BANK-MANAGER")
+                .requestMatchers("/customer/**").hasAnyRole("CUSTOMER", "BANKMANAGER")
+                .requestMatchers("/transaction/**").hasRole("BANKMANAGER")
+                .requestMatchers("/bank/**").hasAnyRole("ADMIN", "BANKMANAGER")
+                .requestMatchers("/bankAccount/**").hasAnyRole("CUSTOMER", "BANKMANAGER")
                 .anyRequest().authenticated() 
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

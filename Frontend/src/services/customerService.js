@@ -75,7 +75,11 @@ export const addImage = async (userId, file) => {
   export const transferMoney=async(reqbody)=>{
     try {
         const url = createUrl('transfer');
-        const response =await axios.post(url,reqbody);
+        const headers = {
+          "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
+      }
+        const response =await axios.post(url,reqbody,{headers});
         return response.data;
     } catch (error) {
         console.error('Error transferring money:', error);
@@ -88,9 +92,12 @@ export const addImage = async (userId, file) => {
   export const getCustomerData=async(customerId)=>{
 
     try {
-      console.log("Service of getcust called");
       const url = createUrl(`customer/${customerId}`);
-      const response =await axios.get(url);
+      const headers = {
+        "Content-Type": "multipart/form-data",
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+    }
+      const response =await axios.get(url,{headers});
       
 
       return response.data;

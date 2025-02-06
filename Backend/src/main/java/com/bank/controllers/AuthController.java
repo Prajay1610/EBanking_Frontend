@@ -1,5 +1,8 @@
 package com.bank.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +26,7 @@ import com.bank.dtos.AuthRequest;
 import com.bank.dtos.AuthResponse;
 import com.bank.entities.User;
 import com.bank.exception.UnauthorizedAccessException;
+import com.bank.repositories.BankManagerRepository;
 import com.bank.repositories.UserRepository;
 import com.bank.security.CustomUserDetailsService;
 import com.bank.security.JwtUtil;
@@ -47,6 +51,9 @@ public class AuthController {
     @Autowired
     private CustomUserDetailsService userDetailsService;
     
+   @Autowired
+   private BankManagerRepository bankManagerRepo;
+    
     @Autowired
     private PasswordEncoder encoder;
     
@@ -57,6 +64,8 @@ public class AuthController {
 	
 	@PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthRequest authRequest)  {
+		
+		 final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getEmail());
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
@@ -64,9 +73,18 @@ public class AuthController {
         } catch (BadCredentialsException e) {
             throw new UnauthorizedAccessException("Incorrect username or password");
         }
-
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getEmail());
-        final String jwt = jwtUtil.generateToken(userDetails);
+        
+        boolean isBankManager = userDetails.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_BANKMANAGER"));
+        
+        Map<String, Object> additionalClaims = new HashMap<>();
+        if (isBankManager) {
+            Long bankId = bankManagerRepo.findByUserId(userRepository.findByEmail(authRequest.getEmail()).get().getId()).getId();
+            additionalClaims.put("bankId", bankId);
+        }
+        
+       
+        final String jwt = jwtUtil.generateToken(userDetails,additionalClaims);
         return ResponseEntity.ok(new AuthResponse(jwt));
     }
 	

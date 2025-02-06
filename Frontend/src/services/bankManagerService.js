@@ -79,7 +79,7 @@ export const viewAllBankCustomers=async(bankManagerId)=>{
         console.log("response", response.data);
         return response.data;
     } catch (error) {
-        throw error; // Re-throw the error for further handling if needed
+        throw error; 
     }
 }
 export const makeInActive=async(userId)=>{

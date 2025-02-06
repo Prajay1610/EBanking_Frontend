@@ -5,10 +5,16 @@ import { useNavigate ,Link} from "react-router-dom";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
 import { makeActive, makeInActive, viewAllBankCustomers } from "../../services/bankManagerService";
+import {jwtDecode} from "jwt-decode"; 
 const ViewAllBankCustomers = () => {
+
+  const token = localStorage.getItem("token");
+    const bankId= jwtDecode(token).bankId;
+
+
   let navigate = useNavigate();
   const [allCustomer, setAllCustomer] = useState([]);
- const [managerId,setManagerId]=useState(1);//set manager id from jwt session
+ const [managerId,setManagerId]=useState(bankId);
   const [tempCustomerName, setTempCustomerName] = useState("");
 
   

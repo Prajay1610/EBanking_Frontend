@@ -95,7 +95,7 @@ const Header = () => {
                 </>
               )}
 
-              {isLoggedIn && role === "ROLE_BANK_MANAGER" && (
+              {isLoggedIn && role === "ROLE_BANKMANAGER" && (
                 <>
                   <li className="nav-item">
                     <Link className="nav-link active text-black nunito-standardfont" to="/addCustomer">

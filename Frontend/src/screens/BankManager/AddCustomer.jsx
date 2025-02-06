@@ -5,9 +5,10 @@ import { toast } from "react-toastify";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
 import { addCustomer, addImage } from "../../services/customerService";
-
+import { jwtDecode } from "jwt-decode";
 const AddCustomer = () => {
-  const bankId=localStorage.getItem("bankId") || 1;
+  const token = localStorage.getItem("token");
+  const bankId= jwtDecode(token).bankId;
 
   const [customer, setCustomer] = useState({
     fname: "",
