@@ -40,7 +40,7 @@ const AddBankManager = () => {
       toast.error("Email is required!");
       return false;
     }
-    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/.test(bank.email)) {
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(bank.email)) {
       toast.error("Please enter a valid email address!");
       return false;
     }
