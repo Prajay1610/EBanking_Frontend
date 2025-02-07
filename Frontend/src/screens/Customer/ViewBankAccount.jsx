@@ -350,7 +350,6 @@ const ViewBankAccounts = ({accountId}) => {
 
     
         </div>
-        <ToastContainer position="top-center" autoClose={3000} />
       </div>
       <Footer />
     </>
