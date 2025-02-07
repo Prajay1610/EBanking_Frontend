@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from "react";
 
 import Footer from "../../components/layouts/Footer/Footer";
-import { Link, useNavigate, useParams } from "react-router-dom"; // Import Link from react-router-dom
+import { Link, useNavigate } from "react-router-dom"; // Import Link from react-router-dom
 import Header from "../../components/layouts/Header/Header";
-import { config } from "../../config"; // Import config.js 
+import { config } from "../../config"; // Import config.js
 
 import {
   getAllTransactions,
   getCustomerAccountData,
   getCustomerData,
 } from "../../services/customerService";
-import { Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 
-const CustomerProfile = ({customerId}) => {
+const CustomerProfile = ({ customerId }) => {
   let navigate = useNavigate();
   const [isDefaultImage, setIsDefaultImage] = useState(false);
-  
+
   const [customerData, setCustomerData] = useState(null); // State for customer data
   const [accountsData, setAccountsData] = useState([]); // State for customer data
   const [loading, setLoading] = useState(true); // State for loading
@@ -25,7 +24,6 @@ const CustomerProfile = ({customerId}) => {
     const fetchCustomerData = async () => {
       try {
         const data = await getCustomerData(customerId);
-        console.log(data);
         setCustomerData(data); // Store fetched data
       } catch (error) {
         console.error("Error fetching customer data:", error);
@@ -41,7 +39,6 @@ const CustomerProfile = ({customerId}) => {
     const fetchAccountData = async () => {
       try {
         const data = await getCustomerAccountData(customerId);
-        console.log("data" + data);
 
         if (data) {
           setAccountsData(data || []); // Always keep last 3 transactions
@@ -90,11 +87,9 @@ const CustomerProfile = ({customerId}) => {
   const retrieveAllTransactions = async () => {
     try {
       const response = await getAllTransactions(customerId);
-      console.log("response", response);
 
       return response;
     } catch (error) {
-      console.error("Error fetching transactions:", error);
       toast.error("Failed to fetch transactions. Please try again.");
       return null;
     }
@@ -140,23 +135,20 @@ const CustomerProfile = ({customerId}) => {
               <div className="card-body">
                 {/* Customer Overview */}
                 <div className="text-center mb-4">
-               
-
-                <img
-
-  src={`${config.serverUrl}/api/auth/${customerId}/profile-image`}
-
-
-  alt="Customer Avatar"
-  className={`rounded-circle img-thumbnail ${isDefaultImage ? "default-profile" : ""}`}
-  width="150"
-  height="150"
-  onError={(e) => {
-    e.target.onerror = null;
-    e.target.src = "/assets/default_image.png"; // Fallback image
-    setIsDefaultImage(true);
-  }}
-/>
+                  <img
+                    src={`${config.serverUrl}/api/auth/${customerId}/profile-image`}
+                    alt="Customer Avatar"
+                    className={`rounded-circle img-thumbnail ${
+                      isDefaultImage ? "default-profile" : ""
+                    }`}
+                    width="150"
+                    height="150"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "/assets/default_image.png"; // Fallback image
+                      setIsDefaultImage(true);
+                    }}
+                  />
 
                   <h5 className="mt-3">{customerData.name}</h5>
                   <p className="text-muted">{customerData.email}</p>
@@ -214,25 +206,24 @@ const CustomerProfile = ({customerId}) => {
                             <td>{account.bankName}</td>
                             <td>{account.accountType}</td>
                             <td>
-  <Link 
-    to={`/ViewSpecificAccountDetails/${customerId}/${account.accountId}`} 
-    className="btn btn-secondary"
-    style={{ backgroundColor: "#413C69", textDecoration: 'none' }} 
-  >
-    View Details
-  </Link>
-</td>
-                            <td>
-                            <Link 
-                              to={`/customer/bank/account/detail/${account.accountId}`} 
-                            >
-                              <button
-                                className="btn btn-success"
-                               
+                              <Link
+                                to={`/ViewSpecificAccountDetails/${customerId}/${account.accountId}`}
+                                className="btn btn-secondary"
+                                style={{
+                                  backgroundColor: "#413C69",
+                                  textDecoration: "none",
+                                }}
                               >
-                              
-                              Download Statement
-                              </button>
+                                View Details
+                              </Link>
+                            </td>
+                            <td>
+                              <Link
+                                to={`/customer/bank/account/detail/${account.accountId}`}
+                              >
+                                <button className="btn btn-success">
+                                  Download Statement
+                                </button>
                               </Link>
                             </td>
                           </tr>
@@ -290,7 +281,6 @@ const CustomerProfile = ({customerId}) => {
 
                 {/* Buttons with Link for Navigation */}
                 <div className="text-center mt-4">
-
                   <button
                     className="btn btn-sm btn-primary mx-2"
                     style={{ backgroundColor: "#544892", border: "none" }}
@@ -298,8 +288,6 @@ const CustomerProfile = ({customerId}) => {
                   >
                     View Transactions
                   </button>
-
-                 
 
                   <Link to="/logout" className="btn btn-danger mx-2">
                     Logout

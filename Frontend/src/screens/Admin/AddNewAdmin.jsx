@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
 import { addNewUser } from "../../services/adminService";
@@ -126,7 +126,6 @@ const AddNewAdmin = () => {
         toast.error("Failed to add admin. Please try again.");
       }
     } catch (error) {
-      console.error("Error while adding admin:", error);
       toast.error("An unexpected error occurred. Please try again later.");
     }
   };

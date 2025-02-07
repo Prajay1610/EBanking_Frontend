@@ -10,7 +10,6 @@ export const getAllTransactions = async (customerId) => {
           "Content-Type": 'application/json',
           "Authorization": `Bearer ${localStorage.getItem('token')}`
       }
-        console.log("called url",url)
         const response = await axios.get(url,{headers});
         return response.data;
     } catch (error) {
@@ -120,7 +119,6 @@ export const addImage = async (userId, file) => {
         "Authorization": `Bearer ${localStorage.getItem('token')}`
     }
       const response =await axios.get(url,{headers});
-      console.log(response)
 
       return response.data;
   } catch (error) {
@@ -139,7 +137,6 @@ export const addImage = async (userId, file) => {
         // Convert date string (YYYY-MM-DD) to timestamp (start of the day)
         const convertToTimestamp = (dateStr) => new Date(dateStr).setHours(0, 0, 0, 0);
 
-        console.log("Fetched transactions:", allTransactions);
 
         // Calculate start and end timestamps for filtering
         const startDateTimestamp = convertToTimestamp(reqbody.startDate);

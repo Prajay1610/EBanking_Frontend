@@ -1,67 +1,52 @@
 import { useState, useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate ,Link} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
-import { makeActive, makeInActive, viewAllBankCustomers } from "../../services/bankManagerService";
+import {
+  makeActive,
+  makeInActive,
+  viewAllBankCustomers,
+} from "../../services/bankManagerService";
 
-import {jwtDecode} from "jwt-decode"; 
+import { jwtDecode } from "jwt-decode";
 
 const ViewAllBankCustomers = () => {
   const token = localStorage.getItem("token");
-  const bankId= jwtDecode(token).bankId;
+  const bankId = jwtDecode(token).bankId;
   let navigate = useNavigate();
   const [allCustomer, setAllCustomer] = useState([]);
 
   const [filteredCustomers, setFilteredCustomers] = useState([]);
 
- const [managerId,setManagerId]=useState(bankId);
+  const [managerId, setManagerId] = useState(bankId);
 
   const [tempCustomerName, setTempCustomerName] = useState("");
 
- 
- 
-
-
-  
-  
-
-  
-  const makeInActiveVar=async(userId)=>{
-
-    
-    const response = await makeInActive(userId); 
-    if(response){
-      getAllBankCustomers(managerId);
-
-   
-    }
-  }
-  const makeActiveVar=async(userId)=>{
-
-    
-    const response = await makeActive(userId); 
-    if(response){
-    
+  const makeInActiveVar = async (userId) => {
+    const response = await makeInActive(userId);
+    if (response) {
       getAllBankCustomers(managerId);
     }
-  }
-   const getAllBankCustomers = async (accountId) => {
-      try {
-               
-                const response = await viewAllBankCustomers(accountId); 
-                if (response) {
-                  console.log("Bank Customers:", response);
-                  
-                  setAllCustomer(response); // Update state with the retrieved data
-                  setFilteredCustomers(response);
-                }
-              } catch (error) {
-                console.error("Error fetching bank customers:", error);
-                toast.error("Failed to load bank customers. Please try again later.");
-              } 
-    };
+  };
+  const makeActiveVar = async (userId) => {
+    const response = await makeActive(userId);
+    if (response) {
+      getAllBankCustomers(managerId);
+    }
+  };
+  const getAllBankCustomers = async (accountId) => {
+    try {
+      const response = await viewAllBankCustomers(accountId);
+      if (response) {
+        setAllCustomer(response); // Update state with the retrieved data
+        setFilteredCustomers(response);
+      }
+    } catch (error) {
+      toast.error("Failed to load bank customers. Please try again later.");
+    }
+  };
 
   // Simulate fetching data from the backend
   useEffect(() => {
@@ -69,7 +54,6 @@ const ViewAllBankCustomers = () => {
   }, []);
   const viewCustomerDetails = (customerId) => {
     navigate(`/customerProfileForManager/${customerId}`);
-
   };
 
   useEffect(() => {
@@ -78,7 +62,9 @@ const ViewAllBankCustomers = () => {
       setFilteredCustomers(allCustomer); // Restore original data if search box is empty
     } else {
       const filtered = allCustomer.filter((customer) =>
-        (customer.customerName ?? "").toLowerCase().includes(tempCustomerName.toLowerCase())
+        (customer.customerName ?? "")
+          .toLowerCase()
+          .includes(tempCustomerName.toLowerCase())
       );
       setFilteredCustomers(filtered);
     }
@@ -89,7 +75,9 @@ const ViewAllBankCustomers = () => {
     setTempCustomerName(tempCustomerName);
     // Filter mock data based on customer name
     const filteredCustomers = allCustomer.filter((customer) =>
-      (customer.customerName ?? "").toLowerCase().includes(tempCustomerName.toLowerCase())
+      (customer.customerName ?? "")
+        .toLowerCase()
+        .includes(tempCustomerName.toLowerCase())
     );
     setAllCustomer(filteredCustomers);
   };
@@ -124,53 +112,55 @@ const ViewAllBankCustomers = () => {
 
   return (
     <>
-    <Header/>
-    <div style={{ backgroundColor: "#f8f9fa", minHeight: "100vh" }}>
-      <div className="mt-2">
-        <div
-          className="card form-card ms-5 me-5 mb-5"
-          style={{
-            backgroundColor: "#ffffff",
-            border: "1px solid #544892",
-            borderRadius: "10px",
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-          }}
-        >
+      <Header />
+      <div style={{ backgroundColor: "#f8f9fa", minHeight: "100vh" }}>
+        <div className="mt-2">
           <div
-            className="card-header text-center"
+            className="card form-card ms-5 me-5 mb-5"
             style={{
-              backgroundColor: "#544892",
-              color: "#ffffff",
-              borderBottom: "1px solid #544892",
-              borderRadius: "10px 10px 0 0",
+              backgroundColor: "#ffffff",
+              border: "1px solid #544892",
+              borderRadius: "10px",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
             }}
           >
-            <h2>All Bank Customers</h2>
-          </div>
-          <div
-            className="card-body"
-            style={{
-              overflowY: "auto",
-            }}
-          >
-            <div className="row mb-3">
-              <div className="col">
-                <form className="row g-3 align-items-center">
-                  <div className="col-auto">
-                    <label>
-                      <b>Customer Name</b>
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Enter customer name..."
-                      onChange={(e) => {setTempCustomerName(e.target.value);}}
-                      value={tempCustomerName}
-                      required
-                      style={{ border: "1px solid #544892" }}
-                    />
-                  </div>
-                  {/* <div className="col-auto">
+            <div
+              className="card-header text-center"
+              style={{
+                backgroundColor: "#544892",
+                color: "#ffffff",
+                borderBottom: "1px solid #544892",
+                borderRadius: "10px 10px 0 0",
+              }}
+            >
+              <h2>All Bank Customers</h2>
+            </div>
+            <div
+              className="card-body"
+              style={{
+                overflowY: "auto",
+              }}
+            >
+              <div className="row mb-3">
+                <div className="col">
+                  <form className="row g-3 align-items-center">
+                    <div className="col-auto">
+                      <label>
+                        <b>Customer Name</b>
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter customer name..."
+                        onChange={(e) => {
+                          setTempCustomerName(e.target.value);
+                        }}
+                        value={tempCustomerName}
+                        required
+                        style={{ border: "1px solid #544892" }}
+                      />
+                    </div>
+                    {/* <div className="col-auto">
                     <button
                       type="submit"
                       className="btn btn-primary btn-lg"
@@ -180,105 +170,105 @@ const ViewAllBankCustomers = () => {
                       Search
                     </button>
                   </div> */}
-                </form>
+                  </form>
+                </div>
               </div>
-            </div>
-            <div className="table-responsive mt-2">
-              <table className="table table-hover text-center">
-                <thead
-                  className="table-bordered"
-                  style={{ backgroundColor: "#544892", color: "#ffffff" }}
-                >
-                  <tr>
-                    <th scope="col">Customer Name</th>
-                    <th scope="col">Bank Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Gender</th>
-                    <th scope="col">Contact</th>
-                    <th scope="col">Address</th>
-                    <th scope="col">Status</th>
-                   
-                    <th scope="col">View customer profile</th>
-                    <th scope="col">Action</th>
-                    
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredCustomers.map((customer) => (
-                    <tr key={customer.accountId} style={{ backgroundColor: "#f8f9fa" }}>
-                      <td>
-                        <b>{customer.customerName}</b>
-                      </td>
-                      <td>
-                        <b>{customer.bankName}</b>
-                      </td>
-                      <td>
-                        <b>{customer.customerEmail}</b>
-                      </td>
-                      <td>
-                        <b>{customer.gender}</b>
-                      </td>
-                      <td>
-                        <b>{customer.customerContact}</b>
-                      </td>
-                      <td>
-                        <b>{customer.customerAddress}</b>
-                      </td>
-                      <td>{customer.customerStatus==true?(<b className="text-success">Active</b>):(<b className="text-danger">InActive</b>)}</td>
-                      <td>
-                        
+              <div className="table-responsive mt-2">
+                <table className="table table-hover text-center">
+                  <thead
+                    className="table-bordered"
+                    style={{ backgroundColor: "#544892", color: "#ffffff" }}
+                  >
+                    <tr>
+                      <th scope="col">Customer Name</th>
+                      <th scope="col">Bank Name</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Gender</th>
+                      <th scope="col">Contact</th>
+                      <th scope="col">Address</th>
+                      <th scope="col">Status</th>
+
+                      <th scope="col">View customer profile</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredCustomers.map((customer) => (
+                      <tr
+                        key={customer.accountId}
+                        style={{ backgroundColor: "#f8f9fa" }}
+                      >
+                        <td>
+                          <b>{customer.customerName}</b>
+                        </td>
+                        <td>
+                          <b>{customer.bankName}</b>
+                        </td>
+                        <td>
+                          <b>{customer.customerEmail}</b>
+                        </td>
+                        <td>
+                          <b>{customer.gender}</b>
+                        </td>
+                        <td>
+                          <b>{customer.customerContact}</b>
+                        </td>
+                        <td>
+                          <b>{customer.customerAddress}</b>
+                        </td>
+                        <td>
+                          {customer.customerStatus == true ? (
+                            <b className="text-success">Active</b>
+                          ) : (
+                            <b className="text-danger">InActive</b>
+                          )}
+                        </td>
+                        <td>
                           <button
                             //onClick={() => viewAccountDetails(customer)}
                             className="btn btn-sm btn-primary mx-2"
-                            style={{ backgroundColor: "#544892", border: "none" }}
-                            onClick={() => viewCustomerDetails(customer.customerId)}
+                            style={{
+                              backgroundColor: "#544892",
+                              border: "none",
+                            }}
+                            onClick={() =>
+                              viewCustomerDetails(customer.customerId)
+                            }
                           >
-                           
-                    View Customer Profile
-                  
+                            View Customer Profile
                           </button>
-                        
-                        
-                      </td>
-                       
-                      <td>
-                      {customer.customerStatus === true ? (
-                          <button
-                           // onClick={() => viewAccountDetails(customer)}
-                            className="btn btn-sm btn-danger mx-2"
-                         
-                            onClick={() => makeInActiveVar(customer.userId)}
+                        </td>
 
-                          >
-
-                           InActive
-                          </button>
-                        ) : (
-                          <button
-                          //onClick={() => viewAccountDetails(customer)}
-                          className="btn btn-sm btn-success"
-                          
-                          onClick={() => makeActiveVar(customer.userId)}
-
-                        >
-                         Active
-                        </button>
-                        )}
-                      </td>
-                      
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                        <td>
+                          {customer.customerStatus === true ? (
+                            <button
+                              // onClick={() => viewAccountDetails(customer)}
+                              className="btn btn-sm btn-danger mx-2"
+                              onClick={() => makeInActiveVar(customer.userId)}
+                            >
+                              InActive
+                            </button>
+                          ) : (
+                            <button
+                              //onClick={() => viewAccountDetails(customer)}
+                              className="btn btn-sm btn-success"
+                              onClick={() => makeActiveVar(customer.userId)}
+                            >
+                              Active
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    
-    </div>
-<Footer/>
+      <Footer />
     </>
-    
   );
 };
 

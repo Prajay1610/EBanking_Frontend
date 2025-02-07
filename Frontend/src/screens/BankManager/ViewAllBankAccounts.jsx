@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
-import axios from "axios";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
 import {
@@ -25,10 +24,6 @@ const ViewAllBankAccounts = () => {
 
   const [managerId, setManagerId] = useState(bankId);
 
-
-
-  
-
   const lockAccountVar = async (accountId) => {
     const response = await lockAccount(accountId);
     if (response) {
@@ -43,20 +38,18 @@ const ViewAllBankAccounts = () => {
     }
   };
 
-
-
   const fetchAllBankAccounts = async () => {
     try {
       setLoading(true);
       const response = await getAllBankAccounts(managerId);
       if (response) {
-        console.log("Bank Accounts:", response);
         setOriginalAccounts(response); // Store original data
         setAllAccounts(response); // Display full list initially
       }
     } catch (error) {
-      console.error("Error fetching bank accounts:", error);
-      toast.error("Failed to fetch bank accounts. Please try again later: "+error);
+      toast.error(
+        "Failed to fetch bank accounts. Please try again later: " + error
+      );
     } finally {
       setLoading(false);
     }
@@ -83,8 +76,6 @@ const ViewAllBankAccounts = () => {
   const viewAccountDetails = (accountId) => {
     navigate(`/ManageBankAccount/${accountId}`);
   };
-
-
 
   return (
     <>
@@ -220,7 +211,6 @@ const ViewAllBankAccounts = () => {
             </div>
           </div>
         </div>
-     
       </div>
       <Footer />
     </>
