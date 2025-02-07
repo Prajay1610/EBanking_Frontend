@@ -68,7 +68,7 @@ const ViewAllBankCustomers = () => {
     getAllBankCustomers(managerId);
   }, []);
   const viewCustomerDetails = (customerId) => {
-    navigate(`/customerProfile/${customerId}`);
+    navigate(`/customerProfileForManager/${customerId}`);
 
   };
 

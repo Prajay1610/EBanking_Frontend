@@ -76,7 +76,7 @@ function App() {
 
           <Route path='/ViewAllBankCustomers' element={<ViewAllBankCustomers/>}/>
           
-          <Route path='/transactions/:customerId' element={<ViewCustomerTransactions/>}/>
+          <Route path='/customer/transactions' element={<ViewCustomerTransactions/>}/>
 
           <Route path='/customer/bank/account/detail/:accountId' element={<ViewBankAccountWrapper/>}/>
 
@@ -89,7 +89,7 @@ function App() {
           <Route path='/AddBankAccount' element={<AddBankAccountForm/>}/>
           <Route path="/ManageBankAccount/:accountId" element={<ManageAccountWrapper />} />
           <Route path="/bank/transactions" element={<ViewAllCustomerTransactions/>}/>
-
+          <Route path="/customerProfileForManager/:customerId" element={<CustomerProfileForManager/>}/>"
           
 
         </Routes>

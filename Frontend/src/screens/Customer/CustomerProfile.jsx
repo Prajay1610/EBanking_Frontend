@@ -111,8 +111,8 @@ const CustomerProfile = ({customerId}) => {
     getAllTransactions(customerId);
   }, []);
 
-  const viewTransactions = (customerId) => {
-    navigate(`/transactions/${customerId}`);
+  const viewTransactions = () => {
+    navigate(`/customer/transactions/`);
   };
 
   if (loading) {
@@ -290,7 +290,7 @@ const CustomerProfile = ({customerId}) => {
                   <button
                     className="btn btn-sm btn-primary mx-2"
                     style={{ backgroundColor: "#544892", border: "none" }}
-                    onClick={() => viewTransactions(customerId)}
+                    onClick={() => viewTransactions()}
                   >
                     View Transactions
                   </button>
