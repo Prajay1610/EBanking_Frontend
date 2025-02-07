@@ -24,8 +24,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.bank.dtos.ApiResponse;
 import com.bank.dtos.AuthRequest;
 import com.bank.dtos.AuthResponse;
+import com.bank.entities.Customer;
 import com.bank.entities.User;
 import com.bank.exception.UnauthorizedAccessException;
+import com.bank.repositories.BankAccountRepository;
 import com.bank.repositories.BankManagerRepository;
 import com.bank.repositories.CustomerRepository;
 import com.bank.repositories.UserRepository;
@@ -64,6 +66,8 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
     
+    @Autowired
+    private BankAccountRepository bankAccRepo;
 	
 	@PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthRequest authRequest)  {
@@ -94,6 +98,9 @@ public class AuthController {
         	Long customerId=customerRepo.findByUserId(userRepository.findByEmail(authRequest.getEmail()).get().getId()).get().getId();
         	System.out.println("Customer id : "+customerId);
         	additionalClaims.put("customerId", customerId);
+        	
+        	String ifscCode = bankAccRepo.findByCustomerId(customerId).get(0).getBank().getBankIfsc();
+        	additionalClaims.put("ifscCode", ifscCode);
         }
        
         final String jwt = jwtUtil.generateToken(userDetails,additionalClaims);
@@ -122,10 +129,15 @@ public class AuthController {
     }
 	
 	
-	@GetMapping("/{userId}/profile-image")
-	public ResponseEntity<byte[]> getProfileImage(@PathVariable Long userId) {
-	    User user = userRepository.findById(userId)
-	            .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+	@GetMapping("/{customerId}/profile-image")
+	public ResponseEntity<byte[]> getProfileImage(@PathVariable Long customerId) {
+		
+		
+		Customer customer=customerRepo.findById(customerId).get();
+	    User user = userRepository.findById(customer.getUser().getId())
+	            .orElseThrow(() -> new RuntimeException("User not found with ID: " + customer.getUser().getId()));
+	    
+	    
 
 	    byte[] imageBytes = user.getProfileImage();
 	    if (imageBytes == null) {
