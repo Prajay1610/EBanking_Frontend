@@ -150,7 +150,7 @@ const MoneyTransfer = () => {
       setIsEditAble(true); // Reset edit state
     } catch (error) {
       console.error("Error transferring money:", error);
-      toast.error("Error transferring money. Please try again.");
+      // toast.error("Error transferring money. Please try again.");
     }
   };
 
