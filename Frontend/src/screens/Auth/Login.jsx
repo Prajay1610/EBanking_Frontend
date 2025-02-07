@@ -13,12 +13,22 @@ const Login = () => {
 
   const navigate=useNavigate();
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  };
 
   const onSubmit = async () => {
     if (!email || !password) {
       toast.error('Please enter email and password');
       return;
     }
+
+    if (!validateEmail(email)) {
+      toast.error('Invalid email format');
+      return;
+    }
+
     try {
       const response = await login(email, password);
       console.log("Response from backend:", response);
