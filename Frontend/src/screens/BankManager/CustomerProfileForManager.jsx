@@ -115,7 +115,7 @@ const CustomerProfileForManager = () => {
   }, []);
 
   const viewTransactions = (customerId) => {
-    navigate(`/transactions/${customerId}`);
+    navigate(`/customer/transactions/${customerId}`);
   };
 
   if (loading) {

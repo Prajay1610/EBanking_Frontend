@@ -143,7 +143,10 @@ const CustomerProfile = ({customerId}) => {
                
 
                 <img
+
   src={`${config.serverUrl}/api/auth/${customerData.userId}/profile-image`}
+
+
   alt="Customer Avatar"
   className={`rounded-circle img-thumbnail ${isDefaultImage ? "default-profile" : ""}`}
   width="150"

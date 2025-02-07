@@ -77,13 +77,15 @@ function App() {
           <Route path='/ViewAllBankCustomers' element={<ViewAllBankCustomers/>}/>
           
           <Route path='/customer/transactions' element={<ViewCustomerTransactions/>}/>
+          <Route path='/customer/transactions/:customerId' element={<ViewCustomerTransactions/>}/>
+
 
           <Route path='/customer/bank/account/detail/:accountId' element={<ViewBankAccountWrapper/>}/>
 
           <Route path='/customerProfile/:customerId' element={<CustomerProfileForManager/>}/>
 
           <Route path='/ViewSpecificAccountDetails/:customerId/:accountId' element={<ViewSpecificAccountDetails/>}/>
-
+          
           <Route path='/ViewAllBanks' element={<ViewAllBanks/>}/>
           <Route path='/MoneyTransfer' element={<MoneyTransfer/>}/>
           <Route path='/AddBankAccount' element={<AddBankAccountForm/>}/>
