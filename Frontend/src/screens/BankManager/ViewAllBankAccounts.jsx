@@ -6,16 +6,16 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
-import { getAllBankAccounts, lockAccount, unlockAccount } from "../../services/bankManagerService";
-import {jwtDecode} from "jwt-decode";
-
-
+import {
+  getAllBankAccounts,
+  lockAccount,
+  unlockAccount,
+} from "../../services/bankManagerService";
+import { jwtDecode } from "jwt-decode";
 
 const ViewAllBankAccounts = () => {
-      
   const token = localStorage.getItem("token");
-  const bankId= jwtDecode(token).bankId;
-
+  const bankId = jwtDecode(token).bankId;
 
   let navigate = useNavigate();
   const [allAccounts, setAllAccounts] = useState([]); // Filtered list
@@ -23,9 +23,12 @@ const ViewAllBankAccounts = () => {
   const [tempAccountNumber, setTempAccountNumber] = useState("");
   const [loading, setLoading] = useState(true);
 
+  const [managerId, setManagerId] = useState(bankId);
 
-  const [managerId,setManagerId] = useState(bankId);
+
+
   
+
   const lockAccountVar = async (accountId) => {
     const response = await lockAccount(accountId);
     if (response) {
@@ -192,7 +195,9 @@ const ViewAllBankAccounts = () => {
                         </td>
                         <td>
                           <button
-                            onClick={() => viewAccountDetails(account.accountId)}
+                            onClick={() =>
+                              viewAccountDetails(account.accountId)
+                            }
                             className="btn btn-sm btn-primary"
                             style={{
                               backgroundColor: "#544892",
@@ -220,7 +225,6 @@ const ViewAllBankAccounts = () => {
       <Footer />
     </>
   );
-}
-
+};
 
 export default ViewAllBankAccounts;
