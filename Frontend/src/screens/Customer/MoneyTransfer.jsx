@@ -67,7 +67,7 @@ const MoneyTransfer = () => {
     if (!account.fromAcccountNo || isNaN(account.fromAcccountNo)) {
       toast.error("From Account Number is required and must be numeric!");
       isValid = false;
-    } else if (!/^\d{6}$/.test(account.fromAcccountNo)) {
+    } else if (!/^\d{7}$/.test(account.fromAcccountNo)) {
       toast.error("Please enter a valid From Account Number (6 digits)!");
       isValid = false;
     }
@@ -76,7 +76,7 @@ const MoneyTransfer = () => {
     if (isValid && (!account.toAcccountNo || isNaN(account.toAcccountNo))) {
       toast.error("To Account Number is required and must be numeric!");
       isValid = false;
-    } else if (isValid && !/^\d{6}$/.test(account.toAcccountNo)) {
+    } else if (isValid && !/^\d{7}$/.test(account.toAcccountNo)) {
       toast.error("Please enter a valid To Account Number (6 digits)!");
       isValid = false;
     }
@@ -177,12 +177,11 @@ const MoneyTransfer = () => {
   return (
     <>
       <Header />
-
       <div className="d-flex flex-column align-items-center min-vh-100">
         {/* Card for Account Details */}
         <div
           className="card form-card border-color custom-bg my-3"
-          style={{ width: "50rem" }}
+          style={{ width: "100%", maxWidth: "50rem" }}
         >
           <div
             className="card-header custom-bg-text text-center"
@@ -218,8 +217,8 @@ const MoneyTransfer = () => {
                       <td>{account.accountType}</td>
                       <td>
                         <button
-                          className="btn btn-success"
-                          onClick={handleUseAccount(account.accountId)}
+                          className="btn btn-success btn-sm"
+                          onClick={() => handleUseAccount(account.accountId)}
                         >
                           Use Account
                         </button>
@@ -231,11 +230,11 @@ const MoneyTransfer = () => {
             </div>
           </div>
         </div>
-
+  
         {/* Card for Transfer Money */}
         <div
           className="card form-card border-color custom-bg my-3"
-          style={{ width: "50rem" }}
+          style={{ width: "100%", maxWidth: "50rem" }}
         >
           <div
             className="card-header custom-bg-text text-center"
@@ -255,7 +254,7 @@ const MoneyTransfer = () => {
           >
             <form className="row g-3">
               {/* From Account Number Field */}
-              <div className="col-md-6 mb-3">
+              <div className="col-12 col-md-6 mb-3">
                 <label htmlFor="fromAcccountNo" className="form-label">
                   <b>From Account Number</b>
                 </label>
@@ -270,9 +269,9 @@ const MoneyTransfer = () => {
                   disabled={!editAble}
                 />
               </div>
-
+  
               {/* To Account Number Field */}
-              <div className="col-md-6 mb-3">
+              <div className="col-12 col-md-6 mb-3">
                 <label htmlFor="toAccno" className="form-label">
                   <b>To Account Number</b>
                 </label>
@@ -286,9 +285,9 @@ const MoneyTransfer = () => {
                   min={0}
                 />
               </div>
-
+  
               {/* Same Bank Checkbox */}
-              <div className="col-md-6 mb-3">
+              <div className="col-12 col-md-6 mb-3">
                 <label className="form-label">
                   <b>Same Bank?</b>
                 </label>
@@ -304,9 +303,9 @@ const MoneyTransfer = () => {
                   </label>
                 </div>
               </div>
-
+  
               {/* IFSC Field */}
-              <div className="col-md-6 mb-3">
+              <div className="col-12 col-md-6 mb-3">
                 <label htmlFor="ifsc" className="form-label">
                   <b>IFSC</b>
                 </label>
@@ -320,9 +319,9 @@ const MoneyTransfer = () => {
                   disabled={account.isSameBank} // Disable if "Same Bank" checkbox is checked
                 />
               </div>
-
+  
               {/* Amount Field */}
-              <div className="col-md-6 mb-3">
+              <div className="col-12 col-md-6 mb-3">
                 <label htmlFor="amount" className="form-label">
                   <b>Amount</b>
                 </label>
@@ -335,9 +334,9 @@ const MoneyTransfer = () => {
                   value={account.amount}
                 />
               </div>
-
+  
               {/* Description Field */}
-              <div className="col-md-6 mb-3">
+              <div className="col-12 col-md-6 mb-3">
                 <label htmlFor="description" className="form-label">
                   <b>Purpose</b>
                 </label>
@@ -350,12 +349,12 @@ const MoneyTransfer = () => {
                   value={account.description}
                 />
               </div>
-
+  
               {/* Transfer Button */}
-              <div className="d-flex align-items-center justify-content-center">
+              <div className="col-12 d-flex justify-content-center">
                 <button
                   type="submit"
-                  className="btn btn-success bg-color custom-bg-text col-md-4"
+                  className="btn btn-success bg-color custom-bg-text col-12 col-md-4"
                   onClick={handleTransfer}
                   style={{
                     backgroundColor: "#534891",

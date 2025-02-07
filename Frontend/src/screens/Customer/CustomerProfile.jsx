@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Footer from "../../components/layouts/Footer/Footer";
 import { Link, useNavigate, useParams } from "react-router-dom"; // Import Link from react-router-dom
 import Header from "../../components/layouts/Header/Header";
+import { config } from "../../config"; // Import config.js 
 
 import {
   getAllTransactions,
@@ -111,8 +112,8 @@ const CustomerProfile = ({customerId}) => {
     getAllTransactions(customerId);
   }, []);
 
-  const viewTransactions = () => {
-    navigate(`/customer/transactions/`);
+  const viewTransactions = (customerId) => {
+    navigate(`/transactions/${customerId}`);
   };
 
   if (loading) {
@@ -142,7 +143,10 @@ const CustomerProfile = ({customerId}) => {
                
 
                 <img
-  src={`http://localhost:8080/api/auth/${customerData.userId}/profile-image`}
+
+  src={`${config.serverUrl}/api/auth/${customerData.userId}/profile-image`}
+
+
   alt="Customer Avatar"
   className={`rounded-circle img-thumbnail ${isDefaultImage ? "default-profile" : ""}`}
   width="150"
@@ -290,7 +294,7 @@ const CustomerProfile = ({customerId}) => {
                   <button
                     className="btn btn-sm btn-primary mx-2"
                     style={{ backgroundColor: "#544892", border: "none" }}
-                    onClick={() => viewTransactions()}
+                    onClick={() => viewTransactions(customerId)}
                   >
                     View Transactions
                   </button>

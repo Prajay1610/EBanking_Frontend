@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Footer from "../../components/layouts/Footer/Footer";
 import { Link, useNavigate, useParams } from "react-router-dom"; // Import Link from react-router-dom
 import Header from "../../components/layouts/Header/Header";
+import { config } from "../../config"; // Import config.js 
 
 import {
   getAllTransactions,
@@ -114,7 +115,7 @@ const CustomerProfileForManager = () => {
   }, []);
 
   const viewTransactions = (customerId) => {
-    navigate(`/transactions/${customerId}`);
+    navigate(`/customer/transactions/${customerId}`);
   };
 
   if (loading) {
@@ -144,7 +145,8 @@ const CustomerProfileForManager = () => {
                
 
                 <img
-  src={`http://localhost:8080/api/auth/${customerId}/profile-image`}
+  src={`${config.serverUrl}/api/auth/${customerId}/profile-image`} 
+
   alt="Customer Avatar"
   className={`rounded-circle img-thumbnail ${isDefaultImage ? "default-profile" : ""}`}
   width="150"

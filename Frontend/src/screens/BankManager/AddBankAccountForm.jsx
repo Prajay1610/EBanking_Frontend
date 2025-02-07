@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
+import { config } from "../../config"; // Import config.js 
+
 const AddBankAccountForm = () => {
   const [bankUsers, setBankUsers] = useState([]);
   const admin_jwtToken = sessionStorage.getItem("admin-jwtToken");
@@ -11,7 +13,7 @@ const AddBankAccountForm = () => {
   const retrieveAllBankUsers = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/user/fetch/bank/managers",
+        `${config.serverUrl}/api/user/fetch/bank/managers`,
         {
           headers: {
             Authorization: "Bearer " + admin_jwtToken, // Replace with your actual JWT token
@@ -47,7 +49,7 @@ const AddBankAccountForm = () => {
     setBank({ ...bank, [e.target.name]: e.target.value });
   };
   const saveBank = (e) => {
-    fetch("http://localhost:8080/api/bank/register", {
+    fetch(`${config.serverUrl}/api/bank/register`, {
       method: "POST",
       headers: {
         Accept: "application/json",

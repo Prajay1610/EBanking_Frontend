@@ -7,6 +7,7 @@ import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
 import { depositFunds, getBankAccountDetails, withdrawFunds } from "../../services/bankManagerService";
 import { getAccountStatement } from "../../services/customerService";
+import { config } from "../../config"; // Import config.js 
 
 const ViewBankAccounts = ({accountId}) => {
   let navigate = useNavigate();
@@ -76,7 +77,7 @@ const ViewBankAccounts = ({accountId}) => {
         
         console.log("Data sent to nodejs ",reqBody)
         try {
-          const response = await fetch("http://localhost:3001/generate-pdf", {
+          const response = await fetch(`${config.nodeServerUrl}/generate-pdf`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

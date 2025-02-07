@@ -2,7 +2,7 @@ import React from "react";
 
 import "./Jumbotron.css";
 import Header from "../Header/Header";
-
+import { Link } from "react-router-dom";
 
 function Jumbotron() {
   return (
@@ -13,7 +13,7 @@ function Jumbotron() {
       <div className="text-overlay animate__animated animate__bounceInDown">
         <h1>Your Banking, Your Way</h1>
         <p>Experience the future of banking with us.</p>
-        <a className="btn btn-danger" href="/home">Explore</a>
+        <Link to="/about"><button className="btn btn-danger">Explore</button></Link>
       </div>
     </div>
   </div>
