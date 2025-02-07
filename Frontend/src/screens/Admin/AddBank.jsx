@@ -210,7 +210,7 @@ const AddBankForm = () => {
                   })}
                 </select>
                 ):(
-                  <p>Unable to fetch bank Managers!</p>
+                  <p>No bank Managers available</p>
                 )}
                 
               </div>

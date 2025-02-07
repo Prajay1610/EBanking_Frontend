@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { createUrl } from "../utils";
 import axios from "axios";
 
@@ -58,7 +59,7 @@ export const addImage = async (userId, file) => {
         "Content-Type": "multipart/form-data",
         "Authorization": `Bearer ${localStorage.getItem('token')}`
     }
-      const response = await axios.post(url, formData, headers);
+      const response = await axios.post(url, formData, {headers});
   
       // Ensure the backend response contains a `success` field
       if (!response.data) {
@@ -84,7 +85,7 @@ export const addImage = async (userId, file) => {
         const response =await axios.post(url,reqbody,{headers});
         return response.data;
     } catch (error) {
-        console.error('Error transferring money:', error);
+        toast.error('Error transferring money:', error.message);
         throw error;
     }
   }

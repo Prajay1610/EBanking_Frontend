@@ -31,10 +31,9 @@ const MoneyTransfer = () => {
   const [accountsData, setAccountsData] = useState([]); // State for customer data
   const [loading, setLoading] = useState(true); // State for loading
   const [editAble, setIsEditAble] = useState(true);
-
+  const ifscCode = jwtDecode(localStorage.getItem('token')).ifscCode;
   const [bankDetails, setBankDetails] = useState({
-    bankName: "",
-    ifscCode: "SBI0000789",
+    ifscCode,
   });
 
   const handleInput = (e) => {
@@ -151,7 +150,7 @@ const MoneyTransfer = () => {
       setIsEditAble(true); // Reset edit state
     } catch (error) {
       console.error("Error transferring money:", error);
-      toast.error("Error transferring money. Please try again.");
+      // toast.error("Error transferring money. Please try again.");
     }
   };
 

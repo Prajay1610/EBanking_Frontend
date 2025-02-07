@@ -37,7 +37,7 @@ const Login = () => {
         navigate('/home');
       }
     } catch (error) {
-      toast.error(error.message || 'An error occurred');
+      console.log('An error occured:'+error.message);
     }
   };
 
@@ -89,7 +89,7 @@ return (
     </div>
   </div>
     </section>
-    <ToastContainer position="top-right" autoClose={3000} />
+  
     </div>
   </>
   )
