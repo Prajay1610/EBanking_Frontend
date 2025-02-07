@@ -12,7 +12,8 @@ import {
 import { Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 
-const CustomerProfile = ({customerId}) => {
+const CustomerProfileForManager = () => {
+  const {customerId} = useParams(); 
   let navigate = useNavigate();
   const [isDefaultImage, setIsDefaultImage] = useState(false);
   
@@ -311,4 +312,4 @@ const CustomerProfile = ({customerId}) => {
   );
 };
 
-export default CustomerProfile;
+export default CustomerProfileForManager;

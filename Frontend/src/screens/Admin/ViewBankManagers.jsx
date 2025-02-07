@@ -40,8 +40,8 @@ const ViewBankManagers = () => {
         setAllManagers(response); // Update state with the retrieved data
       }
     } catch (error) {
-      console.error("Error fetching bank managers:", error);
-      alert("Failed to load bank managers. Please try again later.");
+      
+      toast.error("Failed to fetch bank managers. Please try again later."+error);
     } finally {
       setLoading(false); // Set loading to false after fetching data
     }
@@ -56,7 +56,7 @@ const ViewBankManagers = () => {
       }
     } catch (error) {
       console.error("Error making bank manager InActive:", error);
-      alert("Failed to make bank manager InActive. Please try again later.");
+      toast.error("Failed to make bank manager InActive. Please try again later.");
     }
   };
 
