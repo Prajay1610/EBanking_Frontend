@@ -8,7 +8,6 @@ import Login from './screens/Auth/Login';
 // Toastify imports
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Register from './screens/Auth/Register';
 import CustomerProfile from './screens/Customer/CustomerProfile';
 
 import ViewCustomerTransactions from './screens/Customer/CustomerTransactions';
@@ -34,8 +33,9 @@ import ViewAllCustomerTransactions from './screens/BankManager/ViewAllCustomerTr
 
 import { jwtDecode } from 'jwt-decode';
 import CustomerProfileForManager from './screens/BankManager/CustomerProfileForManager';
+import ProtectedRoute from './components/layouts/Auth/ProtectedRoute';
 
-//similar for view Statements requires a wrapper
+
 const ViewBankAccountWrapper = () => {
   const { accountId } = useParams();
   return <ViewBankAccount accountId={accountId} />;
@@ -57,44 +57,64 @@ function App() {
     <>
     
         <Routes>
-          <Route path="/" element={<Login/>}/>
-          <Route path="/home" element={<Home/>}/>
-           <Route path='/about' element={<About/>}/> 
-           <Route path='/contact' element={<Contact/>}/>
-          <Route path='/register' element={<Register/>}/>
-          <Route path='/customerProfile' element={<CustomerProfileWrapper />}/>
+        
+
 
          
 
+         
+
+         
+          
+         
+         
+          {/* <Route path='/AddBankAccount' element={<AddBankAccountForm/>}/> */}
+          
+         
+          
+          
+
+        {/* Customer Routes */}
+        <Route element={<ProtectedRoute allowedRoles={["ROLE_CUSTOMER"]} />}>
+          <Route path="/customerProfile" element={<CustomerProfileWrapper />} />
+          <Route path="/MoneyTransfer" element={<MoneyTransfer />} />
+          <Route path='/customer/transactions' element={<ViewCustomerTransactions/>}/>
+        </Route>
+
+        {/* Public Routes */}
+        <Route path="/" element={<Login />} />
+        <Route path="/home" element={<Home />} />
+        <Route path='/contact' element={<Contact/>}/>
+        <Route path='/about' element={<About/>}/> 
+
+        {/* Bank Manager Routes */}
+        <Route element={<ProtectedRoute allowedRoles={["ROLE_BANKMANAGER"]} />}>
+          <Route path="/AddCustomer" element={<AddCustomer />} />
+          <Route path='/ViewAllBankAccounts' element={<ViewAllBankAccounts/>}/>
+          <Route path="/ViewAllBankCustomers" element={<ViewAllBankCustomers />} />
+          <Route path='/customer/transactions/:customerId' element={<ViewCustomerTransactions/>}/>
+          <Route path="/customerProfileForManager/:customerId" element={<CustomerProfileForManager/>}/>"
+          <Route path="/bank/transactions" element={<ViewAllCustomerTransactions/>}/>
+        </Route>
+
+        <Route element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]} />}>
           <Route path='/AddBank' element={<AddBank/>}/>
           <Route path='/AddBankManager' element={<AddBankManager/>}/>
-          <Route path='/AddCustomer' element={<AddCustomer/>}/>
           <Route path='/AddNewAdmin' element={<AddNewAdmin/>}/>
           <Route path='/ViewManagers' element={<ViewBankManagers/>}/>
-
-          <Route path='/ViewAllBankAccounts' element={<ViewAllBankAccounts/>}/>
-
-          <Route path='/ViewAllBankCustomers' element={<ViewAllBankCustomers/>}/>
-          
-          <Route path='/customer/transactions' element={<ViewCustomerTransactions/>}/>
-          <Route path='/customer/transactions/:customerId' element={<ViewCustomerTransactions/>}/>
-
-
-          <Route path='/customer/bank/account/detail/:accountId' element={<ViewBankAccountWrapper/>}/>
-
-          <Route path='/customerProfile/:customerId' element={<CustomerProfileForManager/>}/>
-
-          <Route path='/ViewSpecificAccountDetails/:customerId/:accountId' element={<ViewSpecificAccountDetails/>}/>
-          
           <Route path='/ViewAllBanks' element={<ViewAllBanks/>}/>
-          <Route path='/MoneyTransfer' element={<MoneyTransfer/>}/>
-          <Route path='/AddBankAccount' element={<AddBankAccountForm/>}/>
-          <Route path="/ManageBankAccount/:accountId" element={<ManageAccountWrapper />} />
-          <Route path="/bank/transactions" element={<ViewAllCustomerTransactions/>}/>
-          <Route path="/customerProfileForManager/:customerId" element={<CustomerProfileForManager/>}/>"
-          
+        </Route>
 
-        </Routes>
+        <Route element={<ProtectedRoute allowedRoles={["ROLE_CUSTOMER", "ROLE_BANK_MANAGER"]} />}>
+          <Route path='/customer/bank/account/detail/:accountId' element={<ViewBankAccountWrapper/>}/>
+          <Route path='/ViewSpecificAccountDetails/:customerId/:accountId' element={<ViewSpecificAccountDetails/>}/>
+          <Route path="/ManageBankAccount/:accountId" element={<ManageAccountWrapper />} />
+        </Route>
+
+      </Routes>
+
+         
+          
     
 
        {/* toast container */}
