@@ -88,6 +88,12 @@ public class AuthController {
                 .anyMatch(auth -> auth.getAuthority().equals("ROLE_CUSTOMER"));
         
         Map<String, Object> additionalClaims = new HashMap<>();
+        
+        User user = userRepository.findByEmail(authRequest.getEmail()).get();
+        
+        String name=user.getFname()+user.getLname();
+        additionalClaims.put("name", name);
+        
         if (isBankManager) {
             Long bankId = bankManagerRepo.findByUserId(userRepository.findByEmail(authRequest.getEmail()).get().getId()).getId();
             additionalClaims.put("bankId", bankId);

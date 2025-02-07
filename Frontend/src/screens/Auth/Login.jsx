@@ -91,7 +91,7 @@ return (
             <label className="form-label">Password</label>
           </div>
 
-          <button type="button" data-mdb-button-init data-mdb-ripple-init className="btn btn-primary btn-lg btn-block" 
+          <button type="button" data-mdb-button-init data-mdb-ripple-init className="btn btn-success btn-lg btn-block" 
           onClick={onSubmit}
           >Login</button>
         </form>
