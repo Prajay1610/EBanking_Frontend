@@ -10,35 +10,50 @@ import { use } from "react";
 const {jwtDecode} = require("jwt-decode");
 
 const ViewCustomerTransactions = () => {
-  const customerId = jwtDecode(localStorage.getItem("token")).customerId;
-  const location = useLocation();
-  const customer = location.state;
-  const [allTransactions, setAllTransactions] = useState([]);
-  
+  const { customerId: customerIdFromParams } = useParams(); // Get customerId from URL params
+  const [customerId, setCustomerId] = useState(null); // State for customerId
+  const [allTransactions, setAllTransactions] = useState([]); // State for transactions
+  const [role, setRole] = useState(null); // State for user role
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    console.log("Token from localStorage:", token);
+
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        const userRole = decodedToken.role;
+        setRole(userRole);
+
+        if (customerIdFromParams) {
+          setCustomerId(Number(customerIdFromParams)); // Convert to number
+        } else {
+          setCustomerId(decodedToken.customerId); // Set from token
+        }
+      } catch (error) {
+        console.error("Error decoding JWT:", error);
+        toast.error("Failed to decode JWT. Please log in again.");
+      }
+    }
+  }, [customerIdFromParams]); // Runs when `customerIdFromParams` changes
+
+  useEffect(() => {
+    if (customerId) {
+      retrieveAllTransactions();
+    }
+  }, [customerId]); // Runs when `customerId` is set
+
   const retrieveAllTransactions = async () => {
     try {
-      const response = await getAllTransactions(customerId);
-      console.log("response", response);
-      
-        return response; 
+      console.log("Fetching transactions for customerId:", customerId);
+      const transactions = await getAllTransactions(customerId);
+      console.log("Transactions fetched:", transactions);
+      setAllTransactions(transactions || []);
     } catch (error) {
       console.error("Error fetching transactions:", error);
       toast.error("Failed to fetch transactions. Please try again.");
-      return null;
     }
   };
-
-  // Fetch transactions when the component mounts
-  useEffect(() => {
-    const getAllTransactions = async (customerId) => {
-      const transactions = await retrieveAllTransactions(customerId);
-      console.log("transactions", transactions);
-      if (transactions) {
-        setAllTransactions(transactions || []);
-      }
-    };
-    getAllTransactions(customerId);
-  }, []);
 
   // Function to format epoch time to a readable date
   const formatDateFromEpoch = (epochTime) => {
