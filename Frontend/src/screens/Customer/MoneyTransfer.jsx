@@ -65,13 +65,13 @@ const MoneyTransfer = () => {
     let isValid = true; // Start with the assumption that everything is valid
 
     // Validate From Account Number
-    // if (!account.fromAcccountNo || isNaN(account.fromAcccountNo)) {
-    //   toast.error("From Account Number is required and must be numeric!");
-    //   isValid = false;
-    // } else if (!/^\d{6}$/.test(account.fromAcccountNo)) {
-    //   toast.error("Please enter a valid From Account Number (6 digits)!");
-    //   isValid = false;
-    // }
+    if (!account.fromAcccountNo || isNaN(account.fromAcccountNo)) {
+      toast.error("From Account Number is required and must be numeric!");
+      isValid = false;
+    } else if (!/^\d{6}$/.test(account.fromAcccountNo)) {
+      toast.error("Please enter a valid From Account Number (6 digits)!");
+      isValid = false;
+    }
 
     // Validate To Account Number
     if (isValid && (!account.toAcccountNo || isNaN(account.toAcccountNo))) {
