@@ -113,7 +113,7 @@ const CustomerProfile = ({customerId}) => {
   }, []);
 
   const viewTransactions = (customerId) => {
-    navigate(`/transactions/${customerId}`);
+    navigate(`/customer/transactions/${customerId}`);
   };
 
   if (loading) {

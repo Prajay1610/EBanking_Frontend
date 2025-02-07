@@ -3,35 +3,30 @@ import { Link } from "react-router-dom";
 import "./Header.css";
 import "../../../index.css";
 import logo from "./logoSecureBank.png";
-import { jwtDecode } from "jwt-decode";  
-
+import { jwtDecode } from "jwt-decode";
 
 const Header = () => {
-  
   const jwtToken = localStorage.getItem("token");
-
-
   let role = null;
+  let userName = null; // To store the user's name
   let isLoggedIn = false;
 
   if (jwtToken) {
     try {
-   
       const decodedToken = jwtDecode(jwtToken);
       console.log("Decoded Token:", decodedToken);
 
- 
-      
-    if (decodedToken.role && Array.isArray(decodedToken.role)) {
-      role = decodedToken.role[0]; 
-  }
+     
+      if (decodedToken.role && Array.isArray(decodedToken.role)) {
+        role = decodedToken.role[0]; 
+      }
+      userName = decodedToken.name || "User"; 
 
-      
       const currentTime = Math.floor(Date.now() / 1000); 
       isLoggedIn = decodedToken.exp > currentTime; 
     } catch (error) {
       console.error("Error decoding token:", error);
-      localStorage.removeItem("token");
+      localStorage.removeItem("token"); 
     }
   }
 
@@ -62,7 +57,6 @@ const Header = () => {
           >
             <span className="navbar-toggler-icon custom-toggler-icon"></span>
           </button>
-
           {/* Navbar Links */}
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto custom-navlinks">
@@ -96,7 +90,6 @@ const Header = () => {
                   </li>
                 </>
               )}
-
               {isLoggedIn && role === "ROLE_BANKMANAGER" && (
                 <>
                   <li className="nav-item">
@@ -121,7 +114,6 @@ const Header = () => {
                   </li>
                 </>
               )}
-
               {isLoggedIn && role === "ROLE_CUSTOMER" && (
                 <>
                   <li className="nav-item">
@@ -141,9 +133,8 @@ const Header = () => {
                   </li>
                 </>
               )}
-
               {/* Common Links for All Users */}
-              { (role !=="ROLE_BANKMANAGER" && role!=="ROLE_ADMIN") && (
+              {role !== "ROLE_BANKMANAGER" && role !== "ROLE_ADMIN" && (
                 <>
                   <li className="nav-item">
                     <Link className="nav-link active text-black nunito-standardfont" to="/About">
@@ -157,21 +148,35 @@ const Header = () => {
                   </li>
                 </>
               )}
-
-              {/* Login/Logout Button */}
-              <li className="nav-item">
+              {/* User Info and Logout Button */}
+              <li className="nav-item d-flex align-items-center">
                 {isLoggedIn ? (
-                  <button
-                    className="btn btn-danger text-white"
-                    onClick={() => {
-                      localStorage.removeItem("token"); // Remove token on logout
-                      window.location.href = "/"; // Redirect to login page
-                    }}
-                  >
-                    Logout
-                  </button>
+                  <>
+                    <span
+  className="fw-bold px-3 py-2 rounded me-3"
+  style={{
+    backgroundColor: "#6A5ACD", 
+    color: "white", 
+    border: "1px solid #534891",
+    textShadow: "0.5px 0.5px 1px rgba(0, 0, 0, 0.2)", 
+    borderRadius: "8px", 
+    fontFamily: "'Nunito', sans-serif", 
+  }}
+>
+  {userName} ({role?.replace("ROLE_", "")})
+</span>
+                    <button
+                      className="btn btn-danger text-white"
+                      onClick={() => {
+                        localStorage.removeItem("token"); // Remove token on logout
+                        window.location.href = "/"; // Redirect to login page
+                      }}
+                    >
+                      Logout
+                    </button>
+                  </>
                 ) : (
-                  <Link to="/" className="btn btn-danger text-white">
+                  <Link to="/" className="btn btn-success text-white">
                     Login
                   </Link>
                 )}
