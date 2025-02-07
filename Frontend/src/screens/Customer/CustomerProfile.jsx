@@ -144,7 +144,7 @@ const CustomerProfile = ({customerId}) => {
 
                 <img
 
-  src={`${config.serverUrl}/api/auth/${customerData.userId}/profile-image`}
+  src={`${config.serverUrl}/api/auth/${customerId}/profile-image`}
 
 
   alt="Customer Avatar"
