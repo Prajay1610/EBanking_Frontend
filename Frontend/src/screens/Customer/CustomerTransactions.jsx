@@ -10,7 +10,7 @@ import { use } from "react";
 const {jwtDecode} = require("jwt-decode");
 
 const ViewCustomerTransactions = () => {
-  const {customerId}=useParams();
+  const customerId = jwtDecode(localStorage.getItem("token")).customerId;
   const location = useLocation();
   const customer = location.state;
   const [allTransactions, setAllTransactions] = useState([]);

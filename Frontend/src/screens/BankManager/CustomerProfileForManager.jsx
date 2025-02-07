@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 
 const CustomerProfileForManager = () => {
   const {customerId} = useParams(); 
+  console.log("customerId",customerId);
   let navigate = useNavigate();
   const [isDefaultImage, setIsDefaultImage] = useState(false);
   
@@ -143,7 +144,7 @@ const CustomerProfileForManager = () => {
                
 
                 <img
-  src={`http://localhost:8080/api/auth/${customerData.userId}/profile-image`}
+  src={`http://localhost:8080/api/auth/${customerId}/profile-image`}
   alt="Customer Avatar"
   className={`rounded-circle img-thumbnail ${isDefaultImage ? "default-profile" : ""}`}
   width="150"
