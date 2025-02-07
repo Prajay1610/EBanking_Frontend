@@ -32,6 +32,7 @@ import ViewSpecificAccountDetails from './screens/Customer/ViewSpecificAccountDe
 import ManageBankAccount from './screens/BankManager/ManageBankAccount';
 import ViewAllCustomerTransactions from './screens/BankManager/ViewAllCustomerTransaction';
 
+import { jwtDecode } from 'jwt-decode';
 
 //similar for view Statements requires a wrapper
 const ViewBankAccountWrapper = () => {
@@ -40,8 +41,9 @@ const ViewBankAccountWrapper = () => {
 };
 
 const CustomerProfileWrapper=()=>{
-  const { customerId } = useParams();
-  return <CustomerProfile customerId={customerId} />;
+       const token = localStorage.getItem("token");
+       const customerId = jwtDecode(token).customerId;
+      return <CustomerProfile customerId={customerId} />;
 };
 
 const ManageAccountWrapper = ()=>{
@@ -59,10 +61,9 @@ function App() {
            <Route path='/about' element={<About/>}/> 
            <Route path='/contact' element={<Contact/>}/>
           <Route path='/register' element={<Register/>}/>
-          <Route path='/customerProfile/:customerId' element={<CustomerProfileWrapper />}/>
+          <Route path='/customerProfile' element={<CustomerProfileWrapper />}/>
 
-          <Route path="/transactions/:customerId" element={<ViewCustomerTransactions/>}/>
-          
+         
 
           <Route path='/AddBank' element={<AddBank/>}/>
           <Route path='/AddBankManager' element={<AddBankManager/>}/>
@@ -78,13 +79,14 @@ function App() {
           <Route path='/customer/bank/account/detail/:accountId' element={<ViewBankAccountWrapper/>}/>
 
           <Route path='/customerProfile/:customerId' element={<CustomerProfile/>}/>
+
           <Route path='/ViewSpecificAccountDetails/:customerId/:accountId' element={<ViewSpecificAccountDetails/>}/>
 
           <Route path='/ViewAllBanks' element={<ViewAllBanks/>}/>
           <Route path='/MoneyTransfer' element={<MoneyTransfer/>}/>
           <Route path='/AddBankAccount' element={<AddBankAccountForm/>}/>
           <Route path="/ManageBankAccount/:accountId" element={<ManageAccountWrapper />} />
-          <Route path="/bank/transactions/:managerId" element={<ViewAllCustomerTransactions/>}/>
+          <Route path="/bank/transactions" element={<ViewAllCustomerTransactions/>}/>
 
           
 
