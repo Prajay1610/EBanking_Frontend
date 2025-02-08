@@ -104,7 +104,7 @@ function App() {
           <Route path='/ViewAllBanks' element={<ViewAllBanks/>}/>
         </Route>
 
-        <Route element={<ProtectedRoute allowedRoles={["ROLE_CUSTOMER", "ROLE_BANK_MANAGER"]} />}>
+        <Route element={<ProtectedRoute allowedRoles={["ROLE_CUSTOMER", "ROLE_BANKMANAGER"]} />}>
           <Route path='/customer/bank/account/detail/:accountId' element={<ViewBankAccountWrapper/>}/>
           <Route path='/ViewSpecificAccountDetails/:customerId/:accountId' element={<ViewSpecificAccountDetails/>}/>
           <Route path="/ManageBankAccount/:accountId" element={<ManageAccountWrapper />} />
