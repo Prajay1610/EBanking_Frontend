@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Header from "../../components/layouts/Header/Header";
@@ -8,8 +7,8 @@ import { addCustomer, addImage } from "../../services/customerService";
 import { jwtDecode } from "jwt-decode";
 const AddCustomer = () => {
   const token = localStorage.getItem("token");
-  const bankId= jwtDecode(token).bankId;
-  const[userPin,setUserPin]=useState("");
+  const bankId = jwtDecode(token).bankId;
+  const [userPin, setUserPin] = useState("");
 
   const [customer, setCustomer] = useState({
     fname: "",
@@ -127,30 +126,21 @@ const AddCustomer = () => {
 
     try {
       const response = await addCustomer(customer);
-      console.log(response);
       const userId = response.id; // Assuming the backend returns the user ID
       setUserPin(response.pin);
 
       if (profileImage) {
-        
         try {
           await addImage(userId, profileImage);
-          console.log("After successful addImage");
-          } catch (error) {
-              console.log("Image upload failed:", error);
-          }
+        } catch (error) {}
 
-       
-        console.log("rest state done");
         toast.success("Customer added successfully with profile image!");
       } else {
         toast.success("Customer added successfully!");
       }
-      
 
       navigate("/ViewAllBankCustomers");
     } catch (error) {
-      console.error("Error adding customer:", error);
       toast.error("Failed to add customer. Please try again.");
     }
 
@@ -172,16 +162,14 @@ const AddCustomer = () => {
   return (
     <>
       <Header />
-        {userPin?.trim() ? (
-    <h3 className="text-center text-primary">Your Pin is:{userPin}</h3>
-    ) : null}
+      {userPin?.trim() ? (
+        <h3 className="text-center text-primary">Your Pin is:{userPin}</h3>
+      ) : null}
       <div className="d-flex justify-content-center align-items-center min-vh-100 mt-2 mb-2">
-        
         <div
           className="card form-card border-color custom-bg"
           style={{ width: "50rem" }}
         >
-         
           <div
             className="card-header custom-bg-text text-center"
             style={{

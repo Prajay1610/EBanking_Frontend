@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
-import { getAllBankManagers, toggleManagerStatus } from "../../services/adminService"; // Import the service function
+import {
+  getAllBankManagers,
+  toggleManagerStatus,
+} from "../../services/adminService"; // Import the service function
 import { toast } from "react-toastify";
 
 const ViewBankManagers = () => {
@@ -36,12 +39,12 @@ const ViewBankManagers = () => {
       setLoading(true); // Set loading to true while fetching data
       const response = await getAllBankManagers(); // Pass the JWT token if required by the API
       if (response) {
-        console.log("Bank managers:", response.bankManagers);
         setAllManagers(response); // Update state with the retrieved data
       }
     } catch (error) {
-      
-      toast.error("Failed to fetch bank managers. Please try again later."+error);
+      toast.error(
+        "Failed to fetch bank managers. Please try again later." + error
+      );
     } finally {
       setLoading(false); // Set loading to false after fetching data
     }
@@ -51,12 +54,13 @@ const ViewBankManagers = () => {
     try {
       const response = await toggleManagerStatus(managerId);
       if (response) {
-       toast.success("BankManager Status Changed Successfully");
+        toast.success("BankManager Status Changed Successfully");
         fetchAllManagers();
       }
     } catch (error) {
-      console.error("Error making bank manager InActive:", error);
-      toast.error("Failed to make bank manager InActive. Please try again later.");
+      toast.error(
+        "Failed to make bank manager InActive. Please try again later."
+      );
     }
   };
 
@@ -74,7 +78,13 @@ const ViewBankManagers = () => {
   return (
     <>
       <Header />
-      <div style={{ backgroundColor: "white", minHeight: "100vh", padding: "20px" }}>
+      <div
+        style={{
+          backgroundColor: "white",
+          minHeight: "100vh",
+          padding: "20px",
+        }}
+      >
         <div className="mt-2">
           <div
             className="card form-card ms-5 me-5 mb-5 border-color"
@@ -164,24 +174,34 @@ const ViewBankManagers = () => {
                             <td>
                               <b>{manager.address}</b>
                             </td>
-                            <td>{manager.isActive==true?(<b className="text-success">Active</b>):(<b className="text-danger">InActive</b>)}</td>
                             <td>
-                      {manager.isActive === true ? (
-                          <button
-                            className="btn btn-sm btn-danger mx-2"                        
-                            onClick={()=>handleManagerStatusToggle(manager.managerId)}
-                          >
-                           Deactivate Manager
-                          </button>
-                        ) : (
-                          <button 
-                          className="btn btn-sm btn-success"   
-                          onClick={()=>handleManagerStatusToggle(manager.managerId)}
-                        >
-                         Activate Manager
-                        </button>
-                        )}
-                      </td>
+                              {manager.isActive == true ? (
+                                <b className="text-success">Active</b>
+                              ) : (
+                                <b className="text-danger">InActive</b>
+                              )}
+                            </td>
+                            <td>
+                              {manager.isActive === true ? (
+                                <button
+                                  className="btn btn-sm btn-danger mx-2"
+                                  onClick={() =>
+                                    handleManagerStatusToggle(manager.managerId)
+                                  }
+                                >
+                                  Deactivate Manager
+                                </button>
+                              ) : (
+                                <button
+                                  className="btn btn-sm btn-success"
+                                  onClick={() =>
+                                    handleManagerStatusToggle(manager.managerId)
+                                  }
+                                >
+                                  Activate Manager
+                                </button>
+                              )}
+                            </td>
                           </tr>
                         ))
                       ) : (

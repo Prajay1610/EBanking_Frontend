@@ -10,7 +10,6 @@ export const getAllBankAccounts = async (managerId) => {
     }
     try {
         const response = await axios.get(url,{headers});
-        console.log("response", response.data);
         return response.data;
     } catch (error) {
         toast.error("Error while retrieving bank accounts:", error);
@@ -27,7 +26,6 @@ export const getBankAccountDetails = async (accountId) => {
     }
     try {
         const response = await axios.get(url,{headers});
-        console.log("response", response.data);
 
         return response.data;
     } catch (error) {
@@ -44,7 +42,6 @@ export const depositFunds=async(reqbody)=>{
     }
     try {
         const response = await axios.post(url,reqbody,{headers});
-        console.log("response", response.data);
         return response.data;
     } catch (error) {
         
@@ -60,7 +57,6 @@ export const withdrawFunds=async(reqbody)=>{
     }
     try {
         const response = await axios.post(url,reqbody,{headers});
-        console.log("response", response.data);
         return response.data;
     } catch (error) {
         throw error; // Re-throw the error for further handling if needed
@@ -76,7 +72,6 @@ export const viewAllBankCustomers=async(bankManagerId)=>{
     }
     try {
         const response = await axios.get(url,{headers});
-        console.log("response", response.data);
         return response.data;
     } catch (error) {
         throw error; 
@@ -91,7 +86,6 @@ export const makeInActive=async(userId)=>{
     }
     try {
         const response = await axios.put(url,{},{headers});
-        console.log("response", response.data);
         return response.data;
     } catch (error) {
         throw error; // Re-throw the error for further handling if needed
@@ -107,7 +101,6 @@ export const makeActive=async(userId)=>{
     }
     try {
         const response = await axios.put(url,{},{headers});
-        console.log("response", response.data);
         return response.data;
     } catch (error) {
         throw error; // Re-throw the error for further handling if needed
@@ -124,7 +117,6 @@ export const lockAccount=async(accountId)=>{
     }
     try {
         const response = await axios.put(url,{},{headers});
-        console.log("response", response.data);
         return response.data;
     } catch (error) {
         throw error; // Re-throw the error for further handling if needed
@@ -141,7 +133,6 @@ export const unlockAccount=async(accountId)=>{
     }
     try {
         const response = await axios.put(url,{},{headers});
-        console.log("response", response.data);
         return response.data;
     } catch (error) {
         throw error; // Re-throw the error for further handling if needed
@@ -156,10 +147,8 @@ export const getAllBankTransactions = async (managerId) => {
         const url = createUrl(`bank/transactions/allCustomer/${managerId}`);
        
         const response = await axios.get(url,{headers});
-        console.log("called",response.data)
         return response.data;
     } catch (error) {
-        console.error('Error fetching transactions:', error);
         throw error;
     }
 };

@@ -2,26 +2,28 @@ import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
-import { depositFunds, getBankAccountDetails, withdrawFunds } from "../../services/bankManagerService";
+import {
+  depositFunds,
+  getBankAccountDetails,
+  withdrawFunds,
+} from "../../services/bankManagerService";
 import { getAccountStatement } from "../../services/customerService";
-import { config } from "../../config"; // Import config.js 
+import { config } from "../../config"; // Import config.js
 
-const ManageBankAccount = ({accountId}) => {
+const ManageBankAccount = ({ accountId }) => {
   let navigate = useNavigate();
-  
 
-  const [accountDetails,setAccountDetails]=useState({
-    bankName:"",
-    ifscCode:"",
-    customerEmail:"",
-    availableBalance:"",
-    accountId:"",
-    status:"",
-    createdOn:"",
-    customerName:""
+  const [accountDetails, setAccountDetails] = useState({
+    bankName: "",
+    ifscCode: "",
+    customerEmail: "",
+    availableBalance: "",
+    accountId: "",
+    status: "",
+    createdOn: "",
+    customerName: "",
   });
 
   const [statementDownloadRequest, setStatementDownloadRequest] = useState({
@@ -29,13 +31,13 @@ const ManageBankAccount = ({accountId}) => {
     endDate: "",
   });
 
-  const fetchAccountStatement =async(e)=>{
-    e.preventDefault(); 
-   const reqbody={
-    accountId:accountId,
-    startDate:statementDownloadRequest.startDate,
-    endDate:statementDownloadRequest.endDate
-   }
+  const fetchAccountStatement = async (e) => {
+    e.preventDefault();
+    const reqbody = {
+      accountId: accountId,
+      startDate: statementDownloadRequest.startDate,
+      endDate: statementDownloadRequest.endDate,
+    };
     try {
       const response = await getAccountStatement(reqbody);
       if (response) {
@@ -44,13 +46,12 @@ const ManageBankAccount = ({accountId}) => {
           toast.error("No transactions found for the selected date range.");
           return;
         }
-    
+
         const reqBody = {
           accountNumber: accountId,
           transactions: filteredTransactions,
         };
-        
-        console.log("Data sent to nodejs ",reqBody)
+
         try {
           const response = await fetch(`${config.nodeServerUrl}/generate-pdf`, {
             method: "POST",
@@ -59,135 +60,116 @@ const ManageBankAccount = ({accountId}) => {
             },
             body: JSON.stringify(reqBody),
           });
-          console.log("Response from node js :", response);
           if (!response.ok) {
             throw new Error("Failed to generate PDF");
           }
           // Get the PDF as a blob
-      const blob = await response.blob();
+          const blob = await response.blob();
 
-      // Create a temporary URL for the blob
-      const url = window.URL.createObjectURL(blob);
+          // Create a temporary URL for the blob
+          const url = window.URL.createObjectURL(blob);
 
-      // Create a link element and trigger the download
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "account_statement.pdf";
-      document.body.appendChild(a);
-      a.click();
+          // Create a link element and trigger the download
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "account_statement.pdf";
+          document.body.appendChild(a);
+          a.click();
 
-      // Clean up
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    } catch (error) {
-      console.error("Error downloading PDF:", error);
-    } 
-
+          // Clean up
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+        } catch (error) {
+          console.error("Error downloading PDF:", error);
+        }
 
         // Show success message in toast notification
         toast.success("Account statement downloaded successfully!");
       }
-    }
-    catch (error) { 
-      console.log("Error while fetching account statement:", error);
-    }
-  }
+    } catch (error) {}
+  };
 
-
-  const handleUserInput=(e)=>{
+  const handleUserInput = (e) => {
     const { name, value } = e.target;
     setStatementDownloadRequest((prev) => ({
       ...prev,
       [name]: value,
     }));
-  }
+  };
 
   const [amountToDeposit, setAmountToDeposit] = useState(0);
   const [amountToWithdraw, setAmountToWithdraw] = useState(0);
   const getSpecificAccountDetails = async (accountId) => {
     try {
-             
-              const response = await getBankAccountDetails(accountId); 
-              if (response) {
-                console.log("Bank Account:", response);
-                
-                setAccountDetails(response); // Update state with the retrieved data
-              }
-            } catch (error) {
-              console.error("Error fetching bank account:", error);
-              toast.error("Failed to load bank account. Please try again later.");
-            } 
+      const response = await getBankAccountDetails(accountId);
+      if (response) {
+        setAccountDetails(response); // Update state with the retrieved data
+      }
+    } catch (error) {
+      console.error("Error fetching bank account:", error);
+      toast.error("Failed to load bank account. Please try again later.");
+    }
   };
-
-  
 
   const depositAmount = async () => {
     try {
+      const reqbody = {
+        accountNo: accountId,
+        amount: amountToDeposit,
+      };
 
-      const reqbody={
-        accountNo:accountId,
-        amount:amountToDeposit,
-      }
-
-      console.log("Deposit reqbody"+JSON.stringify(reqbody));
-      const response = await depositFunds(reqbody); 
+      const response = await depositFunds(reqbody);
       if (response) {
-        console.log("Amount Deposited resp:", response);
         toast.success("Amount deposited successfully!");
         getSpecificAccountDetails(accountId);
       }
     } catch (error) {
-      
-      console.error("Error while depositing funds:", error);
-
       // Extract error message from API response
       let errorMessage = "Failed to deposit funds. Please try again later.";
-    
+
       if (error.response) {
         // Extract error message from API response body
-        errorMessage = error.response.data?.error || error.response.data?.message || "Server error occurred.";
+        errorMessage =
+          error.response.data?.error ||
+          error.response.data?.message ||
+          "Server error occurred.";
       }
-    
+
       // Show error in toast notification
       toast.error(errorMessage);
-    
-    } 
+    }
   };
   const withdrawAmount = async () => {
     try {
+      const reqbody = {
+        accountNo: accountId,
+        amount: amountToWithdraw,
+      };
 
-      const reqbody={
-        accountNo:accountId,
-        amount:amountToWithdraw,
-      }
-
-      console.log("Withdraw reqbody"+JSON.stringify(reqbody));
-      const response = await withdrawFunds(reqbody); 
+      const response = await withdrawFunds(reqbody);
       if (response) {
-        console.log("Amount withdrawal resp:", response);
         toast.success("Amount Withdrawed successfully!");
         getSpecificAccountDetails(accountId);
       }
     } catch (error) {
-      console.error("Error while Withdrawing funds:", error);
-
       // Extract error message from API response
       let errorMessage = "Failed to withdraw funds. Please try again later.";
-    
+
       if (error.response) {
         // Extract error message from API response body
-        errorMessage = error.response.data?.error || error.response.data?.message || "Server error occurred.";
+        errorMessage =
+          error.response.data?.error ||
+          error.response.data?.message ||
+          "Server error occurred.";
       }
-    
+
       // Show error in toast notification
       toast.error(errorMessage);
-    } 
+    }
   };
- useEffect(()=>{
-  
- 
-  getSpecificAccountDetails(accountId);
- },[]);
+  useEffect(() => {
+    getSpecificAccountDetails(accountId);
+  }, []);
   const styles = `
   .custom-primary-bg { background-color: #544892; }
   .custom-secondary-bg { background-color: #6c5ba7; }
@@ -232,20 +214,20 @@ const ManageBankAccount = ({accountId}) => {
                       onChange={handleUserInput}
                       value={statementDownloadRequest.startDate}
                       required
-                    />    
+                    />
                   </div>
                   <div className="col-md-4">
                     <label className="form-label custom-primary-text">
                       <b>End Date</b>
                     </label>
                     <input
-                        type="date"
-                        className="form-control"
-                        name="endDate"
-                        onChange={handleUserInput}
-                        value={statementDownloadRequest.endDate}
-                        required
-                      />
+                      type="date"
+                      className="form-control"
+                      name="endDate"
+                      onChange={handleUserInput}
+                      value={statementDownloadRequest.endDate}
+                      required
+                    />
                   </div>
                   <div className="col-md-4 d-flex align-items-end">
                     <button

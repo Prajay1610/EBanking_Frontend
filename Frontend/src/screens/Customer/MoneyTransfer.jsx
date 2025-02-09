@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
 
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
 import {
   getCustomerAccountData,
   transferMoney,
 } from "../../services/customerService";
-const {jwtDecode} = require("jwt-decode");
+const { jwtDecode } = require("jwt-decode");
 
 const MoneyTransfer = () => {
-
   const accounts = [
     { type: "Savings" },
     //{ type: "Current" },
   ];
 
-  const [customerId, setCustomerId] = useState(jwtDecode(localStorage.getItem('token')).customerId); 
-
+  const [customerId, setCustomerId] = useState(
+    jwtDecode(localStorage.getItem("token")).customerId
+  );
 
   const [account, setAccount] = useState({
     fromAcccountNo: "",
@@ -31,7 +31,7 @@ const MoneyTransfer = () => {
   const [accountsData, setAccountsData] = useState([]); // State for customer data
   const [loading, setLoading] = useState(true); // State for loading
   const [editAble, setIsEditAble] = useState(true);
-  const ifscCode = jwtDecode(localStorage.getItem('token')).ifscCode;
+  const ifscCode = jwtDecode(localStorage.getItem("token")).ifscCode;
   const [bankDetails, setBankDetails] = useState({
     ifscCode,
   });
@@ -94,7 +94,9 @@ const MoneyTransfer = () => {
       toast.error("IFSC code is required!");
       isValid = false;
     } else if (isValid && !/^[A-Z]{4}[0-9A-Za-z]{7}$/.test(account.ifsc)) {
-      toast.error("Invalid IFSC Code! It must be 11 characters long, starting with 4 uppercase letters followed by 7 alphanumeric characters.");
+      toast.error(
+        "Invalid IFSC Code! It must be 11 characters long, starting with 4 uppercase letters followed by 7 alphanumeric characters."
+      );
       isValid = false;
     }
 
@@ -128,7 +130,6 @@ const MoneyTransfer = () => {
     }
 
     const { fromAcccountNo, toAcccountNo, ifsc, amount, description } = account;
-    console.log("req body" + JSON.stringify(account));
     if (!fromAcccountNo || !toAcccountNo || !ifsc || !amount || !description) {
       toast.error("Please fill all the fields.");
       return;
@@ -136,7 +137,6 @@ const MoneyTransfer = () => {
 
     try {
       const response = await transferMoney(account);
-      console.log(response);
       toast.success("Money transferred successfully!");
       setAccount({
         fromAcccountNo: "",
@@ -149,7 +149,6 @@ const MoneyTransfer = () => {
 
       setIsEditAble(true); // Reset edit state
     } catch (error) {
-      console.error("Error transferring money:", error);
       // toast.error("Error transferring money. Please try again.");
     }
   };
@@ -157,14 +156,12 @@ const MoneyTransfer = () => {
   const fetchAccountData = async () => {
     try {
       const data = await getCustomerAccountData(customerId);
-      console.log("data" + data);
 
       if (data) {
         setAccountsData(data || []);
       }
     } catch (error) {
       toast.error("Error fetching customer data. Please try again.");
-      console.error("Error fetching customer data:", error);
     } finally {
       setLoading(false);
     }
@@ -230,7 +227,7 @@ const MoneyTransfer = () => {
             </div>
           </div>
         </div>
-  
+
         {/* Card for Transfer Money */}
         <div
           className="card form-card border-color custom-bg my-3"
@@ -269,7 +266,7 @@ const MoneyTransfer = () => {
                   disabled={!editAble}
                 />
               </div>
-  
+
               {/* To Account Number Field */}
               <div className="col-12 col-md-6 mb-3">
                 <label htmlFor="toAccno" className="form-label">
@@ -285,7 +282,7 @@ const MoneyTransfer = () => {
                   min={0}
                 />
               </div>
-  
+
               {/* Same Bank Checkbox */}
               <div className="col-12 col-md-6 mb-3">
                 <label className="form-label">
@@ -303,7 +300,7 @@ const MoneyTransfer = () => {
                   </label>
                 </div>
               </div>
-  
+
               {/* IFSC Field */}
               <div className="col-12 col-md-6 mb-3">
                 <label htmlFor="ifsc" className="form-label">
@@ -319,7 +316,7 @@ const MoneyTransfer = () => {
                   disabled={account.isSameBank} // Disable if "Same Bank" checkbox is checked
                 />
               </div>
-  
+
               {/* Amount Field */}
               <div className="col-12 col-md-6 mb-3">
                 <label htmlFor="amount" className="form-label">
@@ -334,7 +331,7 @@ const MoneyTransfer = () => {
                   value={account.amount}
                 />
               </div>
-  
+
               {/* Description Field */}
               <div className="col-12 col-md-6 mb-3">
                 <label htmlFor="description" className="form-label">
@@ -349,7 +346,7 @@ const MoneyTransfer = () => {
                   value={account.description}
                 />
               </div>
-  
+
               {/* Transfer Button */}
               <div className="col-12 d-flex justify-content-center">
                 <button
