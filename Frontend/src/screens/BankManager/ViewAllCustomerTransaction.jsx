@@ -1,32 +1,27 @@
 import { useState, useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
-import { getAllTransactions } from "../../services/customerService";
 import { getAllBankTransactions } from "../../services/bankManagerService";
 import { jwtDecode } from "jwt-decode";
 
 const ViewAllCustomerTransactions = () => {
-
   const token = localStorage.getItem("token");
-  const bankId= jwtDecode(token).bankId;
+  const bankId = jwtDecode(token).bankId;
 
   const location = useLocation();
   const customer = location.state;
   const [allTransactions, setAllTransactions] = useState([]);
   //const {managerId} = useParams();
-const [managerId,setManagerId]=useState(bankId)
+  const [managerId, setManagerId] = useState(bankId);
   const retrieveAllTransactions = async () => {
     try {
       const response = await getAllBankTransactions(managerId);
-      console.log("response", response);
-      
-        return response; 
+
+      return response;
     } catch (error) {
-      console.error("Error fetching transactions:", error);
       toast.error("Failed to fetch transactions. Please try again.");
       return null;
     }
@@ -36,7 +31,6 @@ const [managerId,setManagerId]=useState(bankId)
   useEffect(() => {
     const getAllTransactions = async (bankId) => {
       const transactions = await retrieveAllTransactions(bankId);
-      console.log("transactions", transactions);
       if (transactions) {
         setAllTransactions(transactions || []);
       }
@@ -47,28 +41,34 @@ const [managerId,setManagerId]=useState(bankId)
   // Function to format epoch time to a readable date
   const formatDateFromEpoch = (epochTime) => {
     const date = new Date(Number(epochTime));
-    
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = String(date.getFullYear()).slice(2); // Get last 2 digits of the year
     let hours = date.getHours();
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-    
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+
     // Determine AM or PM
-    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const ampm = hours >= 12 ? "PM" : "AM";
     hours = hours % 12; // Convert to 12-hour format
-    hours = hours ? String(hours).padStart(2, '0') : '12'; // The hour '0' should be '12' in 12-hour format
-    
+    hours = hours ? String(hours).padStart(2, "0") : "12"; // The hour '0' should be '12' in 12-hour format
+
     const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds} ${ampm}`;
-    
+
     return formattedDate;
   };
 
   return (
     <>
       <Header />
-      <div style={{ backgroundColor: "white", minHeight: "100vh", padding: "20px" }}>
+      <div
+        style={{
+          backgroundColor: "white",
+          minHeight: "100vh",
+          padding: "20px",
+        }}
+      >
         <div className="mt-2">
           <div
             className="card form-card ms-5 me-5 mb-5 border-color"
@@ -171,7 +171,9 @@ const [managerId,setManagerId]=useState(bankId)
                             <b>{transaction.narration}</b>
                           </td>
                           <td>
-                            <b>{formatDateFromEpoch(transaction.transactionTime)}</b>
+                            <b>
+                              {formatDateFromEpoch(transaction.transactionTime)}
+                            </b>
                           </td>
                         </tr>
                       ))
@@ -188,7 +190,6 @@ const [managerId,setManagerId]=useState(bankId)
         </div>
       </div>
       <Footer />
-
     </>
   );
 };

@@ -1,6 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
 import { addNewUser } from "../../services/adminService"; // Import the service function
@@ -121,7 +120,6 @@ const AddBankManager = () => {
       });
     } catch (error) {
       // Handle errors (already handled in the service function)
-      console.error("Error while adding bank manager:", error);
     }
   };
 

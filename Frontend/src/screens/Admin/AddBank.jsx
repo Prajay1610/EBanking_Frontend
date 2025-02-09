@@ -38,7 +38,7 @@ const AddBankForm = () => {
    
     fetchBankManagers();
 
-    console.log("Bank Managers: ", managers);
+    
   }, []);
 
   const handleInput = (e) => {
