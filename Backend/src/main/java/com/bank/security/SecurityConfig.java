@@ -29,10 +29,10 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable()).cors().
         	and()
             .authorizeHttpRequests(auth -> auth
-            		.requestMatchers("/api/auth/login", "/api/auth/register", 
-                            "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**","/api/auth/**").permitAll()
+            		.requestMatchers("/api/auth/login", 
+                            "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**","/api/auth/**","/admin/bankData").permitAll()
 
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/admin/**", "/api/auth/register").hasRole("ADMIN")
                 .requestMatchers("/customer/**").hasAnyRole("CUSTOMER", "BANKMANAGER")
                 .requestMatchers("/transaction/**").hasRole("BANKMANAGER")
                 .requestMatchers("/bank/**").hasAnyRole("ADMIN", "BANKMANAGER")

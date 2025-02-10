@@ -1,13 +1,17 @@
 package com.bank.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.bank.dtos.ApiResponse;
+import com.bank.dtos.BankDataResponseDto;
 import com.bank.dtos.BankManagerRespDto;
 import com.bank.dtos.BankRespDto;
 import com.bank.entities.Bank;
@@ -80,6 +84,11 @@ public class AdminSeviceImpl implements AdminService {
 		manager.getUser().setIsActive(!manager.getUser().getIsActive());
 		
 		return new ApiResponse("Status of manager updated to: "+manager.getUser().getIsActive());
+	}
+	@Override
+	public ResponseEntity<?> getBankData() {
+		List<BankDataResponseDto> data= bankRepository.getBankData();
+		return ResponseEntity.status(HttpStatus.OK).body(data);
 	}
 	
 	

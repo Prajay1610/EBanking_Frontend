@@ -99,3 +99,13 @@ export const toggleManagerStatus = async (managerId) => {
     throw error; 
   }
 }
+
+export const getbankData = async () => {
+  const url = createUrl('admin/bankData');
+  
+  try {
+    const response = await axios.get(url);
+      return response.data;
+    }catch (error) {
+      throw error;
+    } };
