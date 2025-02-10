@@ -9,15 +9,11 @@ import {
   Legend,
   ResponsiveContainer
 } from 'recharts';
+import { getbankData } from '../../../services/adminService';
 
-// Sample data for bank customers per bank
-const data = [
-  { name: 'Bank A', customers: 4000 },
-  { name: 'Bank B', customers: 3000 },
-  { name: 'Bank C', customers: 5000 },
-  { name: 'Bank D', customers: 2000 },
-  { name: 'Bank E', customers: 6000 },
-];
+
+const data = await getbankData();
+console.log("chart",data);
 
 const CustomerBarChart = () => {
   return (
@@ -38,11 +34,11 @@ const CustomerBarChart = () => {
               <ResponsiveContainer width="100%" height={400}>
                 <BarChart data={data}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
+                  <XAxis dataKey="bankName" />
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="customers" fill="#8884d8" />
+                  <Bar dataKey="customerCount" fill="#8884d8" />
                 </BarChart>
               </ResponsiveContainer>
             </div>

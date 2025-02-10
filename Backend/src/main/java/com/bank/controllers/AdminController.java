@@ -65,6 +65,12 @@ public class AdminController {
 		}
 	}
 	
+	@GetMapping("/bankData")
+	public ResponseEntity<?> getBankData()
+	{
+		return adminService.getBankData();
+	}
+	
 	@PatchMapping("/toggleManagerStatus/{managerId}")
 	public  ResponseEntity<?> makeInActive(@PathVariable Long managerId) {
 		//TODO: process POST request
