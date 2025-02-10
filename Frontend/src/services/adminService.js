@@ -4,14 +4,12 @@ import { toast } from 'react-toastify';
 
 export const addNewBank = async(reqbody)=>{
     const url = createUrl('bank/add');
-    console.log("reqbody"+JSON.stringify(reqbody));
     const headers = {
       "Content-Type": 'application/json',
       "Authorization": `Bearer ${localStorage.getItem('token')}`
   }
     try {
         const response = await axios.post(url,reqbody,{headers});
-        console.log("resp data"+JSON.stringify(response.data));
         return response.data;
     } catch (error) {
         toast.error('Error occured while adding new bank');
@@ -27,7 +25,6 @@ export const getAllBankManagersFromUser=async(reqbody)=>{
   }
     try {
         const response = await axios.get(url,{headers});
-        console.log("resp data"+JSON.stringify(response.data));
         return response.data;
     } catch (error) {
         toast.error('Error occured while fetching bank managers');
@@ -36,7 +33,6 @@ export const getAllBankManagersFromUser=async(reqbody)=>{
 
 // Function to add a new admin
 export const addNewUser = async (reqBody) => {
-    console.log("reqBody", reqBody);
   const url = createUrl('api/auth/register');
   const headers = {
     "Content-Type": 'application/json',
@@ -60,7 +56,6 @@ export const getAllBankManagers = async () => {
 }
   try {
     const response = await axios.get(url,{headers});
-    console.log("response", response.data);
     return response.data;
   } catch (error) {
     console.error("Error while retrieving bank managers:", error);
@@ -101,7 +96,6 @@ export const toggleManagerStatus = async (managerId) => {
     );
     return response.data;
   } catch (error) {
-    console.error("Error while toggling bank manager status:", error);
     throw error; 
   }
 }

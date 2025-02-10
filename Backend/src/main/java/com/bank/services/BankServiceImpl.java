@@ -98,15 +98,7 @@ public class BankServiceImpl implements BankService{
 		List<BankAccount> allBankAccounts = bankAccountRepository.findByBankId(bankId); 
 		
 		List<AllCustomersRespDto> allCustomersRespDto = new ArrayList<>();
-		/*private String customerName;
-	private String bankName;
-	private String customerEmail;
-	private String Gender;
-	private String customerContact;
-	private String customerAddress;
-	private Long accountId;
-	private boolean customerStatus;
-	*/
+		
 		return allBankAccounts.stream().map(acc->new AllCustomersRespDto(acc.getCustomer().getUser().getFname()+" "+acc.getCustomer().getUser().getLname(), acc.getBank().getBankName(),acc.getCustomer().getUser().getEmail(),acc.getCustomer().getUser().getGender(),acc.getCustomer().getUser().getPhoneNo(),acc.getCustomer().getUser().getAddress(),acc.getId(),acc.getCustomer().getUser().getIsActive(),acc.getCustomer().getUser().getId(),acc.getCustomer().getId())).distinct().toList();
 		
 		

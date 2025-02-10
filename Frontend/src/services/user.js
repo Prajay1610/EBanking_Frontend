@@ -11,10 +11,8 @@ export const login = async(email,password)=>{
    
     try {
         const response = await axios.post(url,reqbody)
-        console.log("1. response from backend",response.data)
         return response.data;
     } catch (err) {
-        console.log(err)
         toast.error(`Error ${err.response.data.error}`)
     }
 

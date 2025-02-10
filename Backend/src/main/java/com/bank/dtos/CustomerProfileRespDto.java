@@ -38,7 +38,6 @@ public class CustomerProfileRespDto {
 		this.userId=userId;
 	}
 	
-//	private List<Transaction> lastThreeTransactions;
 	
 	
 }

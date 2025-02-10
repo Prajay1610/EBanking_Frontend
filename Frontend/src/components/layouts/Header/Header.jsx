@@ -14,7 +14,7 @@ const Header = () => {
   if (jwtToken) {
     try {
       const decodedToken = jwtDecode(jwtToken);
-      console.log("Decoded Token:", decodedToken);
+      
 
      
       if (decodedToken.role && Array.isArray(decodedToken.role)) {
@@ -25,7 +25,6 @@ const Header = () => {
       const currentTime = Math.floor(Date.now() / 1000); 
       isLoggedIn = decodedToken.exp > currentTime; 
     } catch (error) {
-      console.error("Error decoding token:", error);
       localStorage.removeItem("token"); 
     }
   }

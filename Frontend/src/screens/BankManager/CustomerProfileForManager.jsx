@@ -10,12 +10,10 @@ import {
   getCustomerAccountData,
   getCustomerData,
 } from "../../services/customerService";
-import { Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 
 const CustomerProfileForManager = () => {
   const {customerId} = useParams(); 
-  console.log("customerId",customerId);
   let navigate = useNavigate();
   const [isDefaultImage, setIsDefaultImage] = useState(false);
   
@@ -27,10 +25,8 @@ const CustomerProfileForManager = () => {
     const fetchCustomerData = async () => {
       try {
         const data = await getCustomerData(customerId);
-        console.log(data);
         setCustomerData(data); // Store fetched data
       } catch (error) {
-        console.error("Error fetching customer data:", error);
       } finally {
         setLoading(false); // Stop loading once done
       }
@@ -43,7 +39,6 @@ const CustomerProfileForManager = () => {
     const fetchAccountData = async () => {
       try {
         const data = await getCustomerAccountData(customerId);
-        console.log("data" + data);
 
         if (data) {
           setAccountsData(data || []); // Always keep last 3 transactions
@@ -92,11 +87,9 @@ const CustomerProfileForManager = () => {
   const retrieveAllTransactions = async () => {
     try {
       const response = await getAllTransactions(customerId);
-      console.log("response", response);
 
       return response;
     } catch (error) {
-      console.error("Error fetching transactions:", error);
       toast.error("Failed to fetch transactions. Please try again.");
       return null;
     }

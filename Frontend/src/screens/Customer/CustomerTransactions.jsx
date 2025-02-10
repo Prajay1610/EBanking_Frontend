@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Header from "../../components/layouts/Header/Header";
 import Footer from "../../components/layouts/Footer/Footer";
 import { getAllTransactions } from "../../services/customerService";
-import { use } from "react";
-const {jwtDecode} = require("jwt-decode");
+const { jwtDecode } = require("jwt-decode");
 
 const ViewCustomerTransactions = () => {
   const { customerId: customerIdFromParams } = useParams(); // Get customerId from URL params
@@ -17,7 +15,6 @@ const ViewCustomerTransactions = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    console.log("Token from localStorage:", token);
 
     if (token) {
       try {
@@ -31,7 +28,6 @@ const ViewCustomerTransactions = () => {
           setCustomerId(decodedToken.customerId); // Set from token
         }
       } catch (error) {
-        console.error("Error decoding JWT:", error);
         toast.error("Failed to decode JWT. Please log in again.");
       }
     }
@@ -45,12 +41,9 @@ const ViewCustomerTransactions = () => {
 
   const retrieveAllTransactions = async () => {
     try {
-      console.log("Fetching transactions for customerId:", customerId);
       const transactions = await getAllTransactions(customerId);
-      console.log("Transactions fetched:", transactions);
       setAllTransactions(transactions || []);
     } catch (error) {
-      console.error("Error fetching transactions:", error);
       toast.error("Failed to fetch transactions. Please try again.");
     }
   };
@@ -58,28 +51,34 @@ const ViewCustomerTransactions = () => {
   // Function to format epoch time to a readable date
   const formatDateFromEpoch = (epochTime) => {
     const date = new Date(Number(epochTime));
-    
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = String(date.getFullYear()).slice(2); // Get last 2 digits of the year
     let hours = date.getHours();
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-    
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+
     // Determine AM or PM
-    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const ampm = hours >= 12 ? "PM" : "AM";
     hours = hours % 12; // Convert to 12-hour format
-    hours = hours ? String(hours).padStart(2, '0') : '12'; // The hour '0' should be '12' in 12-hour format
-    
+    hours = hours ? String(hours).padStart(2, "0") : "12"; // The hour '0' should be '12' in 12-hour format
+
     const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds} ${ampm}`;
-    
+
     return formattedDate;
   };
 
   return (
     <>
       <Header />
-      <div style={{ backgroundColor: "white", minHeight: "100vh", padding: "20px" }}>
+      <div
+        style={{
+          backgroundColor: "white",
+          minHeight: "100vh",
+          padding: "20px",
+        }}
+      >
         <div className="mt-2">
           <div
             className="card form-card ms-5 me-5 mb-5 border-color"
@@ -182,7 +181,9 @@ const ViewCustomerTransactions = () => {
                             <b>{transaction.narration}</b>
                           </td>
                           <td>
-                            <b>{formatDateFromEpoch(transaction.transactionTime)}</b>
+                            <b>
+                              {formatDateFromEpoch(transaction.transactionTime)}
+                            </b>
                           </td>
                         </tr>
                       ))
@@ -199,7 +200,6 @@ const ViewCustomerTransactions = () => {
         </div>
       </div>
       <Footer />
- 
     </>
   );
 };
