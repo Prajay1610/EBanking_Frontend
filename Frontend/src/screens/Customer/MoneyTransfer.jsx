@@ -50,11 +50,14 @@ const MoneyTransfer = () => {
 
   const handleUseAccount = (accountNo) => {
     // Function to use account
+    console.log("acc data"+accountNo);
     return () => {
       setAccount((prevState) => ({
         ...prevState,
         fromAcccountNo: accountNo,
       }));
+
+     
 
       setIsEditAble(false);
     };
@@ -218,7 +221,7 @@ const MoneyTransfer = () => {
                       <td>
                         <button
                           className="btn btn-success btn-sm"
-                          onClick={() => handleUseAccount(account.accountId)}
+                          onClick={handleUseAccount(account.accountId)}
                         >
                           Use Account
                         </button>
