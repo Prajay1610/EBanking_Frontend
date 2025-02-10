@@ -2,6 +2,8 @@ package com.bank.services;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 import com.bank.dtos.ApiResponse;
 import com.bank.dtos.BankManagerRespDto;
 import com.bank.dtos.BankRespDto;
@@ -16,5 +18,7 @@ public interface AdminService {
 	List<User> getAllBankManagersFromUser();
 
 	ApiResponse toggleManagerStatus(Long managerId);
+
+	ResponseEntity<?> getBankData();
 
 }
