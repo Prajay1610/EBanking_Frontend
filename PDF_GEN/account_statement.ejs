@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Statement</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #2980b9;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Account Statement</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Account Number</th>
+                <th>Balance</th>
+                <th>Transactions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% data.forEach(function(statement) { %>
+            <tr>
+                <td><%= statement.accountNumber %></td>
+                <td><%= statement.balance %></td>
+                <td><%= statement.transactions.join(', ') %></td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p>Generated on <%= new Date().toLocaleDateString() %></p>
+    </div>
+</div>
+
+</body>
+</html>
