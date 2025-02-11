@@ -1,2 +1,4 @@
 node_modules
 /.metadata/
+Backend/src/main/resources/application.properties
+
